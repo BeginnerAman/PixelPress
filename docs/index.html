@@ -1,1221 +1,1066 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PixelPress Desktop Pro - On-Device Image Compression Workstation</title>
-<meta name="description" content="High-performance, privacy-first desktop image optimizer for Windows. TinyPNG-grade dual quantization, chunked streaming engine, zero cloud uploads.">
-
-<!-- Google Fonts: Inter font family -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-
-<style>
-/* -------------------------------------------------------------
-   PixelPress Desktop Pro - Official Website Design System
-   Matches Desktop Studio Aesthetic: #08090d, Glassmorphism, Neon Accents
-   ------------------------------------------------------------- */
-:root {
-  --bg-core: #08090d;
-  --bg-surface: #0e1017;
-  --bg-card: rgba(17, 19, 28, 0.7);
-  --bg-card-hover: rgba(23, 26, 38, 0.9);
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-accent: rgba(124, 106, 255, 0.35);
-
-  --accent-purple: #7c6aff;
-  --accent-purple-glow: rgba(124, 106, 255, 0.35);
-  --accent-cyan: #06b6d4;
-  --accent-cyan-glow: rgba(6, 182, 212, 0.25);
-  --accent-emerald: #22c55e;
-  --accent-emerald-glow: rgba(34, 197, 94, 0.2);
-
-  --text-main: #f8fafc;
-  --text-muted: #94a3b8;
-  --text-dim: #64748b;
-
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-mono: 'JetBrains Mono', Consolas, monospace;
-}
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  scroll-behavior: smooth;
-  background-color: var(--bg-core);
-  color: var(--text-main);
-  font-family: var(--font-sans);
-}
-
-body {
-  overflow-x: hidden;
-  line-height: 1.6;
-  background: radial-gradient(circle at 50% 0%, rgba(124, 106, 255, 0.12) 0%, transparent 60%),
-              radial-gradient(circle at 10% 40%, rgba(6, 182, 212, 0.06) 0%, transparent 50%),
-              radial-gradient(circle at 90% 70%, rgba(34, 197, 94, 0.05) 0%, transparent 50%),
-              var(--bg-core);
-}
-
-/* Lucide Vector Icons */
-.lucide-icon {
-  width: 20px;
-  height: 20px;
-  stroke: currentColor;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  fill: none;
-  display: inline-block;
-  vertical-align: middle;
-}
-
-/* Container */
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 24px;
-}
-
-/* Navigation Header */
-header.navbar {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  backdrop-filter: blur(20px);
-  background: rgba(8, 9, 13, 0.85);
-  border-bottom: 1px solid var(--border-subtle);
-  padding: 16px 0;
-}
-
-.nav-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.brand-group {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  text-decoration: none;
-  color: inherit;
-}
-
-.brand-emblem {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  background: linear-gradient(135deg, rgba(124, 106, 255, 0.25), rgba(6, 182, 212, 0.15));
-  border: 1px solid var(--border-accent);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 0 20px var(--accent-purple-glow);
-}
-
-.brand-text {
-  font-size: 19px;
-  font-weight: 700;
-  letter-spacing: -0.5px;
-}
-
-.brand-badge {
-  font-size: 10px;
-  font-weight: 700;
-  padding: 2px 7px;
-  border-radius: 4px;
-  background: rgba(124, 106, 255, 0.2);
-  color: var(--accent-purple);
-  border: 1px solid var(--border-accent);
-  letter-spacing: 0.5px;
-}
-
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 28px;
-  list-style: none;
-}
-
-.nav-links a {
-  color: var(--text-muted);
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 500;
-  transition: color 0.2s;
-}
-
-.nav-links a:hover {
-  color: var(--text-main);
-}
-
-.nav-cta {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  border-radius: 8px;
-  background: rgba(124, 106, 255, 0.15);
-  color: #fff;
-  border: 1px solid var(--accent-purple);
-  text-decoration: none;
-  font-size: 13px;
-  font-weight: 600;
-  transition: all 0.2s;
-}
-
-.nav-cta:hover {
-  background: var(--accent-purple);
-  box-shadow: 0 0 20px var(--accent-purple-glow);
-  transform: translateY(-1px);
-}
-
-/* Hero Section */
-.hero {
-  padding: 80px 0 60px;
-  text-align: center;
-  position: relative;
-}
-
-.hero-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 14px;
-  border-radius: 20px;
-  background: rgba(34, 197, 94, 0.1);
-  border: 1px solid rgba(34, 197, 94, 0.3);
-  color: var(--accent-emerald);
-  font-size: 12px;
-  font-weight: 600;
-  margin-bottom: 24px;
-}
-
-.hero-title {
-  font-size: clamp(38px, 6vw, 68px);
-  font-weight: 800;
-  line-height: 1.1;
-  letter-spacing: -1.5px;
-  max-width: 900px;
-  margin: 0 auto 20px;
-}
-
-.gradient-text {
-  background: linear-gradient(135deg, #ffffff 30%, #7c6aff 70%, #06b6d4 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.hero-subtitle {
-  font-size: clamp(16px, 2vw, 20px);
-  color: var(--text-muted);
-  max-width: 720px;
-  margin: 0 auto 40px;
-  line-height: 1.6;
-}
-
-/* Download CTA Grid */
-.download-grid {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  margin-bottom: 30px;
-}
-
-.btn-download-primary {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 16px 28px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #7c6aff 0%, #6350e8 100%);
-  color: #fff;
-  text-decoration: none;
-  font-weight: 700;
-  font-size: 15px;
-  box-shadow: 0 10px 30px var(--accent-purple-glow);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.btn-download-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 15px 40px rgba(124, 106, 255, 0.5);
-}
-
-.btn-download-secondary {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 16px 24px;
-  border-radius: 12px;
-  background: rgba(17, 19, 28, 0.9);
-  color: #fff;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 14px;
-  border: 1px solid var(--border-subtle);
-  transition: all 0.2s;
-}
-
-.btn-download-secondary:hover {
-  border-color: var(--accent-cyan);
-  background: rgba(23, 26, 38, 0.95);
-  box-shadow: 0 0 25px var(--accent-cyan-glow);
-  transform: translateY(-2px);
-}
-
-.btn-meta {
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-}
-
-.btn-label {
-  font-size: 14px;
-  line-height: 1.2;
-}
-
-.btn-sub {
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.65);
-  font-weight: 400;
-}
-
-.hero-meta-bar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  font-size: 13px;
-  color: var(--text-dim);
-}
-
-.hero-meta-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-/* Interactive Split Comparison Slider */
-.comparison-section {
-  padding: 60px 0;
-}
-
-.section-header {
-  text-align: center;
-  margin-bottom: 40px;
-}
-
-.section-tag {
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: var(--accent-purple);
-  letter-spacing: 1px;
-  margin-bottom: 8px;
-}
-
-.section-title {
-  font-size: clamp(26px, 3.5vw, 40px);
-  font-weight: 800;
-  letter-spacing: -0.8px;
-}
-
-.section-subtitle {
-  font-size: 16px;
-  color: var(--text-muted);
-  max-width: 600px;
-  margin: 10px auto 0;
-}
-
-.comparison-wrapper {
-  max-width: 960px;
-  margin: 0 auto;
-  border-radius: 16px;
-  border: 1px solid var(--border-subtle);
-  background: var(--bg-surface);
-  padding: 8px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
-}
-
-.comparison-card {
-  position: relative;
-  width: 100%;
-  height: 480px;
-  border-radius: 12px;
-  overflow: hidden;
-  user-select: none;
-  background: #0d0f17;
-}
-
-.split-layer {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.layer-original {
-  background: linear-gradient(135deg, #181d2c 0%, #0d111d 100%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 40px;
-}
-
-.layer-compressed {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 50%;
-  height: 100%;
-  overflow: hidden;
-  background: linear-gradient(135deg, #181d2c 0%, #0d111d 100%);
-  border-right: 2px solid var(--accent-purple);
-  z-index: 2;
-}
-
-.layer-inner-content {
-  width: 960px;
-  height: 480px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 40px;
-}
-
-.spec-art-box {
-  width: 220px;
-  height: 220px;
-  border-radius: 20px;
-  border: 1px solid var(--border-accent);
-  background: rgba(124, 106, 255, 0.08);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 24px;
-}
-
-.badge-layer {
-  position: absolute;
-  top: 20px;
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-}
-
-.badge-original {
-  right: 20px;
-  background: rgba(239, 68, 68, 0.15);
-  color: #f87171;
-  border: 1px solid rgba(239, 68, 68, 0.3);
-}
-
-.badge-compressed {
-  left: 20px;
-  background: rgba(34, 197, 94, 0.15);
-  color: var(--accent-emerald);
-  border: 1px solid rgba(34, 197, 94, 0.3);
-}
-
-.slider-handle {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: var(--accent-purple);
-  border: 3px solid #fff;
-  box-shadow: 0 0 20px var(--accent-purple-glow);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: ew-resize;
-  z-index: 10;
-  color: #fff;
-}
-
-.comparison-stats-bar {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  padding: 20px 16px 8px;
-  text-align: center;
-}
-
-.stat-box {
-  padding: 12px;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid var(--border-subtle);
-}
-
-.stat-label {
-  font-size: 12px;
-  color: var(--text-dim);
-  text-transform: uppercase;
-  margin-bottom: 4px;
-}
-
-.stat-val {
-  font-size: 20px;
-  font-weight: 700;
-}
-
-.stat-emerald {
-  color: var(--accent-emerald);
-}
-
-/* Bento Features Grid */
-.features-section {
-  padding: 80px 0;
-}
-
-.bento-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-}
-
-.bento-card {
-  border-radius: 16px;
-  background: var(--bg-card);
-  backdrop-filter: blur(16px);
-  border: 1px solid var(--border-subtle);
-  padding: 28px;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.bento-card:hover {
-  transform: translateY(-4px);
-  background: var(--bg-card-hover);
-  border-color: var(--border-accent);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-}
-
-.card-icon-wrap {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 20px;
-  border: 1px solid var(--border-accent);
-}
-
-.icon-purple {
-  background: rgba(124, 106, 255, 0.15);
-  color: var(--accent-purple);
-}
-
-.icon-emerald {
-  background: rgba(34, 197, 94, 0.15);
-  color: var(--accent-emerald);
-}
-
-.icon-cyan {
-  background: rgba(6, 182, 212, 0.15);
-  color: var(--accent-cyan);
-}
-
-.card-title {
-  font-size: 18px;
-  font-weight: 700;
-  margin-bottom: 8px;
-  letter-spacing: -0.3px;
-}
-
-.card-desc {
-  font-size: 14px;
-  color: var(--text-muted);
-  line-height: 1.5;
-}
-
-/* Comparison Table */
-.benchmark-section {
-  padding: 80px 0;
-}
-
-.table-wrapper {
-  overflow-x: auto;
-  border-radius: 16px;
-  border: 1px solid var(--border-subtle);
-  background: var(--bg-card);
-  backdrop-filter: blur(16px);
-  margin-top: 30px;
-}
-
-table.benchmark-table {
-  width: 100%;
-  border-collapse: collapse;
-  text-align: left;
-  font-size: 14px;
-}
-
-table.benchmark-table th,
-table.benchmark-table td {
-  padding: 16px 20px;
-  border-bottom: 1px solid var(--border-subtle);
-}
-
-table.benchmark-table th {
-  background: rgba(255, 255, 255, 0.03);
-  font-weight: 600;
-  color: var(--text-muted);
-}
-
-table.benchmark-table td.highlight {
-  color: var(--accent-purple);
-  font-weight: 700;
-  background: rgba(124, 106, 255, 0.05);
-}
-
-/* Keyboard Shortcuts Section */
-.shortcuts-section {
-  padding: 60px 0;
-}
-
-.shortcuts-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin-top: 30px;
-}
-
-.shortcut-card {
-  padding: 20px;
-  border-radius: 12px;
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  text-align: center;
-}
-
-kbd {
-  display: inline-block;
-  padding: 4px 8px;
-  font-family: var(--font-mono);
-  font-size: 13px;
-  font-weight: 600;
-  color: #fff;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 6px;
-  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.4);
-  margin-bottom: 10px;
-}
-
-.shortcut-label {
-  font-size: 13px;
-  color: var(--text-muted);
-}
-
-/* FAQ Section */
-.faq-section {
-  padding: 60px 0 100px;
-}
-
-.faq-list {
-  max-width: 800px;
-  margin: 30px auto 0;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.faq-item {
-  border-radius: 12px;
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  overflow: hidden;
-}
-
-.faq-question {
-  padding: 18px 22px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 15px;
-  user-select: none;
-}
-
-.faq-answer {
-  padding: 0 22px 18px;
-  font-size: 14px;
-  color: var(--text-muted);
-  line-height: 1.6;
-}
-
-/* Footer */
-footer.site-footer {
-  border-top: 1px solid var(--border-subtle);
-  padding: 40px 0;
-  background: #050608;
-  font-size: 13px;
-  color: var(--text-dim);
-}
-
-.footer-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.footer-copy a {
-  color: var(--text-muted);
-  text-decoration: none;
-}
-
-.footer-copy a:hover {
-  color: var(--accent-purple);
-}
-
-@media (max-width: 900px) {
-  .bento-grid { grid-template-columns: 1fr; }
-  .shortcuts-grid { grid-template-columns: repeat(2, 1fr); }
-  .comparison-stats-bar { grid-template-columns: repeat(2, 1fr); }
-  .nav-links { display: none; }
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PixelPress Desktop Pro - On-Device Image Compression Workstation</title>
+  <meta name="description" content="High-performance, privacy-first desktop image optimizer for Windows 11 and 10. TinyPNG-grade dual quantization, chunked streaming engine, zero cloud uploads.">
+
+  <!-- Google Fonts: Inter and JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Modular Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- Modular Script (Deferred) -->
+  <script src="js/main.js" defer></script>
 </head>
 <body>
 
-<!-- SVG Sprites (Lucide Icons) -->
-<svg style="display: none;" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <!-- Aperture Logo -->
-    <symbol id="icon-aperture" viewBox="0 0 24 24">
-      <circle cx="12" cy="12" r="10"></circle>
-      <line x1="14.31" y1="8" x2="20.05" y2="17.94"></line>
-      <line x1="9.69" y1="8" x2="21.17" y2="8"></line>
-      <line x1="7.38" y1="12" x2="13.12" y2="2.06"></line>
-      <line x1="9.69" y1="16" x2="3.95" y2="6.06"></line>
-      <line x1="14.31" y1="16" x2="2.83" y2="16"></line>
-      <line x1="16.62" y1="12" x2="10.88" y2="21.94"></line>
-    </symbol>
-    <!-- Shield -->
-    <symbol id="icon-shield" viewBox="0 0 24 24">
-      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-    </symbol>
-    <!-- Download -->
-    <symbol id="icon-download" viewBox="0 0 24 24">
-      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-      <polyline points="7 10 12 15 17 10"></polyline>
-      <line x1="12" y1="15" x2="12" y2="3"></line>
-    </symbol>
-    <!-- Cpu -->
-    <symbol id="icon-cpu" viewBox="0 0 24 24">
-      <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
-      <rect x="9" y="9" width="6" height="6"></rect>
-      <line x1="9" y1="1" x2="9" y2="4"></line>
-      <line x1="15" y1="1" x2="15" y2="4"></line>
-      <line x1="9" y1="20" x2="9" y2="23"></line>
-      <line x1="15" y1="20" x2="15" y2="23"></line>
-      <line x1="20" y1="9" x2="23" y2="9"></line>
-      <line x1="20" y1="14" x2="23" y2="14"></line>
-      <line x1="1" y1="9" x2="4" y2="9"></line>
-      <line x1="1" y1="14" x2="4" y2="14"></line>
-    </symbol>
-    <!-- Zap -->
-    <symbol id="icon-zap" viewBox="0 0 24 24">
-      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-    </symbol>
-    <!-- Layers -->
-    <symbol id="icon-layers" viewBox="0 0 24 24">
-      <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
-      <polyline points="2 17 12 22 22 17"></polyline>
-      <polyline points="2 12 12 17 22 12"></polyline>
-    </symbol>
-    <!-- Sparkles -->
-    <symbol id="icon-sparkles" viewBox="0 0 24 24">
-      <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path>
-    </symbol>
-    <!-- Folder -->
-    <symbol id="icon-folder" viewBox="0 0 24 24">
-      <path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"></path>
-    </symbol>
-    <!-- Check -->
-    <symbol id="icon-check" viewBox="0 0 24 24">
-      <polyline points="20 6 9 17 4 12"></polyline>
-    </symbol>
-    <!-- Sliders -->
-    <symbol id="icon-sliders" viewBox="0 0 24 24">
-      <line x1="4" y1="21" x2="4" y2="14"></line>
-      <line x1="4" y1="10" x2="4" y2="3"></line>
-      <line x1="12" y1="21" x2="12" y2="12"></line>
-      <line x1="12" y1="8" x2="12" y2="3"></line>
-      <line x1="20" y1="21" x2="20" y2="16"></line>
-      <line x1="20" y1="12" x2="20" y2="3"></line>
-      <line x1="1" y1="14" x2="7" y2="14"></line>
-      <line x1="9" y1="8" x2="15" y2="8"></line>
-      <line x1="17" y1="16" x2="23" y2="16"></line>
-    </symbol>
-    <!-- Chevron -->
-    <symbol id="icon-chevron-down" viewBox="0 0 24 24">
-      <polyline points="6 9 12 15 18 9"></polyline>
-    </symbol>
-  </defs>
-</svg>
+  <!-- Lucide Vector Icons SVG Sprite (Zero Emojis, Pure Crisp Vectors) -->
+  <svg style="display: none;">
+    <defs>
+      <!-- Aperture Brand Icon -->
+      <symbol id="icon-aperture" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="14.31" y1="8" x2="20.05" y2="17.94"></line>
+        <line x1="9.69" y1="8" x2="21.17" y2="8"></line>
+        <line x1="7.38" y1="12" x2="13.12" y2="2.06"></line>
+        <line x1="9.69" y1="16" x2="3.95" y2="6.06"></line>
+        <line x1="14.31" y1="16" x2="2.83" y2="16"></line>
+        <line x1="16.62" y1="12" x2="10.88" y2="21.94"></line>
+      </symbol>
 
-<!-- Header Navbar -->
-<header class="navbar">
-  <div class="container nav-row">
-    <a href="#" class="brand-group">
-      <div class="brand-emblem">
-        <svg class="lucide-icon" style="color: var(--accent-purple);"><use href="#icon-aperture"/></svg>
-      </div>
-      <span class="brand-text">PixelPress</span>
-      <span class="brand-badge">DESKTOP PRO</span>
-    </a>
-    <ul class="nav-links">
-      <li><a href="#features">Features</a></li>
-      <li><a href="#compare">Quality Inspector</a></li>
-      <li><a href="#benchmarks">Benchmarks</a></li>
-      <li><a href="#shortcuts">Shortcuts</a></li>
-      <li><a href="#faq">FAQ</a></li>
-    </ul>
-    <a href="https://github.com/BeginnerAman/PixelPress" target="_blank" class="nav-cta">
-      <span>GitHub Repository</span>
-    </a>
-  </div>
-</header>
+      <!-- Shield Check (Privacy & Air-Gap) -->
+      <symbol id="icon-shield-check" viewBox="0 0 24 24">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+        <polyline points="9 12 11 14 15 10"></polyline>
+      </symbol>
 
-<!-- Hero Section -->
-<section class="hero">
-  <div class="container">
-    <div class="hero-pill">
-      <svg class="lucide-icon" style="width: 14px; height: 14px;"><use href="#icon-shield"/></svg>
-      <span>100% On-Device Processing - Zero Cloud Uploads</span>
-    </div>
-    
-    <h1 class="hero-title">
-      Studio-Grade Image Compression.<br>
-      <span class="gradient-text">Zero Cloud Dependency.</span>
-    </h1>
-    
-    <p class="hero-subtitle">
-      Crush PNG, JPEG, and WebP file sizes by up to 80% with TinyPNG-grade dual quantization running directly on your Windows PC. No subscriptions, zero file limits, and 100% air-gapped privacy.
-    </p>
+      <!-- Zap (High Speed) -->
+      <symbol id="icon-zap" viewBox="0 0 24 24">
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+      </symbol>
 
-    <!-- Download Buttons Grid -->
-    <div class="download-grid">
-      <a href="https://github.com/BeginnerAman/PixelPress/releases/download/v2.1.0/PixelPress_Setup.exe" class="btn-download-primary">
-        <svg class="lucide-icon"><use href="#icon-download"/></svg>
-        <div class="btn-meta">
-          <span class="btn-label">Download Setup Installer</span>
-          <span class="btn-sub">v2.1.0 - Setup Wizard - 15.8 MB</span>
+      <!-- CPU (Local Hardware Execution) -->
+      <symbol id="icon-cpu" viewBox="0 0 24 24">
+        <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+        <rect x="9" y="9" width="6" height="6"></rect>
+        <line x1="9" y1="1" x2="9" y2="4"></line>
+        <line x1="15" y1="1" x2="15" y2="4"></line>
+        <line x1="9" y1="20" x2="9" y2="23"></line>
+        <line x1="15" y1="20" x2="15" y2="23"></line>
+        <line x1="20" y1="9" x2="23" y2="9"></line>
+        <line x1="20" y1="14" x2="23" y2="14"></line>
+        <line x1="1" y1="9" x2="4" y2="9"></line>
+        <line x1="1" y1="14" x2="4" y2="14"></line>
+      </symbol>
+
+      <!-- Layers (Dual Quantization) -->
+      <symbol id="icon-layers" viewBox="0 0 24 24">
+        <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+        <polyline points="2 17 12 22 22 17"></polyline>
+        <polyline points="2 12 12 17 22 12"></polyline>
+      </symbol>
+
+      <!-- Folder Open (Windows Shell Picker) -->
+      <symbol id="icon-folder-open" viewBox="0 0 24 24">
+        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+        <polygon points="2 10 22 10 19 21 5 21"></polygon>
+      </symbol>
+
+      <!-- Database (Chunked Stream O(1) Memory) -->
+      <symbol id="icon-database" viewBox="0 0 24 24">
+        <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+        <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+        <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+      </symbol>
+
+      <!-- Download -->
+      <symbol id="icon-download" viewBox="0 0 24 24">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+        <polyline points="7 10 12 15 17 10"></polyline>
+        <line x1="12" y1="15" x2="12" y2="3"></line>
+      </symbol>
+
+      <!-- Sliders (Inspector & Tuning) -->
+      <symbol id="icon-sliders" viewBox="0 0 24 24">
+        <line x1="4" y1="21" x2="4" y2="14"></line>
+        <line x1="4" y1="10" x2="4" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="12"></line>
+        <line x1="12" y1="8" x2="12" y2="3"></line>
+        <line x1="20" y1="21" x2="20" y2="16"></line>
+        <line x1="20" y1="12" x2="20" y2="3"></line>
+        <line x1="1" y1="14" x2="7" y2="14"></line>
+        <line x1="9" y1="8" x2="15" y2="8"></line>
+        <line x1="17" y1="16" x2="23" y2="16"></line>
+      </symbol>
+
+      <!-- Hard Drive (Disk Storage) -->
+      <symbol id="icon-hard-drive" viewBox="0 0 24 24">
+        <line x1="22" y1="12" x2="2" y2="12"></line>
+        <path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path>
+        <line x1="6" y1="16" x2="6.01" y2="16"></line>
+        <line x1="10" y1="16" x2="10.01" y2="16"></line>
+      </symbol>
+
+      <!-- Globe (Cloud Bandwidth) -->
+      <symbol id="icon-globe" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="2" y1="12" x2="22" y2="12"></line>
+        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+      </symbol>
+
+      <!-- Clock (Upload Time) -->
+      <symbol id="icon-clock" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10"></circle>
+        <polyline points="12 6 12 12 16 14"></polyline>
+      </symbol>
+
+      <!-- Dollar Sign (API Savings) -->
+      <symbol id="icon-dollar-sign" viewBox="0 0 24 24">
+        <line x1="12" y1="1" x2="12" y2="23"></line>
+        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+      </symbol>
+
+      <!-- Checkmark -->
+      <symbol id="icon-check" viewBox="0 0 24 24">
+        <polyline points="20 6 9 17 4 12"></polyline>
+      </symbol>
+
+      <!-- Cross -->
+      <symbol id="icon-x" viewBox="0 0 24 24">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </symbol>
+
+      <!-- Chevron Down -->
+      <symbol id="icon-chevron-down" viewBox="0 0 24 24">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </symbol>
+
+      <!-- Chevron Left / Right -->
+      <symbol id="icon-chevrons-left-right" viewBox="0 0 24 24">
+        <polyline points="9 7 4 12 9 17"></polyline>
+        <polyline points="15 7 20 12 15 17"></polyline>
+      </symbol>
+
+      <!-- Image File -->
+      <symbol id="icon-image" viewBox="0 0 24 24">
+        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+        <polyline points="21 15 16 10 5 21"></polyline>
+      </symbol>
+
+      <!-- Upload Cloud -->
+      <symbol id="icon-upload-cloud" viewBox="0 0 24 24">
+        <polyline points="16 16 12 12 8 16"></polyline>
+        <line x1="12" y1="12" x2="12" y2="21"></line>
+        <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path>
+        <polyline points="16 16 12 12 8 16"></polyline>
+      </symbol>
+
+      <!-- Terminal / Keyboard -->
+      <symbol id="icon-terminal" viewBox="0 0 24 24">
+        <polyline points="4 17 10 11 4 5"></polyline>
+        <line x1="12" y1="19" x2="20" y2="19"></line>
+      </symbol>
+
+      <!-- GitHub -->
+      <symbol id="icon-github" viewBox="0 0 24 24">
+        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+      </symbol>
+
+      <!-- External Link -->
+      <symbol id="icon-external-link" viewBox="0 0 24 24">
+        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+        <polyline points="15 3 21 3 21 9"></polyline>
+        <line x1="10" y1="14" x2="21" y2="3"></line>
+      </symbol>
+    </defs>
+  </svg>
+
+  <!-- Sticky Navigation Header -->
+  <header class="navbar">
+    <div class="container nav-row">
+      <a href="#" class="brand-wrap">
+        <div class="brand-icon">
+          <svg class="lucide-icon"><use href="#icon-aperture"></use></svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">PixelPress</span>
+          <span class="brand-badge">Desktop Pro v2.1.0</span>
         </div>
       </a>
 
-      <a href="https://github.com/BeginnerAman/PixelPress/releases/download/v2.1.0/PixelPress-v2.1.0-Portable.zip" class="btn-download-secondary">
-        <svg class="lucide-icon" style="color: var(--accent-cyan);"><use href="#icon-zap"/></svg>
-        <div class="btn-meta">
-          <span class="btn-label">Fast Portable ZIP</span>
-          <span class="btn-sub">USB Drive Ready - Instant 0.2s Launch - 19.7 MB</span>
-        </div>
+      <ul class="nav-links">
+        <li><a href="#features">Architecture</a></li>
+        <li><a href="#inspector">Quality Inspector</a></li>
+        <li><a href="#calculator">Savings Calculator</a></li>
+        <li><a href="#formats">Engines</a></li>
+        <li><a href="#benchmarks">Benchmarks</a></li>
+        <li><a href="#shortcuts">Shortcuts</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="https://github.com/BeginnerAman/PixelPress" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">
+          <svg class="lucide-icon sm"><use href="#icon-github"></use></svg>
+          <span>GitHub</span>
+        </a>
+        <a href="#download" class="btn btn-primary btn-sm">
+          <svg class="lucide-icon sm"><use href="#icon-download"></use></svg>
+          <span>Download</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container">
+      <a href="https://github.com/BeginnerAman/PixelPress/releases/tag/v2.1.0" target="_blank" rel="noopener" class="hero-pill">
+        <span class="pill-tag">NEW RELEASE</span>
+        <span>PixelPress Desktop Pro v2.1.0 is Live for Windows 11 and 10</span>
+        <svg class="lucide-icon sm"><use href="#icon-external-link"></use></svg>
       </a>
 
-      <a href="https://github.com/BeginnerAman/PixelPress/releases/download/v2.1.0/PixelPress-Portable.exe" class="btn-download-secondary">
-        <svg class="lucide-icon" style="color: var(--accent-emerald);"><use href="#icon-layers"/></svg>
-        <div class="btn-meta">
-          <span class="btn-label">Single-File EXE</span>
-          <span class="btn-sub">Zero Extraction - Standalone - 19.8 MB</span>
+      <h1 class="hero-title">
+        Stop Uploading Images to the Cloud. <br>
+        <span class="text-gradient">Compress Locally at 100x Speed.</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        Industrial-grade, privacy-first desktop image optimization workstation. TinyPNG-grade dual quantization, chunked streaming engine with constant O(1) memory, and native Windows 11 integration - without cloud uploads or subscriptions.
+      </p>
+
+      <div class="hero-cta-group">
+        <a href="https://github.com/BeginnerAman/PixelPress/releases/download/v2.1.0/PixelPress_Setup.exe" class="btn btn-primary btn-lg">
+          <svg class="lucide-icon"><use href="#icon-download"></use></svg>
+          <span>Download Setup (15.8 MB)</span>
+        </a>
+        <a href="https://github.com/BeginnerAman/PixelPress/releases/download/v2.1.0/PixelPress-v2.1.0-Portable.zip" class="btn btn-secondary btn-lg">
+          <svg class="lucide-icon"><use href="#icon-folder-open"></use></svg>
+          <span>Portable ZIP (19.7 MB)</span>
+        </a>
+        <a href="https://github.com/BeginnerAman/PixelPress/releases/download/v2.1.0/PixelPress-Portable.exe" class="btn btn-secondary btn-lg">
+          <svg class="lucide-icon"><use href="#icon-zap"></use></svg>
+          <span>Standalone EXE (19.8 MB)</span>
+        </a>
+      </div>
+
+      <div class="hero-trust-bar">
+        <div class="trust-item">
+          <svg class="lucide-icon sm"><use href="#icon-shield-check"></use></svg>
+          <span>100% Offline Air-Gapped</span>
         </div>
-      </a>
-    </div>
-
-    <div class="hero-meta-bar">
-      <div class="hero-meta-item">
-        <svg class="lucide-icon" style="width: 14px; height: 14px; color: var(--accent-emerald);"><use href="#icon-check"/></svg>
-        <span>Windows 11 / 10 (64-bit)</span>
-      </div>
-      <div class="hero-meta-item">
-        <svg class="lucide-icon" style="width: 14px; height: 14px; color: var(--accent-emerald);"><use href="#icon-check"/></svg>
-        <span>MIT License</span>
-      </div>
-      <div class="hero-meta-item">
-        <svg class="lucide-icon" style="width: 14px; height: 14px; color: var(--accent-emerald);"><use href="#icon-check"/></svg>
-        <span>Engineered by Aman Vishwakarma</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Interactive Split Comparison Slider -->
-<section id="compare" class="comparison-section">
-  <div class="container">
-    <div class="section-header">
-      <div class="section-tag">Interactive Quality Inspector</div>
-      <h2 class="section-title">See the Quality. Not the File Size.</h2>
-      <p class="section-subtitle">Drag the interactive slider below to inspect 1:1 pixel fidelity between raw uncompressed photography and PixelPress optimization.</p>
-    </div>
-
-    <div class="comparison-wrapper">
-      <div class="comparison-card" id="sliderCard">
-        <!-- Original Layer -->
-        <div class="split-layer layer-original">
-          <div class="spec-art-box">
-            <svg class="lucide-icon" style="width: 72px; height: 72px; color: var(--text-dim);"><use href="#icon-aperture"/></svg>
-          </div>
-          <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 6px;">RAW Uncompressed Photograph</h3>
-          <p style="font-size: 13px; color: var(--text-muted); font-family: var(--font-mono);">3456 x 4608 px - High-Fidelity 24-bit TrueColor</p>
-          <span class="badge-layer badge-original">ORIGINAL - 4.05 MB</span>
+        <div class="trust-item">
+          <svg class="lucide-icon sm"><use href="#icon-check"></use></svg>
+          <span>Zero Telemetry or Trackers</span>
         </div>
+        <div class="trust-item">
+          <svg class="lucide-icon sm"><use href="#icon-cpu"></use></svg>
+          <span>Multi-Core Native Windows 11 / 10</span>
+        </div>
+        <div class="trust-item">
+          <svg class="lucide-icon sm"><use href="#icon-zap"></use></svg>
+          <span>Free &amp; Open Source (MIT)</span>
+        </div>
+      </div>
 
-        <!-- Compressed Layer -->
-        <div class="split-layer layer-compressed" id="sliderOverlay">
-          <div class="layer-inner-content">
-            <div class="spec-art-box" style="background: rgba(34, 197, 94, 0.08); border-color: rgba(34, 197, 94, 0.3);">
-              <svg class="lucide-icon" style="width: 72px; height: 72px; color: var(--accent-emerald);"><use href="#icon-aperture"/></svg>
+      <!-- Floating App Window Mockup -->
+      <div class="mockup-wrapper">
+        <div class="mockup-glow"></div>
+        <div class="window-frame">
+          <div class="window-titlebar">
+            <div class="window-titlebar-left">
+              <svg class="lucide-icon sm" style="color: var(--accent-purple);"><use href="#icon-aperture"></use></svg>
+              <span class="window-titlebar-title">PixelPress Desktop Pro</span>
+              <span class="window-titlebar-tag">v2.1.0 Desktop Pro</span>
             </div>
-            <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 6px;">PixelPress Optimized (Adaptive Octree)</h3>
-            <p style="font-size: 13px; color: var(--accent-emerald); font-family: var(--font-mono);">3456 x 4608 px - 100% Visual Fidelity Preserved</p>
-            <span class="badge-layer badge-compressed">OPTIMIZED - 2.02 MB (-50.2% SAVED)</span>
+            <div class="window-controls">
+              <span class="win-btn min"></span>
+              <span class="win-btn max"></span>
+              <span class="win-btn close"></span>
+            </div>
+          </div>
+
+          <div class="mockup-body">
+            <div class="mockup-dropzone">
+              <div class="mockup-dropzone-icon">
+                <svg class="lucide-icon lg"><use href="#icon-upload-cloud"></use></svg>
+              </div>
+              <h4>Drag &amp; Drop Images or Entire Folders Here</h4>
+              <p>Supports PNG, JPEG, WebP, GIF, BMP, TIFF, and ICO - Unlimited batch size</p>
+            </div>
+
+            <div class="mockup-queue">
+              <div class="mockup-queue-item">
+                <div class="mockup-item-left">
+                  <div class="mockup-item-icon">
+                    <svg class="lucide-icon sm"><use href="#icon-image"></use></svg>
+                  </div>
+                  <div class="mockup-item-info">
+                    <h5>product-hero-banner.png</h5>
+                    <span>4.20 MB to 780 KB - 8-bit FastOctree RGBA</span>
+                  </div>
+                </div>
+                <div class="mockup-item-right">
+                  <span class="mockup-badge-saved">-81.4% Saved</span>
+                  <svg class="lucide-icon sm" style="color: var(--accent-emerald);"><use href="#icon-check"></use></svg>
+                </div>
+              </div>
+
+              <div class="mockup-queue-item">
+                <div class="mockup-item-left">
+                  <div class="mockup-item-icon">
+                    <svg class="lucide-icon sm"><use href="#icon-image"></use></svg>
+                  </div>
+                  <div class="mockup-item-info">
+                    <h5>studio-portrait-4k.jpg</h5>
+                    <span>8.45 MB to 1.42 MB - Progressive DCT 4:2:0</span>
+                  </div>
+                </div>
+                <div class="mockup-item-right">
+                  <span class="mockup-badge-saved">-83.2% Saved</span>
+                  <svg class="lucide-icon sm" style="color: var(--accent-emerald);"><use href="#icon-check"></use></svg>
+                </div>
+              </div>
+
+              <div class="mockup-queue-item">
+                <div class="mockup-item-left">
+                  <div class="mockup-item-icon">
+                    <svg class="lucide-icon sm"><use href="#icon-image"></use></svg>
+                  </div>
+                  <div class="mockup-item-info">
+                    <h5>editorial-layout.webp</h5>
+                    <span>5.10 MB to 640 KB - Method-4 Predictive Coding</span>
+                  </div>
+                </div>
+                <div class="mockup-item-right">
+                  <span class="mockup-badge-saved">-87.5% Saved</span>
+                  <svg class="lucide-icon sm" style="color: var(--accent-emerald);"><use href="#icon-check"></use></svg>
+                </div>
+              </div>
+            </div>
+
+            <div class="mockup-footer-bar">
+              <div class="mockup-stat">
+                Completed: <strong>3 of 3 Files</strong> (17.75 MB to 2.84 MB)
+              </div>
+              <div class="mockup-stat">
+                Total Storage Saved: <strong style="color: var(--accent-emerald);">14.91 MB (-84.0%)</strong>
+              </div>
+              <div class="btn btn-primary btn-sm">
+                <svg class="lucide-icon sm"><use href="#icon-folder-open"></use></svg>
+                <span>Save to Folder (Ctrl + S)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Quality Inspector -->
+  <section id="inspector" class="section">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-pill">LIVE QUALITY INSPECTOR</div>
+        <h2>Inspect the Pixels. 80%+ Reduction with Zero Visible Loss.</h2>
+        <p>Drag the split slider handle left and right to inspect the microscopic pixel fidelity between the raw uncompressed master asset and the PixelPress optimized output.</p>
+      </div>
+
+      <div class="inspector-card">
+        <div class="inspector-header">
+          <div class="inspector-meta">
+            <svg class="lucide-icon" style="color: var(--accent-purple);"><use href="#icon-sliders"></use></svg>
+            <span class="inspector-title" id="sceneTitle">Vector UI Graphic and Alpha Transparency</span>
+          </div>
+
+          <div class="inspector-tabs">
+            <button class="inspector-tab-btn active" data-format="png">PNG Alpha</button>
+            <button class="inspector-tab-btn" data-format="jpeg">JPEG Photo</button>
+            <button class="inspector-tab-btn" data-format="webp">WebP Modern</button>
           </div>
         </div>
 
-        <!-- Drag Handle -->
-        <div class="slider-handle" id="sliderHandle">
-          <svg class="lucide-icon" style="width: 18px; height: 18px;"><use href="#icon-sliders"/></svg>
-        </div>
-      </div>
+        <!-- Split Slider Visual Area -->
+        <div class="split-slider-container" id="splitSlider">
+          <!-- Layer 1: Master Raw Layer (Before) -->
+          <div class="split-image-layer before">
+            <div class="split-layer-content">
+              <div class="scene-canvas">
+                <div class="scene-graphic">
+                  <div class="scene-graphic-rings"></div>
+                  <svg class="lucide-icon xl"><use href="#icon-aperture"></use></svg>
+                </div>
+                <div class="scene-caption">Raw High-Resolution Master File</div>
+                <div class="scene-sub">Uncompressed 32-bit RGBA Buffer - No Quantization</div>
+              </div>
+            </div>
+            <span class="split-badge badge-before">ORIGINAL: RAW UNCOMPRESSED</span>
+          </div>
 
-      <!-- Stats Bar -->
-      <div class="comparison-stats-bar">
-        <div class="stat-box">
-          <div class="stat-label">Original Payload</div>
-          <div class="stat-val">4.05 MB</div>
+          <!-- Layer 2: Optimized Layer (After) -->
+          <div class="split-image-layer after" id="splitAfterLayer">
+            <div class="split-layer-content">
+              <div class="scene-canvas">
+                <div class="scene-graphic" style="box-shadow: 0 0 60px rgba(124, 106, 255, 0.45);">
+                  <div class="scene-graphic-rings" style="border-color: rgba(124, 106, 255, 0.4);"></div>
+                  <svg class="lucide-icon xl" style="color: #a5b4fc;"><use href="#icon-aperture"></use></svg>
+                </div>
+                <div class="scene-caption" style="color: #c7d2fe;">PixelPress Desktop Pro Optimized</div>
+                <div class="scene-sub" style="color: var(--accent-emerald);">Adaptive Quantized Output - Visually Lossless</div>
+              </div>
+            </div>
+            <span class="split-badge badge-after">OPTIMIZED: PIXELPRESS PRO</span>
+          </div>
+
+          <!-- Draggable Slider Handle -->
+          <div class="split-handle" id="splitHandle">
+            <div class="split-handle-btn">
+              <svg class="lucide-icon sm"><use href="#icon-chevrons-left-right"></use></svg>
+            </div>
+          </div>
         </div>
-        <div class="stat-box">
-          <div class="stat-label">Optimized Payload</div>
-          <div class="stat-val stat-emerald">2.02 MB</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-label">Data Reduction</div>
-          <div class="stat-val stat-emerald">-50.2%</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-label">Compression Time</div>
-          <div class="stat-val">2.46s (Local CPU)</div>
+
+        <!-- Metric Readout Footer -->
+        <div class="inspector-footer">
+          <div class="inspector-stat-col">
+            <span class="inspector-stat-label">Original Payload</span>
+            <span class="inspector-stat-value" id="statRawSize">4.20 MB</span>
+          </div>
+          <div class="inspector-stat-col">
+            <span class="inspector-stat-label">Optimized Output</span>
+            <span class="inspector-stat-value highlight" id="statOptSize">780 KB</span>
+          </div>
+          <div class="inspector-stat-col">
+            <span class="inspector-stat-label">Compression Ratio</span>
+            <span class="inspector-stat-value highlight" id="statRatio">81.4%</span>
+          </div>
+          <div class="inspector-stat-col">
+            <span class="inspector-stat-label">Local Quantization Engine</span>
+            <span class="inspector-stat-value" id="statAlgo">8-bit FastOctree RGBA</span>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- Bento Grid Features Section -->
-<section id="features" class="features-section">
-  <div class="container">
-    <div class="section-header">
-      <div class="section-tag">Engineering Highlights</div>
-      <h2 class="section-title">Built for Speed. Engineered for Scale.</h2>
-      <p class="section-subtitle">Explore the core systems that position PixelPress Desktop Pro in a tier above typical desktop utilities.</p>
+  <!-- Interactive Storage & Bandwidth Savings Calculator -->
+  <section id="calculator" class="section">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-pill">ROI &amp; BANDWIDTH CALCULATOR</div>
+        <h2>Quantify Your Hardware &amp; Network Gains</h2>
+        <p>Estimate how much local disk storage, cloud egress bandwidth, upload latency, and paid API fees your team will reclaim by switching to PixelPress Desktop Pro.</p>
+      </div>
+
+      <div class="calc-card">
+        <div class="calc-grid">
+          <!-- Input Controls -->
+          <div class="calc-input-block">
+            <h3>Configure Your Batch Volume</h3>
+            <p>Drag the slider to adjust your estimated monthly image volume:</p>
+
+            <div class="slider-group">
+              <div class="slider-label-row">
+                <span class="slider-title">Monthly Images Processed:</span>
+                <span class="slider-readout" id="calcCountReadout">2,500 images / mo</span>
+              </div>
+              <input type="range" id="calcRange" class="calc-range-input" min="100" max="25000" step="100" value="2500">
+            </div>
+
+            <div style="font-size: 0.85rem; color: var(--text-dim); line-height: 1.5;">
+              Calculations assume an average original size of 3.5 MB per asset and an 80% average compression yield without cloud round-trip delay.
+            </div>
+          </div>
+
+          <!-- Dynamic Output Metrics -->
+          <div class="calc-output-block">
+            <div class="calc-metric-card">
+              <div class="calc-metric-icon">
+                <svg class="lucide-icon"><use href="#icon-hard-drive"></use></svg>
+              </div>
+              <div class="calc-metric-num" id="calcDiskSaved">78.8 GB / yr</div>
+              <div class="calc-metric-label">Local SSD &amp; Backup Storage Reclaimed</div>
+            </div>
+
+            <div class="calc-metric-card">
+              <div class="calc-metric-icon">
+                <svg class="lucide-icon"><use href="#icon-globe"></use></svg>
+              </div>
+              <div class="calc-metric-num" id="calcBandwidthSaved">630.0 GB / yr</div>
+              <div class="calc-metric-label">CDN &amp; Cloud Egress Bandwidth Saved</div>
+            </div>
+
+            <div class="calc-metric-card">
+              <div class="calc-metric-icon">
+                <svg class="lucide-icon"><use href="#icon-clock"></use></svg>
+              </div>
+              <div class="calc-metric-num" id="calcTimeSaved">7.0 Hrs / yr</div>
+              <div class="calc-metric-label">Cloud Upload Waiting Time Eliminated</div>
+            </div>
+
+            <div class="calc-metric-card">
+              <div class="calc-metric-icon">
+                <svg class="lucide-icon"><use href="#icon-dollar-sign"></use></svg>
+              </div>
+              <div class="calc-metric-num" id="calcCostSaved">$216 / yr</div>
+              <div class="calc-metric-label">TinyPNG Paid API Subscription Saved</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </section>
 
-    <div class="bento-grid">
-      <!-- Card 1 -->
-      <div class="bento-card">
+  <!-- Technical Bento Grid -->
+  <section id="features" class="section">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-pill">CORE TECHNICAL ARCHITECTURE</div>
+        <h2>Built for Industrial Workloads. Zero Compromises.</h2>
+        <p>PixelPress combines high-performance multi-threaded algorithms with native Windows shell APIs to deliver workstation reliability.</p>
+      </div>
+
+      <div class="bento-grid">
+        <!-- Bento 1: Adaptive Dual Quantization (Col 8) -->
+        <div class="bento-card col-8">
+          <div class="bento-icon-box">
+            <svg class="lucide-icon"><use href="#icon-layers"></use></svg>
+          </div>
+          <h3 class="bento-title">TinyPNG-Grade Dual Adaptive Quantization</h3>
+          <p class="bento-desc">
+            Rather than applying a crude uniform compression algorithm across all image formats, PixelPress inspects the internal channel topology of every file:
+          </p>
+          <ul class="bento-tech-list">
+            <li class="bento-tech-item">
+              <svg class="lucide-icon sm"><use href="#icon-check"></use></svg>
+              <span><strong>8-bit FastOctree RGBA:</strong> Builds a spatial 8-level octree palette preserving 256 colors alongside full alpha translucency, completely eliminating translucent halo fringes.</span>
+            </li>
+            <li class="bento-tech-item">
+              <svg class="lucide-icon sm"><use href="#icon-check"></use></svg>
+              <span><strong>Median-Cut Error-Diffusion RGB:</strong> Deploys a recursive box-splitting algorithm with Floyd-Steinberg dithering to distribute color gradients across neighboring pixels, eliminating banding.</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Bento 2: Chunked Stream Pipeline (Col 4) -->
+        <div class="bento-card col-4 cyan">
+          <div class="bento-icon-box">
+            <svg class="lucide-icon"><use href="#icon-database"></use></svg>
+          </div>
+          <h3 class="bento-title">Chunked Stream Engine</h3>
+          <p class="bento-desc">
+            Constant O(1) Memory Footprint. Traditional web and desktop tools crash when fed 500+ files due to thread explosion. PixelPress processes in sliding windows of 8 images with immediate garbage collection.
+          </p>
+          <ul class="bento-tech-list">
+            <li class="bento-tech-item">
+              <svg class="lucide-icon sm"><use href="#icon-check"></use></svg>
+              <span>10,000+ files in one single batch</span>
+            </li>
+            <li class="bento-tech-item">
+              <svg class="lucide-icon sm"><use href="#icon-check"></use></svg>
+              <span>Instant AbortController support</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Bento 3: Native Windows 11 Shell Integration (Col 4) -->
+        <div class="bento-card col-4 emerald">
+          <div class="bento-icon-box">
+            <svg class="lucide-icon"><use href="#icon-folder-open"></use></svg>
+          </div>
+          <h3 class="bento-title">Fluent Shell Integration</h3>
+          <p class="bento-desc">
+            Uses the modern Windows 11 Common Item Dialog (`FOS_PICKFOLDERS`) via native Win32 HWND ownership, providing breadcrumb navigation and screen centering.
+          </p>
+          <ul class="bento-tech-list">
+            <li class="bento-tech-item">
+              <svg class="lucide-icon sm"><use href="#icon-check"></use></svg>
+              <span>Modern Windows 11 Fluent UI</span>
+            </li>
+            <li class="bento-tech-item">
+              <svg class="lucide-icon sm"><use href="#icon-check"></use></svg>
+              <span>Aperture taskbar icon modal bridge</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Bento 4: Multi-Core Parallel CPU Processing (Col 8) -->
+        <div class="bento-card col-8 amber">
+          <div class="bento-icon-box">
+            <svg class="lucide-icon"><use href="#icon-cpu"></use></svg>
+          </div>
+          <h3 class="bento-title">Multi-Core CPU Parallel Worker Pool</h3>
+          <p class="bento-desc">
+            Compress images in parallel across all available CPU cores. Built on high-performance C libraries: LibJPEG-Turbo with SIMD assembly acceleration, LibPNG, and LibWebP for peak throughput.
+          </p>
+          <ul class="bento-tech-list">
+            <li class="bento-tech-item">
+              <svg class="lucide-icon sm"><use href="#icon-check"></use></svg>
+              <span><strong>100 Images in 12.4 Seconds:</strong> Up to 100x faster than cloud services that incur HTTP upload and download latency.</span>
+            </li>
+            <li class="bento-tech-item">
+              <svg class="lucide-icon sm"><use href="#icon-check"></use></svg>
+              <span><strong>Air-Gapped Privacy:</strong> Absolute confidentiality. No external telemetry, no analytics SDKs, and zero internet requests.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Format-by-Format Engine Breakdown -->
+  <section id="formats" class="section">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-pill">FORMAT ENGINES</div>
+        <h2>Specialized Compression Pipelines per Format</h2>
+        <p>Each graphic format features distinctive compression heuristics. PixelPress applies dedicated, tailored quantization and encoding filters for each.</p>
+      </div>
+
+      <div class="format-grid">
+        <!-- PNG Card -->
+        <div class="format-card">
+          <div class="format-badge-row">
+            <span class="format-name">PNG</span>
+            <span class="format-ratio">65% to 82%</span>
+          </div>
+          <div class="format-algo">FastOctree 8-bit RGBA</div>
+          <p class="format-desc">
+            Converts heavy 32-bit RGBA assets into optimized 8-bit indexed palettes while retaining full alpha channel gradations and crisp vector borders.
+          </p>
+          <div class="format-tags">
+            <span class="format-tag">Alpha Channel</span>
+            <span class="format-tag">Deflate Filter</span>
+            <span class="format-tag">Zero Halos</span>
+          </div>
+        </div>
+
+        <!-- JPEG Card -->
+        <div class="format-card">
+          <div class="format-badge-row">
+            <span class="format-name">JPEG / JPG</span>
+            <span class="format-ratio">70% to 85%</span>
+          </div>
+          <div class="format-algo">Progressive DCT 4:2:0</div>
+          <p class="format-desc">
+            Leverages LibJPEG-Turbo progressive Discrete Cosine Transform scans with chrominance subsampling, rendering progressive previews on web pages.
+          </p>
+          <div class="format-tags">
+            <span class="format-tag">Progressive DCT</span>
+            <span class="format-tag">MozJPEG-Grade</span>
+            <span class="format-tag">Smooth Gradients</span>
+          </div>
+        </div>
+
+        <!-- WebP Card -->
+        <div class="format-card">
+          <div class="format-badge-row">
+            <span class="format-name">WEBP</span>
+            <span class="format-ratio">75% to 88%</span>
+          </div>
+          <div class="format-algo">Method-4 Predictive Coding</div>
+          <p class="format-desc">
+            High-efficiency predictive intra-frame compression with dedicated alpha plane compression, generating ultra-light assets for modern web delivery.
+          </p>
+          <div class="format-tags">
+            <span class="format-tag">Predictive Coding</span>
+            <span class="format-tag">Alpha Plane</span>
+            <span class="format-tag">Modern Web</span>
+          </div>
+        </div>
+
+        <!-- GIF Card -->
+        <div class="format-card">
+          <div class="format-badge-row">
+            <span class="format-name">GIF</span>
+            <span class="format-ratio">40% to 60%</span>
+          </div>
+          <div class="format-algo">Frame Remapping &amp; Diffing</div>
+          <p class="format-desc">
+            Optimizes animated sequences by computing inter-frame differences, deduplicating identical background blocks, and recalculating global color tables.
+          </p>
+          <div class="format-tags">
+            <span class="format-tag">Multi-Frame</span>
+            <span class="format-tag">Temporal Diff</span>
+            <span class="format-tag">Optimized Palette</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4-Stage Architectural Pipeline -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-pill">INTERNAL WORKFLOW</div>
+        <h2>The 4-Stage Execution Pipeline</h2>
+        <p>From initial drag &amp; drop to atomic disk flush, every image passes through a hardened, fault-tolerant execution sequence.</p>
+      </div>
+
+      <div class="pipeline-grid">
+        <div class="pipeline-step">
+          <div class="pipeline-num"><span>01</span> STAGE ONE</div>
+          <h4>Validation &amp; Sniffing</h4>
+          <p>Memory-mapped header verification identifies actual MIME signatures, preventing extension spoofing and handling corrupt files gracefully.</p>
+        </div>
+
+        <div class="pipeline-step">
+          <div class="pipeline-num"><span>02</span> STAGE TWO</div>
+          <h4>Color Topology Analysis</h4>
+          <p>Inspects presence of alpha transparency, bit depth, and color distribution to select the optimal quantization strategy automatically.</p>
+        </div>
+
+        <div class="pipeline-step">
+          <div class="pipeline-num"><span>03</span> STAGE THREE</div>
+          <h4>Parallel Worker Execution</h4>
+          <p>Dispatched to a bounded worker thread pool. Processes in chunks of 8 images with continuous telemetry updates to the UI.</p>
+        </div>
+
+        <div class="pipeline-step">
+          <div class="pipeline-num"><span>04</span> STAGE FOUR</div>
+          <h4>Atomic Flush &amp; GC</h4>
+          <p>Buffers are validated, EXIF stripped (if enabled), written atomically to disk or staging memory, and RAM is immediately purged.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparative Benchmark Table -->
+  <section id="benchmarks" class="section">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-pill">HEAD-TO-HEAD BENCHMARK</div>
+        <h2>PixelPress Desktop Pro vs. Alternative Solutions</h2>
+        <p>Standardized test benchmark across 100 high-resolution photographic and graphic files (420 MB total uncompressed payload).</p>
+      </div>
+
+      <div class="benchmark-table-wrapper">
+        <table class="benchmark-table">
+          <thead>
+            <tr>
+              <th>Evaluation Parameter</th>
+              <th class="highlight-col">PixelPress Desktop Pro</th>
+              <th>TinyPNG Web</th>
+              <th>Google Squoosh</th>
+              <th>ImageOptim</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Execution Model</strong></td>
+              <td class="highlight-col"><span class="check-pill"><svg class="lucide-icon sm"><use href="#icon-check"></use></svg> 100% On-Device Air-Gap</span></td>
+              <td><span class="cross-pill"><svg class="lucide-icon sm"><use href="#icon-x"></use></svg> Remote Cloud Servers</span></td>
+              <td>In-Browser WebAssembly</td>
+              <td><span class="check-pill"><svg class="lucide-icon sm"><use href="#icon-check"></use></svg> Local macOS Only</span></td>
+            </tr>
+            <tr>
+              <td><strong>Network Dependency</strong></td>
+              <td class="highlight-col"><span class="check-pill"><svg class="lucide-icon sm"><use href="#icon-check"></use></svg> Zero (Fully Offline)</span></td>
+              <td><span class="cross-pill"><svg class="lucide-icon sm"><use href="#icon-x"></use></svg> Mandatory High-Bandwidth</span></td>
+              <td>Initial Page Load</td>
+              <td><span class="check-pill"><svg class="lucide-icon sm"><use href="#icon-check"></use></svg> Zero (Fully Offline)</span></td>
+            </tr>
+            <tr>
+              <td><strong>100 Images Execution Time</strong></td>
+              <td class="highlight-col"><strong>12.4 Seconds</strong></td>
+              <td>145+ Seconds (Upload + Process + Download)</td>
+              <td>Manual (Single File Pipeline)</td>
+              <td>48 Seconds</td>
+            </tr>
+            <tr>
+              <td><strong>Batch Processing Ceiling</strong></td>
+              <td class="highlight-col"><strong>Unlimited</strong> (Chunked Stream O(1))</td>
+              <td>20 Files per Batch (Free Tier)</td>
+              <td>1 Image at a Time</td>
+              <td>Unlimited</td>
+            </tr>
+            <tr>
+              <td><strong>Memory Footprint</strong></td>
+              <td class="highlight-col"><strong>Constant O(1)</strong> (~95 MB RAM)</td>
+              <td>N/A (Web UI)</td>
+              <td>Browser Crashes on 50+ Files</td>
+              <td>O(N) Process Heap</td>
+            </tr>
+            <tr>
+              <td><strong>Cost &amp; Licensing</strong></td>
+              <td class="highlight-col"><strong>Free &amp; Open Source (MIT)</strong></td>
+              <td>Paid Subscription over 500/mo</td>
+              <td>Free</td>
+              <td>Free</td>
+            </tr>
+            <tr>
+              <td><strong>Windows 11 Native Integration</strong></td>
+              <td class="highlight-col"><span class="check-pill"><svg class="lucide-icon sm"><use href="#icon-check"></use></svg> Native Win32 / WebView2</span></td>
+              <td><span class="cross-pill"><svg class="lucide-icon sm"><use href="#icon-x"></use></svg> Browser Tab</span></td>
+              <td><span class="cross-pill"><svg class="lucide-icon sm"><use href="#icon-x"></use></svg> Browser Tab</span></td>
+              <td><span class="cross-pill"><svg class="lucide-icon sm"><use href="#icon-x"></use></svg> No Windows Support</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Workstation Keyboard Shortcuts Reference -->
+  <section id="shortcuts" class="section">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-pill">POWER WORKFLOWS</div>
+        <h2>Workstation Keyboard Shortcuts</h2>
+        <p>Speed up high-volume asset preparation without touching your mouse.</p>
+      </div>
+
+      <div class="shortcuts-grid">
+        <div class="shortcut-card">
+          <kbd>Ctrl + O</kbd>
+          <span class="shortcut-label">Open Windows File Explorer picker</span>
+        </div>
+        <div class="shortcut-card">
+          <kbd>Ctrl + S</kbd>
+          <span class="shortcut-label">Save compressed images to target folder</span>
+        </div>
+        <div class="shortcut-card">
+          <kbd>Ctrl + V</kbd>
+          <span class="shortcut-label">Paste image data direct from clipboard</span>
+        </div>
+        <div class="shortcut-card">
+          <kbd>Esc</kbd>
+          <span class="shortcut-label">Clear workspace or dismiss modal</span>
+        </div>
+        <div class="shortcut-card">
+          <kbd>Space</kbd>
+          <span class="shortcut-label">Toggle before and after quality view</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Extended FAQ Accordion -->
+  <section id="faq" class="section">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-pill">FREQUENTLY ASKED QUESTIONS</div>
+        <h2>Everything You Need to Know</h2>
+        <p>Detailed technical and operational answers regarding PixelPress Desktop Pro.</p>
+      </div>
+
+      <div class="faq-wrap">
+        <div class="faq-item active">
+          <button class="faq-question">
+            <span>Does PixelPress upload my graphics or photos to any cloud servers?</span>
+            <svg class="lucide-icon sm faq-chevron"><use href="#icon-chevron-down"></use></svg>
+          </button>
+          <div class="faq-answer">
+            Absolute zero. PixelPress contains zero external telemetry libraries, analytics beacons, or remote upload sockets. Every byte of image computation is executed locally on your PC's CPU using local C-compiled imaging libraries. You can run PixelPress on an entirely air-gapped machine without an internet connection.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>How does PixelPress achieve TinyPNG compression levels without quality loss?</span>
+            <svg class="lucide-icon sm faq-chevron"><use href="#icon-chevron-down"></use></svg>
+          </button>
+          <div class="faq-answer">
+            PixelPress incorporates an adaptive dual-quantization pipeline. For RGBA images with alpha channels (such as transparent UI icons and logos), it deploys an 8-bit FastOctree clustering algorithm that crafts an optimal 256-color palette while preserving subtle transparency transitions. For continuous-tone RGB photos, it applies Median-Cut box-splitting with Floyd-Steinberg error-diffusion dithering to prevent gradient banding.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>What is the difference between the Installer, Portable ZIP, and Standalone EXE?</span>
+            <svg class="lucide-icon sm faq-chevron"><use href="#icon-chevron-down"></use></svg>
+          </button>
+          <div class="faq-answer">
+            The Official Setup Installer (PixelPress_Setup.exe) installs cleanly to Program Files with desktop shortcuts, Start Menu entries, and a Windows uninstaller. The Fast Portable ZIP provides a pre-extracted directory bundle offering the fastest sub-200ms cold startup without temporary file decompression. The Single-File Standalone EXE packages everything into one single executable file suitable for instant USB transfers.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Will PixelPress crash or slow down if I compress thousands of images?</span>
+            <svg class="lucide-icon sm faq-chevron"><use href="#icon-chevron-down"></use></svg>
+          </button>
+          <div class="faq-answer">
+            No. PixelPress is architected with an industrial chunked streaming engine. Instead of buffering hundreds of image frames into memory simultaneously, images are queued and processed in sliding windows of 8 files. After each window completes, intermediate buffers and DOM blob URLs are immediately garbage-collected, maintaining a constant O(1) memory footprint regardless of queue size.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Does PixelPress strip camera metadata and GPS coordinates?</span>
+            <svg class="lucide-icon sm faq-chevron"><use href="#icon-chevron-down"></use></svg>
+          </button>
+          <div class="faq-answer">
+            Yes. PixelPress includes an optional metadata stripping toggle. When enabled, all EXIF blocks containing camera serial numbers, lens specifications, exposure settings, and sensitive GPS geolocation coordinates are stripped from the final output, safeguarding privacy before sharing.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Which Windows operating systems are supported?</span>
+            <svg class="lucide-icon sm faq-chevron"><use href="#icon-chevron-down"></use></svg>
+          </button>
+          <div class="faq-answer">
+            PixelPress is fully certified for 64-bit Windows 11 and Windows 10. It utilizes the Microsoft Edge WebView2 Evergreen runtime which is pre-installed on modern Windows systems, eliminating the bloated memory overhead of Electron runtimes.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Can I convert image formats in addition to compressing them?</span>
+            <svg class="lucide-icon sm faq-chevron"><use href="#icon-chevron-down"></use></svg>
+          </button>
+          <div class="faq-answer">
+            Yes. PixelPress allows you to keep original formats (PNG stays PNG, JPEG stays JPEG) or convert the entire batch into modern WebP, optimized JPEG, or PNG with a single click before compressing.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Is PixelPress free and can I use it for commercial client work?</span>
+            <svg class="lucide-icon sm faq-chevron"><use href="#icon-chevron-down"></use></svg>
+          </button>
+          <div class="faq-answer">
+            PixelPress is 100% free and open-source software released under the permissive MIT License. You are free to use it for personal projects, commercial client deliverables, enterprise production workflows, and internal studio pipelines without any licensing fees.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Download Hub -->
+  <section id="download" class="section">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-pill">OFFICIAL RELEASES</div>
+        <h2>Download PixelPress Desktop Pro v2.1.0</h2>
+        <p>Choose the packaging format optimized for your deployment requirements. All binaries are compiled, verified, and hosted on GitHub Releases.</p>
+      </div>
+
+      <div class="download-hub-grid">
+        <!-- Setup Installer (Featured) -->
+        <div class="download-hub-card featured">
+          <span class="featured-pill">RECOMMENDED FOR STANDARD PCS</span>
+          <div class="download-icon-box">
+            <svg class="lucide-icon"><use href="#icon-download"></use></svg>
+          </div>
+          <h3>Official Setup Installer</h3>
+          <p>Full Windows wizard with Start Menu integration, desktop shortcuts, and clean uninstaller in Windows Settings / Control Panel.</p>
+          <div class="download-meta">
+            <span>PixelPress_Setup.exe</span>
+            <span>15.8 MB</span>
+          </div>
+          <a href="https://github.com/BeginnerAman/PixelPress/releases/download/v2.1.0/PixelPress_Setup.exe" class="btn btn-primary">
+            <svg class="lucide-icon sm"><use href="#icon-download"></use></svg>
+            <span>Download Installer</span>
+          </a>
+        </div>
+
+        <!-- Fast Portable ZIP -->
+        <div class="download-hub-card">
+          <div class="download-icon-box" style="background: rgba(6, 182, 212, 0.12); color: var(--accent-cyan);">
+            <svg class="lucide-icon"><use href="#icon-folder-open"></use></svg>
+          </div>
+          <h3>Fast Portable ZIP</h3>
+          <p>Pre-extracted directory bundle. Delivers instantaneous sub-200ms cold startup without temporary extraction delays. Recommended for USB drives.</p>
+          <div class="download-meta">
+            <span>PixelPress-v2.1.0-Portable.zip</span>
+            <span>19.7 MB</span>
+          </div>
+          <a href="https://github.com/BeginnerAman/PixelPress/releases/download/v2.1.0/PixelPress-v2.1.0-Portable.zip" class="btn btn-secondary">
+            <svg class="lucide-icon sm"><use href="#icon-download"></use></svg>
+            <span>Download Portable ZIP</span>
+          </a>
+        </div>
+
+        <!-- Standalone Single EXE -->
+        <div class="download-hub-card">
+          <div class="download-icon-box" style="background: rgba(34, 197, 94, 0.12); color: var(--accent-emerald);">
+            <svg class="lucide-icon"><use href="#icon-zap"></use></svg>
+          </div>
+          <h3>Single-File Standalone</h3>
+          <p>Zero-extraction standalone binary. Entire application bundled into one single executable file. Double-click and compress immediately.</p>
+          <div class="download-meta">
+            <span>PixelPress-Portable.exe</span>
+            <span>19.8 MB</span>
+          </div>
+          <a href="https://github.com/BeginnerAman/PixelPress/releases/download/v2.1.0/PixelPress-Portable.exe" class="btn btn-secondary">
+            <svg class="lucide-icon sm"><use href="#icon-download"></use></svg>
+            <span>Download Standalone EXE</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="brand-wrap">
+            <div class="brand-icon">
+              <svg class="lucide-icon"><use href="#icon-aperture"></use></svg>
+            </div>
+            <div class="brand-text">
+              <span class="brand-title">PixelPress</span>
+              <span class="brand-badge">Desktop Pro</span>
+            </div>
+          </div>
+          <p>
+            Industrial-grade, privacy-first desktop image optimization workstation for Windows 11 and 10. Free and open source.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h5>Architecture</h5>
+          <ul>
+            <li><a href="#features">Dual Quantization</a></li>
+            <li><a href="#features">Chunked Streaming</a></li>
+            <li><a href="#formats">Format Engines</a></li>
+            <li><a href="#benchmarks">Benchmarks</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Downloads</h5>
+          <ul>
+            <li><a href="https://github.com/BeginnerAman/PixelPress/releases/download/v2.1.0/PixelPress_Setup.exe">Setup Installer</a></li>
+            <li><a href="https://github.com/BeginnerAman/PixelPress/releases/download/v2.1.0/PixelPress-v2.1.0-Portable.zip">Fast Portable ZIP</a></li>
+            <li><a href="https://github.com/BeginnerAman/PixelPress/releases/download/v2.1.0/PixelPress-Portable.exe">Standalone EXE</a></li>
+            <li><a href="https://github.com/BeginnerAman/PixelPress/releases/tag/v2.1.0">Release Notes</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Project</h5>
+          <ul>
+            <li><a href="https://github.com/BeginnerAman/PixelPress" target="_blank" rel="noopener">GitHub Repository</a></li>
+            <li><a href="https://github.com/BeginnerAman" target="_blank" rel="noopener">Developer Profile</a></li>
+            <li><a href="https://github.com/BeginnerAman/PixelPress/issues" target="_blank" rel="noopener">Report Issue</a></li>
+            <li><a href="https://github.com/BeginnerAman/PixelPress/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
         <div>
-          <div class="card-icon-wrap icon-purple">
-            <svg class="lucide-icon"><use href="#icon-sparkles"/></svg>
-          </div>
-          <h3 class="card-title">TinyPNG-Grade Dual Quantization</h3>
-          <p class="card-desc">Spatial Octree clustering for RGBA transparency alongside recursive Median-Cut with Floyd-Steinberg error diffusion for continuous gradients.</p>
+          Copyright (c) 2026 Aman Vishwakarma. Built with pride for high-performance Windows computing.
         </div>
-      </div>
-
-      <!-- Card 2 -->
-      <div class="bento-card">
         <div>
-          <div class="card-icon-wrap icon-cyan">
-            <svg class="lucide-icon"><use href="#icon-cpu"/></svg>
-          </div>
-          <h3 class="card-title">Chunked Streaming Engine</h3>
-          <p class="card-desc">Batch queue partitioned into fixed-size windows (CHUNK_SIZE = 8). Memory scaling remains strictly bounded at O(1) across 1,000+ files.</p>
-        </div>
-      </div>
-
-      <!-- Card 3 -->
-      <div class="bento-card">
-        <div>
-          <div class="card-icon-wrap icon-emerald">
-            <svg class="lucide-icon"><use href="#icon-shield"/></svg>
-          </div>
-          <h3 class="card-title">100% Air-Gapped Local Privacy</h3>
-          <p class="card-desc">Zero cloud uploads, zero telemetry SDKs, and zero analytics trackers. All pixels are processed in transient process memory on your CPU.</p>
-        </div>
-      </div>
-
-      <!-- Card 4 -->
-      <div class="bento-card">
-        <div>
-          <div class="card-icon-wrap icon-purple">
-            <svg class="lucide-icon"><use href="#icon-folder"/></svg>
-          </div>
-          <h3 class="card-title">Windows 11 Fluent Explorer</h3>
-          <p class="card-desc">Direct integration with native IFileOpenDialog. Save all compressed images into your chosen folder with zero ZIP extraction friction.</p>
-        </div>
-      </div>
-
-      <!-- Card 5 -->
-      <div class="bento-card">
-        <div>
-          <div class="card-icon-wrap icon-cyan">
-            <svg class="lucide-icon"><use href="#icon-zap"/></svg>
-          </div>
-          <h3 class="card-title">Sub-16 MB Featherweight Binary</h3>
-          <p class="card-desc">Rejects heavy 180MB+ Electron frameworks in favor of Microsoft Edge WebView2 Evergreen, delivering instant 0.2s cold launches.</p>
-        </div>
-      </div>
-
-      <!-- Card 6 -->
-      <div class="bento-card">
-        <div>
-          <div class="card-icon-wrap icon-emerald">
-            <svg class="lucide-icon"><use href="#icon-layers"/></svg>
-          </div>
-          <h3 class="card-title">Smart Dual-Mode Storage</h3>
-          <p class="card-desc">Routes runtime staging to %LOCALAPPDATA% to keep your Desktop 100% clean, with automatic portable.dat USB pendrive detection.</p>
+          Version v2.1.0 Desktop Pro - MIT Open Source License
         </div>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- Benchmark Table Section -->
-<section id="benchmarks" class="benchmark-section">
-  <div class="container">
-    <div class="section-header">
-      <div class="section-tag">Objective Metrics</div>
-      <h2 class="section-title">Head-to-Head Architectural Comparison</h2>
-      <p class="section-subtitle">Evaluated over a standardized batch of 100 high-resolution images (420 MB raw payload).</p>
-    </div>
-
-    <div class="table-wrapper">
-      <table class="benchmark-table">
-        <thead>
-          <tr>
-            <th>Metric / Capability</th>
-            <th>PixelPress Desktop Pro (v2.1.0)</th>
-            <th>TinyPNG (Web)</th>
-            <th>Google Squoosh (Web)</th>
-            <th>ImageOptim (macOS)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Execution Environment</td>
-            <td class="highlight">100% Local (On-Device)</td>
-            <td>Remote Cloud Server</td>
-            <td>In-Browser Wasm</td>
-            <td>Local Native</td>
-          </tr>
-          <tr>
-            <td>Privacy Guarantee</td>
-            <td class="highlight">Air-Gapped (Zero Uploads)</td>
-            <td>Cloud Retention Risk</td>
-            <td>Client-Side Sandbox</td>
-            <td>Air-Gapped</td>
-          </tr>
-          <tr>
-            <td>100-Image Batch Execution</td>
-            <td class="highlight">12.4 Seconds (Multi-Core)</td>
-            <td>145+ Seconds (Upload+Download)</td>
-            <td>Manual Single-File</td>
-            <td>48 Seconds</td>
-          </tr>
-          <tr>
-            <td>Maximum Batch Limit</td>
-            <td class="highlight">Unlimited (Chunked Stream)</td>
-            <td>20 Files per Batch (Free)</td>
-            <td>1 Image at a Time</td>
-            <td>Unlimited</td>
-          </tr>
-          <tr>
-            <td>Memory Scaling</td>
-            <td class="highlight">Constant O(1) Memory Heap</td>
-            <td>Not Applicable</td>
-            <td>Tab Crash at 50+ Files</td>
-            <td>O(N) Process Memory</td>
-          </tr>
-          <tr>
-            <td>Cost Model</td>
-            <td class="highlight">Free and Open Source (MIT)</td>
-            <td>Subscription / Paid API</td>
-            <td>Free</td>
-            <td>Free</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
-
-<!-- Hardware Shortcuts Section -->
-<section id="shortcuts" class="shortcuts-section">
-  <div class="container">
-    <div class="section-header">
-      <div class="section-tag">Ergonomics</div>
-      <h2 class="section-title">Pro Hardware Shortcuts</h2>
-      <p class="section-subtitle">Work without touching the mouse using built-in desktop keyboard accelerators.</p>
-    </div>
-
-    <div class="shortcuts-grid">
-      <div class="shortcut-card">
-        <kbd>Ctrl + O</kbd>
-        <div class="shortcut-label">Open File Explorer Dialog</div>
-      </div>
-      <div class="shortcut-card">
-        <kbd>Ctrl + S</kbd>
-        <div class="shortcut-label">Direct Save to Destination Folder</div>
-      </div>
-      <div class="shortcut-card">
-        <kbd>Ctrl + V</kbd>
-        <div class="shortcut-label">Paste Image from System Clipboard</div>
-      </div>
-      <div class="shortcut-card">
-        <kbd>Esc</kbd>
-        <div class="shortcut-label">Reset Workspace / Close Inspector</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FAQ Section -->
-<section id="faq" class="faq-section">
-  <div class="container">
-    <div class="section-header">
-      <div class="section-tag">Frequently Asked Questions</div>
-      <h2 class="section-title">Common Questions</h2>
-    </div>
-
-    <div class="faq-list">
-      <div class="faq-item">
-        <div class="faq-question">
-          <span>Does PixelPress require an internet connection?</span>
-          <svg class="lucide-icon"><use href="#icon-chevron-down"/></svg>
-        </div>
-        <div class="faq-answer">
-          No. PixelPress is 100% offline and air-gapped. All image processing, quantization, and compression routines execute locally using your PC's CPU cores.
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <div class="faq-question">
-          <span>What image formats are supported?</span>
-          <svg class="lucide-icon"><use href="#icon-chevron-down"/></svg>
-        </div>
-        <div class="faq-answer">
-          PixelPress supports input files in PNG, JPEG, JPG, WebP, GIF, BMP, TIFF, and ICO formats. Compressed outputs can be exported in Original matching format, WebP, JPEG, or PNG.
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <div class="faq-question">
-          <span>Which download option should I choose?</span>
-          <svg class="lucide-icon"><use href="#icon-chevron-down"/></svg>
-        </div>
-        <div class="faq-answer">
-          For most users on Windows, the Setup Installer (PixelPress_Setup.exe) is recommended because it provides automatic Desktop shortcuts and Start Menu integration. If you are running the app from a USB pendrive, the Fast Portable ZIP provides instant 0.2s launch speed without decompression delays.
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <div class="faq-question">
-          <span>Will PixelPress leave temporary folders on my Desktop?</span>
-          <svg class="lucide-icon"><use href="#icon-chevron-down"/></svg>
-        </div>
-        <div class="faq-answer">
-          No. PixelPress utilizes a Smart AppData storage engine that isolates all session buffers and logs to %LOCALAPPDATA%\PixelPress\. Your Desktop and Downloads directories remain completely clean.
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Footer -->
-<footer class="site-footer">
-  <div class="container footer-row">
-    <div class="footer-copy">
-      PixelPress Desktop Pro v2.1.0 - Designed and Engineered by <a href="https://github.com/BeginnerAman" target="_blank">Aman Vishwakarma</a>.
-    </div>
-    <div class="footer-links">
-      <a href="https://github.com/BeginnerAman/PixelPress" target="_blank" style="color: var(--text-muted); text-decoration: none;">GitHub</a>
-    </div>
-  </div>
-</footer>
-
-<!-- Interactive Split Slider Script -->
-<script>
-(function() {
-  const card = document.getElementById('sliderCard');
-  const overlay = document.getElementById('sliderOverlay');
-  const handle = document.getElementById('sliderHandle');
-  let isDragging = false;
-
-  function updateSlider(x) {
-    const rect = card.getBoundingClientRect();
-    let pos = (x - rect.left) / rect.width;
-    pos = Math.max(0.05, Math.min(0.95, pos));
-    const percent = pos * 100;
-    overlay.style.width = percent + '%';
-    handle.style.left = percent + '%';
-  }
-
-  card.addEventListener('mousedown', (e) => {
-    isDragging = true;
-    updateSlider(e.clientX);
-  });
-
-  window.addEventListener('mousemove', (e) => {
-    if (!isDragging) return;
-    updateSlider(e.clientX);
-  });
-
-  window.addEventListener('mouseup', () => {
-    isDragging = false;
-  });
-
-  // Touch Support for mobile / touch displays
-  card.addEventListener('touchstart', (e) => {
-    isDragging = true;
-    updateSlider(e.touches[0].clientX);
-  });
-
-  window.addEventListener('touchmove', (e) => {
-    if (!isDragging) return;
-    updateSlider(e.touches[0].clientX);
-  });
-
-  window.addEventListener('touchend', () => {
-    isDragging = false;
-  });
-})();
-</script>
+  </footer>
 
 </body>
 </html>

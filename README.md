@@ -3,6 +3,7 @@
 High-Performance, On-Device Image Compression Workstation for Windows.
 
 [![Version](https://img.shields.io/badge/Version-v2.1.0_Desktop_Pro-7c6aff?style=flat-square)](https://github.com/BeginnerAman/PixelPress/releases/tag/v2.1.0)
+[![Website](https://img.shields.io/badge/Website-Live_Showcase-7c6aff?style=flat-square)](https://beginneraman.github.io/PixelPress/)
 [![Platform](https://img.shields.io/badge/Platform-Windows_11_%2F_10_(64--bit)-22c55e?style=flat-square)](https://github.com/BeginnerAman/PixelPress/releases/tag/v2.1.0)
 [![Architecture](https://img.shields.io/badge/Architecture-Edge_WebView2_%2B_Python-06b6d4?style=flat-square)](https://github.com/BeginnerAman/PixelPress)
 [![Privacy](https://img.shields.io/badge/Privacy-100%25_On--Device_(Zero_Cloud)-success?style=flat-square)](https://github.com/BeginnerAman/PixelPress)
@@ -16,6 +17,19 @@ High-Performance, On-Device Image Compression Workstation for Windows.
 PixelPress Desktop Pro is an industrial-grade, privacy-first desktop image optimization workstation designed specifically for Windows 11 and Windows 10. Built to eliminate the friction, security vulnerabilities, and file-size ceilings of online cloud services, PixelPress executes all computational workloads locally on your PC's hardware.
 
 Unlike web-based tools that upload proprietary graphics, confidential client assets, and personal photos to remote third-party servers, PixelPress runs completely offline in an air-gapped environment. Powered by an adaptive dual-quantization pipeline, multi-core CPU parallel execution, and a chunked streaming memory architecture, it delivers compression ratios rivaling TinyPNG without transmitting a single byte over the network.
+
+---
+
+## Official Live Showcase Website
+
+Explore the interactive live showcase website hosted on GitHub Pages:
+
+* **Live Showcase URL:** [https://beginneraman.github.io/PixelPress/](https://beginneraman.github.io/PixelPress/)
+* **Interactive Features on Website:**
+  * **Interactive Quality Inspector:** Split slider comparing raw uncompressed master graphics with PixelPress outputs at 1:1 pixel fidelity.
+  * **ROI and Bandwidth Savings Calculator:** Live dynamic calculator estimating local SSD space reclaimed, cloud egress bandwidth saved, and TinyPNG API cost savings.
+  * **Format Engine Deep-Dive:** Microscopic breakdown for PNG (FastOctree 8-bit), JPEG (Progressive DCT), WebP (Method-4 Predictive), and GIF.
+  * **Direct GitHub Release Downloads:** One-click links for Setup Installer, Fast Portable ZIP, and Standalone EXE.
 
 ---
 
