@@ -714,6 +714,7 @@ header.navbar.scrolled {
 .benchmark-table td {
   padding: 14px 18px;
   border-bottom: 1px solid var(--border-subtle);
+  vertical-align: middle;
 }
 
 .benchmark-table th {
@@ -734,6 +735,7 @@ header.navbar.scrolled {
   background: #0d0f17;
   z-index: 2;
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.4);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .benchmark-table th.highlight-col,
@@ -1086,11 +1088,130 @@ footer.site-footer {
   }
 
   /* Show swipe hint pill on mobile */
-  .table-scroll-hint { display: inline-flex; }
+  .table-scroll-hint {
+    display: inline-flex;
+    font-size: 0.72rem;
+    margin-bottom: 8px;
+  }
+
+  /* Benchmark Table Mobile Fine-Tuning: Compact Typography, No Bloat, Crisp Alignment */
+  .benchmark-table-wrapper {
+    border-radius: var(--radius-lg);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  }
+
+  .benchmark-table {
+    min-width: 580px;
+    font-size: 0.75rem;
+  }
+
+  .benchmark-table th,
+  .benchmark-table td {
+    padding: 10px 10px;
+    vertical-align: middle;
+    line-height: 1.35;
+  }
+
+  .benchmark-table th {
+    font-size: 0.70rem;
+    letter-spacing: 0.03em;
+  }
+
+  /* Compact Sticky First Column: Leaves ample screen space for comparison values */
+  .benchmark-table th:first-child,
+  .benchmark-table td:first-child {
+    width: 118px;
+    min-width: 118px;
+    max-width: 122px;
+    font-size: 0.72rem;
+    padding: 10px 8px;
+    white-space: normal;
+    word-break: normal;
+    background: #0b0d14;
+    border-right: 1px solid rgba(124, 106, 255, 0.25);
+    box-shadow: 3px 0 8px rgba(0, 0, 0, 0.45);
+  }
+
+  /* Highlight Column for PixelPress */
+  .benchmark-table th.highlight-col,
+  .benchmark-table td.highlight-col {
+    min-width: 140px;
+    padding: 10px 10px;
+    font-size: 0.74rem;
+  }
+
+  /* Other Comparison Columns */
+  .benchmark-table th:not(:first-child):not(.highlight-col),
+  .benchmark-table td:not(:first-child):not(.highlight-col) {
+    min-width: 110px;
+    font-size: 0.73rem;
+  }
+
+  .check-pill,
+  .cross-pill {
+    font-size: 0.72rem;
+    gap: 4px;
+    white-space: normal;
+    line-height: 1.25;
+  }
+
+  .check-pill svg,
+  .cross-pill svg {
+    width: 13px;
+    height: 13px;
+    flex-shrink: 0;
+  }
 
   .format-grid { grid-template-columns: 1fr; }
   .pipeline-grid { grid-template-columns: 1fr; }
   .shortcuts-grid { grid-template-columns: 1fr 1fr; }
   .footer-grid { grid-template-columns: 1fr; gap: 26px; }
   .footer-bottom { flex-direction: column; align-items: flex-start; }
+}
+
+@media (max-width: 480px) {
+  .benchmark-table {
+    min-width: 520px;
+    font-size: 0.71rem;
+  }
+
+  .benchmark-table th,
+  .benchmark-table td {
+    padding: 8px 8px;
+  }
+
+  .benchmark-table th:first-child,
+  .benchmark-table td:first-child {
+    width: 106px;
+    min-width: 106px;
+    max-width: 108px;
+    font-size: 0.69rem;
+    padding: 8px 6px;
+  }
+
+  .benchmark-table th.highlight-col,
+  .benchmark-table td.highlight-col {
+    min-width: 130px;
+    padding: 8px 8px;
+    font-size: 0.71rem;
+  }
+
+  .benchmark-table th:not(:first-child):not(.highlight-col),
+  .benchmark-table td:not(:first-child):not(.highlight-col) {
+    min-width: 98px;
+    font-size: 0.70rem;
+    padding: 8px 7px;
+  }
+
+  .check-pill,
+  .cross-pill {
+    font-size: 0.69rem;
+    gap: 3px;
+  }
+
+  .check-pill svg,
+  .cross-pill svg {
+    width: 12px;
+    height: 12px;
+  }
 }
