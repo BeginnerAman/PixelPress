@@ -22,8 +22,8 @@
   <!-- Lucide Vector Icons SVG Sprite (Zero Emojis, Pure Crisp Vectors) -->
   <svg style="display: none;">
     <defs>
-      <!-- Aperture Brand Icon -->
-      <symbol id="icon-aperture" viewBox="0 0 24 24">
+      <!-- Official Aperture Logo (Exact from Desktop App) -->
+      <symbol id="icon-logo" viewBox="0 0 24 24">
         <circle cx="12" cy="12" r="10"></circle>
         <line x1="14.31" y1="8" x2="20.05" y2="17.94"></line>
         <line x1="9.69" y1="8" x2="21.17" y2="8"></line>
@@ -141,31 +141,10 @@
         <polyline points="6 9 12 15 18 9"></polyline>
       </symbol>
 
-      <!-- Chevron Left / Right -->
+      <!-- Chevrons Left Right -->
       <symbol id="icon-chevrons-left-right" viewBox="0 0 24 24">
         <polyline points="9 7 4 12 9 17"></polyline>
         <polyline points="15 7 20 12 15 17"></polyline>
-      </symbol>
-
-      <!-- Image File -->
-      <symbol id="icon-image" viewBox="0 0 24 24">
-        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-        <circle cx="8.5" cy="8.5" r="1.5"></circle>
-        <polyline points="21 15 16 10 5 21"></polyline>
-      </symbol>
-
-      <!-- Upload Cloud -->
-      <symbol id="icon-upload-cloud" viewBox="0 0 24 24">
-        <polyline points="16 16 12 12 8 16"></polyline>
-        <line x1="12" y1="12" x2="12" y2="21"></line>
-        <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path>
-        <polyline points="16 16 12 12 8 16"></polyline>
-      </symbol>
-
-      <!-- Terminal / Keyboard -->
-      <symbol id="icon-terminal" viewBox="0 0 24 24">
-        <polyline points="4 17 10 11 4 5"></polyline>
-        <line x1="12" y1="19" x2="20" y2="19"></line>
       </symbol>
 
       <!-- GitHub -->
@@ -182,29 +161,32 @@
     </defs>
   </svg>
 
-  <!-- Sticky Navigation Header -->
+  <!-- Sticky Navigation Header (Clean Centered Alignment, Exact App Logo) -->
   <header class="navbar">
     <div class="container nav-row">
+      <!-- Exact App Brand Badge -->
       <a href="#" class="brand-wrap">
-        <div class="brand-icon">
-          <svg class="lucide-icon"><use href="#icon-aperture"></use></svg>
+        <div class="brand-badge">
+          <svg class="lucide-icon brand-icon"><use href="#icon-logo"></use></svg>
         </div>
-        <div class="brand-text">
+        <div class="brand-details">
           <span class="brand-title">PixelPress</span>
-          <span class="brand-badge">Desktop Pro v2.1.0</span>
+          <span class="brand-subtitle">DESKTOP PRO</span>
         </div>
       </a>
 
+      <!-- Clean Horizontal Navigation Menu (Single words, No multi-line breaks) -->
       <ul class="nav-links">
         <li><a href="#features">Architecture</a></li>
-        <li><a href="#inspector">Quality Inspector</a></li>
-        <li><a href="#calculator">Savings Calculator</a></li>
+        <li><a href="#inspector">Quality</a></li>
+        <li><a href="#calculator">Calculator</a></li>
         <li><a href="#formats">Engines</a></li>
         <li><a href="#benchmarks">Benchmarks</a></li>
         <li><a href="#shortcuts">Shortcuts</a></li>
         <li><a href="#faq">FAQ</a></li>
       </ul>
 
+      <!-- Action Buttons (Proper spacing, Never touching FAQ) -->
       <div class="nav-actions">
         <a href="https://github.com/BeginnerAman/PixelPress" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">
           <svg class="lucide-icon sm"><use href="#icon-github"></use></svg>
@@ -218,7 +200,7 @@
     </div>
   </header>
 
-  <!-- Hero Section -->
+  <!-- Hero Section (Lightweight, Airy, No Clutter) -->
   <section class="hero-section">
     <div class="container">
       <a href="https://github.com/BeginnerAman/PixelPress/releases/tag/v2.1.0" target="_blank" rel="noopener" class="hero-pill">
@@ -262,263 +244,17 @@
         </div>
         <div class="trust-item">
           <svg class="lucide-icon sm"><use href="#icon-cpu"></use></svg>
-          <span>Multi-Core Native Windows 11 / 10</span>
+          <span>Multi-Core Windows 11 / 10 Native</span>
         </div>
         <div class="trust-item">
           <svg class="lucide-icon sm"><use href="#icon-zap"></use></svg>
           <span>Free &amp; Open Source (MIT)</span>
         </div>
       </div>
-
-      <!-- Floating App Window Mockup -->
-      <div class="mockup-wrapper">
-        <div class="mockup-glow"></div>
-        <div class="window-frame">
-          <div class="window-titlebar">
-            <div class="window-titlebar-left">
-              <svg class="lucide-icon sm" style="color: var(--accent-purple);"><use href="#icon-aperture"></use></svg>
-              <span class="window-titlebar-title">PixelPress Desktop Pro</span>
-              <span class="window-titlebar-tag">v2.1.0 Desktop Pro</span>
-            </div>
-            <div class="window-controls">
-              <span class="win-btn min"></span>
-              <span class="win-btn max"></span>
-              <span class="win-btn close"></span>
-            </div>
-          </div>
-
-          <div class="mockup-body">
-            <div class="mockup-dropzone">
-              <div class="mockup-dropzone-icon">
-                <svg class="lucide-icon lg"><use href="#icon-upload-cloud"></use></svg>
-              </div>
-              <h4>Drag &amp; Drop Images or Entire Folders Here</h4>
-              <p>Supports PNG, JPEG, WebP, GIF, BMP, TIFF, and ICO - Unlimited batch size</p>
-            </div>
-
-            <div class="mockup-queue">
-              <div class="mockup-queue-item">
-                <div class="mockup-item-left">
-                  <div class="mockup-item-icon">
-                    <svg class="lucide-icon sm"><use href="#icon-image"></use></svg>
-                  </div>
-                  <div class="mockup-item-info">
-                    <h5>product-hero-banner.png</h5>
-                    <span>4.20 MB to 780 KB - 8-bit FastOctree RGBA</span>
-                  </div>
-                </div>
-                <div class="mockup-item-right">
-                  <span class="mockup-badge-saved">-81.4% Saved</span>
-                  <svg class="lucide-icon sm" style="color: var(--accent-emerald);"><use href="#icon-check"></use></svg>
-                </div>
-              </div>
-
-              <div class="mockup-queue-item">
-                <div class="mockup-item-left">
-                  <div class="mockup-item-icon">
-                    <svg class="lucide-icon sm"><use href="#icon-image"></use></svg>
-                  </div>
-                  <div class="mockup-item-info">
-                    <h5>studio-portrait-4k.jpg</h5>
-                    <span>8.45 MB to 1.42 MB - Progressive DCT 4:2:0</span>
-                  </div>
-                </div>
-                <div class="mockup-item-right">
-                  <span class="mockup-badge-saved">-83.2% Saved</span>
-                  <svg class="lucide-icon sm" style="color: var(--accent-emerald);"><use href="#icon-check"></use></svg>
-                </div>
-              </div>
-
-              <div class="mockup-queue-item">
-                <div class="mockup-item-left">
-                  <div class="mockup-item-icon">
-                    <svg class="lucide-icon sm"><use href="#icon-image"></use></svg>
-                  </div>
-                  <div class="mockup-item-info">
-                    <h5>editorial-layout.webp</h5>
-                    <span>5.10 MB to 640 KB - Method-4 Predictive Coding</span>
-                  </div>
-                </div>
-                <div class="mockup-item-right">
-                  <span class="mockup-badge-saved">-87.5% Saved</span>
-                  <svg class="lucide-icon sm" style="color: var(--accent-emerald);"><use href="#icon-check"></use></svg>
-                </div>
-              </div>
-            </div>
-
-            <div class="mockup-footer-bar">
-              <div class="mockup-stat">
-                Completed: <strong>3 of 3 Files</strong> (17.75 MB to 2.84 MB)
-              </div>
-              <div class="mockup-stat">
-                Total Storage Saved: <strong style="color: var(--accent-emerald);">14.91 MB (-84.0%)</strong>
-              </div>
-              <div class="btn btn-primary btn-sm">
-                <svg class="lucide-icon sm"><use href="#icon-folder-open"></use></svg>
-                <span>Save to Folder (Ctrl + S)</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </section>
 
-  <!-- Interactive Quality Inspector -->
-  <section id="inspector" class="section">
-    <div class="container">
-      <div class="section-head">
-        <div class="section-pill">LIVE QUALITY INSPECTOR</div>
-        <h2>Inspect the Pixels. 80%+ Reduction with Zero Visible Loss.</h2>
-        <p>Drag the split slider handle left and right to inspect the microscopic pixel fidelity between the raw uncompressed master asset and the PixelPress optimized output.</p>
-      </div>
-
-      <div class="inspector-card">
-        <div class="inspector-header">
-          <div class="inspector-meta">
-            <svg class="lucide-icon" style="color: var(--accent-purple);"><use href="#icon-sliders"></use></svg>
-            <span class="inspector-title" id="sceneTitle">Vector UI Graphic and Alpha Transparency</span>
-          </div>
-
-          <div class="inspector-tabs">
-            <button class="inspector-tab-btn active" data-format="png">PNG Alpha</button>
-            <button class="inspector-tab-btn" data-format="jpeg">JPEG Photo</button>
-            <button class="inspector-tab-btn" data-format="webp">WebP Modern</button>
-          </div>
-        </div>
-
-        <!-- Split Slider Visual Area -->
-        <div class="split-slider-container" id="splitSlider">
-          <!-- Layer 1: Master Raw Layer (Before) -->
-          <div class="split-image-layer before">
-            <div class="split-layer-content">
-              <div class="scene-canvas">
-                <div class="scene-graphic">
-                  <div class="scene-graphic-rings"></div>
-                  <svg class="lucide-icon xl"><use href="#icon-aperture"></use></svg>
-                </div>
-                <div class="scene-caption">Raw High-Resolution Master File</div>
-                <div class="scene-sub">Uncompressed 32-bit RGBA Buffer - No Quantization</div>
-              </div>
-            </div>
-            <span class="split-badge badge-before">ORIGINAL: RAW UNCOMPRESSED</span>
-          </div>
-
-          <!-- Layer 2: Optimized Layer (After) -->
-          <div class="split-image-layer after" id="splitAfterLayer">
-            <div class="split-layer-content">
-              <div class="scene-canvas">
-                <div class="scene-graphic" style="box-shadow: 0 0 60px rgba(124, 106, 255, 0.45);">
-                  <div class="scene-graphic-rings" style="border-color: rgba(124, 106, 255, 0.4);"></div>
-                  <svg class="lucide-icon xl" style="color: #a5b4fc;"><use href="#icon-aperture"></use></svg>
-                </div>
-                <div class="scene-caption" style="color: #c7d2fe;">PixelPress Desktop Pro Optimized</div>
-                <div class="scene-sub" style="color: var(--accent-emerald);">Adaptive Quantized Output - Visually Lossless</div>
-              </div>
-            </div>
-            <span class="split-badge badge-after">OPTIMIZED: PIXELPRESS PRO</span>
-          </div>
-
-          <!-- Draggable Slider Handle -->
-          <div class="split-handle" id="splitHandle">
-            <div class="split-handle-btn">
-              <svg class="lucide-icon sm"><use href="#icon-chevrons-left-right"></use></svg>
-            </div>
-          </div>
-        </div>
-
-        <!-- Metric Readout Footer -->
-        <div class="inspector-footer">
-          <div class="inspector-stat-col">
-            <span class="inspector-stat-label">Original Payload</span>
-            <span class="inspector-stat-value" id="statRawSize">4.20 MB</span>
-          </div>
-          <div class="inspector-stat-col">
-            <span class="inspector-stat-label">Optimized Output</span>
-            <span class="inspector-stat-value highlight" id="statOptSize">780 KB</span>
-          </div>
-          <div class="inspector-stat-col">
-            <span class="inspector-stat-label">Compression Ratio</span>
-            <span class="inspector-stat-value highlight" id="statRatio">81.4%</span>
-          </div>
-          <div class="inspector-stat-col">
-            <span class="inspector-stat-label">Local Quantization Engine</span>
-            <span class="inspector-stat-value" id="statAlgo">8-bit FastOctree RGBA</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Interactive Storage & Bandwidth Savings Calculator -->
-  <section id="calculator" class="section">
-    <div class="container">
-      <div class="section-head">
-        <div class="section-pill">ROI &amp; BANDWIDTH CALCULATOR</div>
-        <h2>Quantify Your Hardware &amp; Network Gains</h2>
-        <p>Estimate how much local disk storage, cloud egress bandwidth, upload latency, and paid API fees your team will reclaim by switching to PixelPress Desktop Pro.</p>
-      </div>
-
-      <div class="calc-card">
-        <div class="calc-grid">
-          <!-- Input Controls -->
-          <div class="calc-input-block">
-            <h3>Configure Your Batch Volume</h3>
-            <p>Drag the slider to adjust your estimated monthly image volume:</p>
-
-            <div class="slider-group">
-              <div class="slider-label-row">
-                <span class="slider-title">Monthly Images Processed:</span>
-                <span class="slider-readout" id="calcCountReadout">2,500 images / mo</span>
-              </div>
-              <input type="range" id="calcRange" class="calc-range-input" min="100" max="25000" step="100" value="2500">
-            </div>
-
-            <div style="font-size: 0.85rem; color: var(--text-dim); line-height: 1.5;">
-              Calculations assume an average original size of 3.5 MB per asset and an 80% average compression yield without cloud round-trip delay.
-            </div>
-          </div>
-
-          <!-- Dynamic Output Metrics -->
-          <div class="calc-output-block">
-            <div class="calc-metric-card">
-              <div class="calc-metric-icon">
-                <svg class="lucide-icon"><use href="#icon-hard-drive"></use></svg>
-              </div>
-              <div class="calc-metric-num" id="calcDiskSaved">78.8 GB / yr</div>
-              <div class="calc-metric-label">Local SSD &amp; Backup Storage Reclaimed</div>
-            </div>
-
-            <div class="calc-metric-card">
-              <div class="calc-metric-icon">
-                <svg class="lucide-icon"><use href="#icon-globe"></use></svg>
-              </div>
-              <div class="calc-metric-num" id="calcBandwidthSaved">630.0 GB / yr</div>
-              <div class="calc-metric-label">CDN &amp; Cloud Egress Bandwidth Saved</div>
-            </div>
-
-            <div class="calc-metric-card">
-              <div class="calc-metric-icon">
-                <svg class="lucide-icon"><use href="#icon-clock"></use></svg>
-              </div>
-              <div class="calc-metric-num" id="calcTimeSaved">7.0 Hrs / yr</div>
-              <div class="calc-metric-label">Cloud Upload Waiting Time Eliminated</div>
-            </div>
-
-            <div class="calc-metric-card">
-              <div class="calc-metric-icon">
-                <svg class="lucide-icon"><use href="#icon-dollar-sign"></use></svg>
-              </div>
-              <div class="calc-metric-num" id="calcCostSaved">$216 / yr</div>
-              <div class="calc-metric-label">TinyPNG Paid API Subscription Saved</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Technical Bento Grid -->
+  <!-- Technical Bento Grid (Architecture) -->
   <section id="features" class="section">
     <div class="container">
       <div class="section-head">
@@ -610,6 +346,284 @@
               <span><strong>Air-Gapped Privacy:</strong> Absolute confidentiality. No external telemetry, no analytics SDKs, and zero internet requests.</span>
             </li>
           </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Quality Inspector (Realistic, Logical Photographic Split Slider) -->
+  <section id="inspector" class="section">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-pill">LIVE QUALITY INSPECTOR</div>
+        <h2>Inspect the Pixels. 80%+ Reduction with Zero Visible Loss.</h2>
+        <p>Drag the split slider handle left and right to inspect the microscopic pixel fidelity between the raw uncompressed master asset and the PixelPress optimized output.</p>
+      </div>
+
+      <div class="inspector-card">
+        <div class="inspector-header">
+          <div class="inspector-meta">
+            <svg class="lucide-icon" style="color: var(--accent-purple);"><use href="#icon-sliders"></use></svg>
+            <span class="inspector-title" id="sceneTitle">Architectural Twilight Landscape (High Dynamic Range)</span>
+          </div>
+
+          <div class="inspector-tabs">
+            <button class="inspector-tab-btn active" data-format="jpeg">JPEG Photo</button>
+            <button class="inspector-tab-btn" data-format="png">PNG Alpha</button>
+            <button class="inspector-tab-btn" data-format="webp">WebP Modern</button>
+          </div>
+        </div>
+
+        <!-- Split Slider Visual Area with Realistic Vector Scenes -->
+        <div class="split-slider-container" id="splitSlider">
+
+          <!-- Layer 1: Master Raw Layer (Before) -->
+          <div class="split-image-layer before">
+            <div class="split-layer-canvas">
+
+              <!-- Scene 1: JPEG Landscape (Photographic Twilight) -->
+              <svg class="scene-art-svg scene-content-jpeg" viewBox="0 0 1000 450" preserveAspectRatio="xMidYMid slice">
+                <defs>
+                  <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#0a0a1a"/>
+                    <stop offset="40%" stop-color="#141432"/>
+                    <stop offset="75%" stop-color="#2d1b4e"/>
+                    <stop offset="100%" stop-color="#582c68"/>
+                  </linearGradient>
+                  <linearGradient id="waterGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#18112e"/>
+                    <stop offset="100%" stop-color="#06070f"/>
+                  </linearGradient>
+                </defs>
+                <rect width="1000" height="340" fill="url(#skyGrad)"/>
+                <rect y="340" width="1000" height="110" fill="url(#waterGrad)"/>
+                <!-- Stars -->
+                <circle cx="120" cy="50" r="1.5" fill="#ffffff" opacity="0.8"/>
+                <circle cx="280" cy="70" r="1" fill="#ffffff" opacity="0.6"/>
+                <circle cx="450" cy="40" r="1.5" fill="#ffffff" opacity="0.9"/>
+                <circle cx="620" cy="90" r="1" fill="#ffffff" opacity="0.7"/>
+                <circle cx="780" cy="45" r="1.5" fill="#ffffff" opacity="0.8"/>
+                <circle cx="910" cy="80" r="1" fill="#ffffff" opacity="0.6"/>
+                <!-- Moon Crescent -->
+                <path d="M 850 80 A 24 24 0 1 0 870 120 A 20 20 0 1 1 850 80 Z" fill="#fef08a" opacity="0.9"/>
+                <!-- Distant Mountains -->
+                <polygon points="0,340 180,220 350,340" fill="#1b1d36" opacity="0.85"/>
+                <polygon points="260,340 460,180 640,340" fill="#242145" opacity="0.9"/>
+                <polygon points="520,340 720,200 900,340" fill="#1e1c3a" opacity="0.85"/>
+                <polygon points="760,340 920,240 1000,340" fill="#17182e" opacity="0.9"/>
+                <!-- Foreground Ridges -->
+                <polygon points="0,340 120,270 240,340" fill="#0f1122"/>
+                <polygon points="180,340 380,250 560,340" fill="#131428"/>
+                <polygon points="480,340 680,260 860,340" fill="#101224"/>
+                <polygon points="800,340 940,280 1000,340" fill="#0b0d1a"/>
+                <!-- Water Reflection line -->
+                <line x1="0" y1="340" x2="1000" y2="340" stroke="#7c6aff" stroke-width="1.5" opacity="0.3"/>
+              </svg>
+
+              <!-- Scene 2: PNG UI System (Glassmorphic Card & Alpha Channel) -->
+              <svg class="scene-art-svg scene-content-png" style="display: none;" viewBox="0 0 1000 450" preserveAspectRatio="xMidYMid slice">
+                <rect width="1000" height="450" fill="#090a10"/>
+                <!-- Subtle Grid Background -->
+                <g stroke="rgba(255,255,255,0.04)" stroke-width="1">
+                  <line x1="100" y1="0" x2="100" y2="450"/>
+                  <line x1="250" y1="0" x2="250" y2="450"/>
+                  <line x1="400" y1="0" x2="400" y2="450"/>
+                  <line x1="550" y1="0" x2="550" y2="450"/>
+                  <line x1="700" y1="0" x2="700" y2="450"/>
+                  <line x1="850" y1="0" x2="850" y2="450"/>
+                </g>
+                <!-- Glassmorphic Card Mockup -->
+                <rect x="250" y="80" width="500" height="290" rx="20" fill="rgba(25, 28, 44, 0.75)" stroke="rgba(124, 106, 255, 0.4)" stroke-width="2"/>
+                <!-- Header inside Card -->
+                <circle cx="300" cy="130" r="16" fill="rgba(124, 106, 255, 0.2)" stroke="#7c6aff" stroke-width="2"/>
+                <rect x="335" y="120" width="160" height="12" rx="4" fill="#f8fafc"/>
+                <rect x="335" y="138" width="100" height="8" rx="3" fill="#64748b"/>
+                <rect x="620" y="120" width="90" height="24" rx="12" fill="rgba(34, 197, 94, 0.2)" stroke="#22c55e" stroke-width="1"/>
+                <!-- Metrics Bar inside Card -->
+                <rect x="290" y="190" width="420" height="60" rx="10" fill="rgba(15, 18, 28, 0.8)" stroke="rgba(255, 255, 255, 0.08)"/>
+                <rect x="310" y="210" width="110" height="20" rx="4" fill="rgba(124, 106, 255, 0.25)"/>
+                <rect x="440" y="210" width="110" height="20" rx="4" fill="rgba(6, 182, 212, 0.25)"/>
+                <rect x="570" y="210" width="110" height="20" rx="4" fill="rgba(34, 197, 94, 0.25)"/>
+                <!-- Footer Action inside Card -->
+                <rect x="290" y="280" width="420" height="50" rx="10" fill="#7c6aff"/>
+              </svg>
+
+              <!-- Scene 3: WebP Modern Graphics -->
+              <svg class="scene-art-svg scene-content-webp" style="display: none;" viewBox="0 0 1000 450" preserveAspectRatio="xMidYMid slice">
+                <rect width="1000" height="450" fill="#080812"/>
+                <circle cx="200" cy="225" r="180" fill="none" stroke="rgba(124, 106, 255, 0.25)" stroke-width="2"/>
+                <circle cx="500" cy="225" r="140" fill="none" stroke="rgba(6, 182, 212, 0.25)" stroke-width="2"/>
+                <circle cx="800" cy="225" r="180" fill="none" stroke="rgba(34, 197, 94, 0.25)" stroke-width="2"/>
+                <path d="M 100 350 Q 500 80 900 350" fill="none" stroke="url(#skyGrad)" stroke-width="6"/>
+                <text x="500" y="235" text-anchor="middle" fill="#ffffff" font-family="'Inter', sans-serif" font-size="28" font-weight="800" letter-spacing="-0.5">HIGH-EFFICIENCY PREDICTIVE WEBP</text>
+              </svg>
+
+            </div>
+            <span class="split-badge badge-before">ORIGINAL: RAW UNCOMPRESSED</span>
+          </div>
+
+          <!-- Layer 2: Optimized Layer (After) -->
+          <div class="split-image-layer after" id="splitAfterLayer">
+            <div class="split-layer-canvas">
+
+              <!-- Scene 1: JPEG Landscape (Identical high-detail artwork) -->
+              <svg class="scene-art-svg scene-content-jpeg" viewBox="0 0 1000 450" preserveAspectRatio="xMidYMid slice">
+                <rect width="1000" height="340" fill="url(#skyGrad)"/>
+                <rect y="340" width="1000" height="110" fill="url(#waterGrad)"/>
+                <!-- Stars -->
+                <circle cx="120" cy="50" r="1.5" fill="#ffffff" opacity="0.8"/>
+                <circle cx="280" cy="70" r="1" fill="#ffffff" opacity="0.6"/>
+                <circle cx="450" cy="40" r="1.5" fill="#ffffff" opacity="0.9"/>
+                <circle cx="620" cy="90" r="1" fill="#ffffff" opacity="0.7"/>
+                <circle cx="780" cy="45" r="1.5" fill="#ffffff" opacity="0.8"/>
+                <circle cx="910" cy="80" r="1" fill="#ffffff" opacity="0.6"/>
+                <!-- Moon Crescent -->
+                <path d="M 850 80 A 24 24 0 1 0 870 120 A 20 20 0 1 1 850 80 Z" fill="#fef08a" opacity="0.9"/>
+                <!-- Distant Mountains -->
+                <polygon points="0,340 180,220 350,340" fill="#1b1d36" opacity="0.85"/>
+                <polygon points="260,340 460,180 640,340" fill="#242145" opacity="0.9"/>
+                <polygon points="520,340 720,200 900,340" fill="#1e1c3a" opacity="0.85"/>
+                <polygon points="760,340 920,240 1000,340" fill="#17182e" opacity="0.9"/>
+                <!-- Foreground Ridges -->
+                <polygon points="0,340 120,270 240,340" fill="#0f1122"/>
+                <polygon points="180,340 380,250 560,340" fill="#131428"/>
+                <polygon points="480,340 680,260 860,340" fill="#101224"/>
+                <polygon points="800,340 940,280 1000,340" fill="#0b0d1a"/>
+                <!-- Water Reflection line -->
+                <line x1="0" y1="340" x2="1000" y2="340" stroke="#7c6aff" stroke-width="1.5" opacity="0.3"/>
+              </svg>
+
+              <!-- Scene 2: PNG UI System (Identical high-detail artwork) -->
+              <svg class="scene-art-svg scene-content-png" style="display: none;" viewBox="0 0 1000 450" preserveAspectRatio="xMidYMid slice">
+                <rect width="1000" height="450" fill="#090a10"/>
+                <g stroke="rgba(255,255,255,0.04)" stroke-width="1">
+                  <line x1="100" y1="0" x2="100" y2="450"/>
+                  <line x1="250" y1="0" x2="250" y2="450"/>
+                  <line x1="400" y1="0" x2="400" y2="450"/>
+                  <line x1="550" y1="0" x2="550" y2="450"/>
+                  <line x1="700" y1="0" x2="700" y2="450"/>
+                  <line x1="850" y1="0" x2="850" y2="450"/>
+                </g>
+                <rect x="250" y="80" width="500" height="290" rx="20" fill="rgba(25, 28, 44, 0.75)" stroke="rgba(124, 106, 255, 0.4)" stroke-width="2"/>
+                <circle cx="300" cy="130" r="16" fill="rgba(124, 106, 255, 0.2)" stroke="#7c6aff" stroke-width="2"/>
+                <rect x="335" y="120" width="160" height="12" rx="4" fill="#f8fafc"/>
+                <rect x="335" y="138" width="100" height="8" rx="3" fill="#64748b"/>
+                <rect x="620" y="120" width="90" height="24" rx="12" fill="rgba(34, 197, 94, 0.2)" stroke="#22c55e" stroke-width="1"/>
+                <rect x="290" y="190" width="420" height="60" rx="10" fill="rgba(15, 18, 28, 0.8)" stroke="rgba(255, 255, 255, 0.08)"/>
+                <rect x="310" y="210" width="110" height="20" rx="4" fill="rgba(124, 106, 255, 0.25)"/>
+                <rect x="440" y="210" width="110" height="20" rx="4" fill="rgba(6, 182, 212, 0.25)"/>
+                <rect x="570" y="210" width="110" height="20" rx="4" fill="rgba(34, 197, 94, 0.25)"/>
+                <rect x="290" y="280" width="420" height="50" rx="10" fill="#7c6aff"/>
+              </svg>
+
+              <!-- Scene 3: WebP Modern Graphics (Identical high-detail artwork) -->
+              <svg class="scene-art-svg scene-content-webp" style="display: none;" viewBox="0 0 1000 450" preserveAspectRatio="xMidYMid slice">
+                <rect width="1000" height="450" fill="#080812"/>
+                <circle cx="200" cy="225" r="180" fill="none" stroke="rgba(124, 106, 255, 0.25)" stroke-width="2"/>
+                <circle cx="500" cy="225" r="140" fill="none" stroke="rgba(6, 182, 212, 0.25)" stroke-width="2"/>
+                <circle cx="800" cy="225" r="180" fill="none" stroke="rgba(34, 197, 94, 0.25)" stroke-width="2"/>
+                <path d="M 100 350 Q 500 80 900 350" fill="none" stroke="url(#skyGrad)" stroke-width="6"/>
+                <text x="500" y="235" text-anchor="middle" fill="#ffffff" font-family="'Inter', sans-serif" font-size="28" font-weight="800" letter-spacing="-0.5">HIGH-EFFICIENCY PREDICTIVE WEBP</text>
+              </svg>
+
+            </div>
+            <span class="split-badge badge-after">PIXELPRESS PRO: OPTIMIZED</span>
+          </div>
+
+          <!-- Draggable Slider Handle -->
+          <div class="split-handle" id="splitHandle">
+            <div class="split-handle-btn">
+              <svg class="lucide-icon sm"><use href="#icon-chevrons-left-right"></use></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Metric Readout Footer -->
+        <div class="inspector-footer">
+          <div class="inspector-stat-col">
+            <span class="inspector-stat-label">Original Payload</span>
+            <span class="inspector-stat-value" id="statRawSize">8.45 MB</span>
+          </div>
+          <div class="inspector-stat-col">
+            <span class="inspector-stat-label">Optimized Output</span>
+            <span class="inspector-stat-value highlight" id="statOptSize">1.42 MB</span>
+          </div>
+          <div class="inspector-stat-col">
+            <span class="inspector-stat-label">Compression Ratio</span>
+            <span class="inspector-stat-value highlight" id="statRatio">83.2%</span>
+          </div>
+          <div class="inspector-stat-col">
+            <span class="inspector-stat-label">Local Quantization Engine</span>
+            <span class="inspector-stat-value" id="statAlgo">Progressive DCT 4:2:0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Storage & Bandwidth Savings Calculator -->
+  <section id="calculator" class="section">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-pill">ROI &amp; BANDWIDTH CALCULATOR</div>
+        <h2>Quantify Your Hardware &amp; Network Gains</h2>
+        <p>Estimate how much local disk storage, cloud egress bandwidth, upload latency, and paid API fees your team will reclaim by switching to PixelPress Desktop Pro.</p>
+      </div>
+
+      <div class="calc-card">
+        <div class="calc-grid">
+          <!-- Input Controls -->
+          <div class="calc-input-block">
+            <h3>Configure Your Batch Volume</h3>
+            <p>Drag the slider to adjust your estimated monthly image volume:</p>
+
+            <div class="slider-group">
+              <div class="slider-label-row">
+                <span class="slider-title">Monthly Images Processed:</span>
+                <span class="slider-readout" id="calcCountReadout">2,500 images / mo</span>
+              </div>
+              <input type="range" id="calcRange" class="calc-range-input" min="100" max="25000" step="100" value="2500">
+            </div>
+
+            <div style="font-size: 0.85rem; color: var(--text-dim); line-height: 1.5;">
+              Calculations assume an average original size of 3.5 MB per asset and an 80% average compression yield without cloud round-trip delay.
+            </div>
+          </div>
+
+          <!-- Dynamic Output Metrics -->
+          <div class="calc-output-block">
+            <div class="calc-metric-card">
+              <div class="calc-metric-icon">
+                <svg class="lucide-icon"><use href="#icon-hard-drive"></use></svg>
+              </div>
+              <div class="calc-metric-num" id="calcDiskSaved">78.8 GB / yr</div>
+              <div class="calc-metric-label">Local SSD &amp; Backup Storage Reclaimed</div>
+            </div>
+
+            <div class="calc-metric-card">
+              <div class="calc-metric-icon">
+                <svg class="lucide-icon"><use href="#icon-globe"></use></svg>
+              </div>
+              <div class="calc-metric-num" id="calcBandwidthSaved">630.0 GB / yr</div>
+              <div class="calc-metric-label">CDN &amp; Cloud Egress Bandwidth Saved</div>
+            </div>
+
+            <div class="calc-metric-card">
+              <div class="calc-metric-icon">
+                <svg class="lucide-icon"><use href="#icon-clock"></use></svg>
+              </div>
+              <div class="calc-metric-num" id="calcTimeSaved">7.0 Hrs / yr</div>
+              <div class="calc-metric-label">Cloud Upload Waiting Time Eliminated</div>
+            </div>
+
+            <div class="calc-metric-card">
+              <div class="calc-metric-icon">
+                <svg class="lucide-icon"><use href="#icon-dollar-sign"></use></svg>
+              </div>
+              <div class="calc-metric-num" id="calcCostSaved">$216 / yr</div>
+              <div class="calc-metric-label">TinyPNG Paid API Subscription Saved</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -966,7 +980,7 @@
 
         <!-- Fast Portable ZIP -->
         <div class="download-hub-card">
-          <div class="download-icon-box" style="background: rgba(6, 182, 212, 0.12); color: var(--accent-cyan);">
+          <div class="download-icon-box" style="background: var(--accent-cyan-soft); color: var(--accent-cyan);">
             <svg class="lucide-icon"><use href="#icon-folder-open"></use></svg>
           </div>
           <h3>Fast Portable ZIP</h3>
@@ -983,7 +997,7 @@
 
         <!-- Standalone Single EXE -->
         <div class="download-hub-card">
-          <div class="download-icon-box" style="background: rgba(34, 197, 94, 0.12); color: var(--accent-emerald);">
+          <div class="download-icon-box" style="background: var(--accent-emerald-soft); color: var(--accent-emerald);">
             <svg class="lucide-icon"><use href="#icon-zap"></use></svg>
           </div>
           <h3>Single-File Standalone</h3>
@@ -1007,12 +1021,12 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <div class="brand-wrap">
-            <div class="brand-icon">
-              <svg class="lucide-icon"><use href="#icon-aperture"></use></svg>
+            <div class="brand-badge">
+              <svg class="lucide-icon brand-icon"><use href="#icon-logo"></use></svg>
             </div>
-            <div class="brand-text">
+            <div class="brand-details">
               <span class="brand-title">PixelPress</span>
-              <span class="brand-badge">Desktop Pro</span>
+              <span class="brand-subtitle">DESKTOP PRO</span>
             </div>
           </div>
           <p>

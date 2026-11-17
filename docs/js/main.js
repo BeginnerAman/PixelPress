@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* --------------------------------------------------------------------------
-   1. Navbar Scroll Effect
+   1. Navbar Scroll Backdrop Transition
    -------------------------------------------------------------------------- */
 function initNavbarScroll() {
   const navbar = document.querySelector('header.navbar');
@@ -32,7 +32,7 @@ function initNavbarScroll() {
 }
 
 /* --------------------------------------------------------------------------
-   2. Interactive Comparison Split Slider
+   2. Interactive Comparison Split Slider (Mouse and Touch Support)
    -------------------------------------------------------------------------- */
 function initComparisonSlider() {
   const container = document.getElementById('splitSlider');
@@ -53,7 +53,7 @@ function initComparisonSlider() {
     handle.style.left = percentage + '%';
   };
 
-  // Mouse Events
+  // Mouse Drag Events
   handle.addEventListener('mousedown', (e) => {
     isDragging = true;
     e.preventDefault();
@@ -68,12 +68,12 @@ function initComparisonSlider() {
     updateSplit(e.clientX);
   });
 
-  // Container Click Jump
+  // Jump to click point
   container.addEventListener('click', (e) => {
     updateSplit(e.clientX);
   });
 
-  // Touch Events (Mobile/Tablet)
+  // Touch Drag Events
   handle.addEventListener('touchstart', (e) => {
     isDragging = true;
   }, { passive: true });
@@ -95,23 +95,27 @@ function initComparisonSlider() {
   const algoEl = document.getElementById('statAlgo');
   const sceneTitleEl = document.getElementById('sceneTitle');
 
+  const sceneJpeg = document.querySelectorAll('.scene-content-jpeg');
+  const scenePng = document.querySelectorAll('.scene-content-png');
+  const sceneWebp = document.querySelectorAll('.scene-content-webp');
+
   const formatData = {
-    png: {
-      title: 'Vector UI Graphic and Alpha Transparency',
-      raw: '4.20 MB',
-      opt: '780 KB',
-      ratio: '81.4%',
-      algo: '8-bit FastOctree RGBA'
-    },
     jpeg: {
-      title: 'Studio Portrait Photography (High Dynamic Range)',
+      title: 'Architectural Twilight Landscape (High Dynamic Range)',
       raw: '8.45 MB',
       opt: '1.42 MB',
       ratio: '83.2%',
       algo: 'Progressive DCT 4:2:0'
     },
+    png: {
+      title: 'Vector UI System and Alpha Transparency Channel',
+      raw: '4.20 MB',
+      opt: '780 KB',
+      ratio: '81.4%',
+      algo: '8-bit FastOctree RGBA'
+    },
     webp: {
-      title: 'Complex Web Editorial Banner Composition',
+      title: 'Modern High-Contrast Editorial Graphics Banner',
       raw: '5.10 MB',
       opt: '640 KB',
       ratio: '87.5%',
@@ -133,6 +137,17 @@ function initComparisonSlider() {
       if (ratioEl) ratioEl.textContent = data.ratio;
       if (algoEl) algoEl.textContent = data.algo;
       if (sceneTitleEl) sceneTitleEl.textContent = data.title;
+
+      // Toggle visual scenes
+      const showScene = (nodes, visible) => {
+        nodes.forEach(n => {
+          n.style.display = visible ? 'block' : 'none';
+        });
+      };
+
+      showScene(sceneJpeg, fmt === 'jpeg');
+      showScene(scenePng, fmt === 'png');
+      showScene(sceneWebp, fmt === 'webp');
     });
   });
 }
@@ -154,15 +169,15 @@ function initSavingsCalculator() {
     const monthlyCount = parseInt(rangeInput.value, 10);
     countReadout.textContent = monthlyCount.toLocaleString() + ' images / mo';
 
-    // Assumptions:
-    // Avg uncompressed image: 3.5 MB
-    // PixelPress average reduction: 75% -> saves 2.625 MB per image
+    // Model:
+    // Average image payload: 3.5 MB
+    // Average reduction yield: 75% -> saves 2.625 MB per asset
     const avgSavingsMB = 2.625;
     const yearlyImages = monthlyCount * 12;
     const totalSavingsMB = yearlyImages * avgSavingsMB;
     const totalSavingsGB = totalSavingsMB / 1024;
 
-    // Output 1: Disk Space Saved / yr
+    // 1. Local SSD Space Saved
     if (diskSavedEl) {
       if (totalSavingsGB >= 1000) {
         diskSavedEl.textContent = (totalSavingsGB / 1024).toFixed(1) + ' TB / yr';
@@ -171,7 +186,7 @@ function initSavingsCalculator() {
       }
     }
 
-    // Output 2: Cloud Bandwidth Saved / yr (Assuming 8x views per asset)
+    // 2. Cloud and CDN Bandwidth Saved (Assume 8 views per asset)
     if (bandwidthSavedEl) {
       const bandwidthGB = totalSavingsGB * 8;
       if (bandwidthGB >= 1000) {
@@ -181,15 +196,14 @@ function initSavingsCalculator() {
       }
     }
 
-    // Output 3: Upload Time Saved (Assuming 25 Mbps upload speed -> ~3.12 MB/s)
+    // 3. Upload Time Saved (25 Mbps connection -> ~3.12 MB/s)
     if (timeSavedEl) {
       const uploadSeconds = totalSavingsMB / 3.12;
       const uploadHours = uploadSeconds / 3600;
       timeSavedEl.textContent = uploadHours.toFixed(1) + ' Hrs / yr';
     }
 
-    // Output 4: TinyPNG API Cost Saved
-    // TinyPNG charges $0.009 per image beyond 500 free monthly images
+    // 4. TinyPNG API Cost Saved ($0.009 per image after 500 free monthly)
     if (costSavedEl) {
       const paidImagesPerMonth = Math.max(0, monthlyCount - 500);
       const yearlyCost = paidImagesPerMonth * 0.009 * 12;
@@ -214,7 +228,7 @@ function initFaqAccordion() {
     questionBtn.addEventListener('click', () => {
       const isActive = item.classList.contains('active');
 
-      // Close all items
+      // Close other accordion items
       faqItems.forEach(otherItem => {
         otherItem.classList.remove('active');
       });
