@@ -30,7 +30,7 @@ function initNavbarScroll() {
 }
 
 /* --------------------------------------------------------------------------
-   2. Smooth FAQ Accordion (Hardware-Accelerated CSS Grid 60 FPS)
+   2. Smooth FAQ Accordion (Auto-Close Previous & Smooth Toggle)
    -------------------------------------------------------------------------- */
 function initFaqAccordion() {
   const faqItems = document.querySelectorAll('.faq-item');
@@ -41,7 +41,21 @@ function initFaqAccordion() {
 
     questionBtn.addEventListener('click', (e) => {
       e.preventDefault();
-      item.classList.toggle('active');
+      const isAlreadyActive = item.classList.contains('active');
+
+      // Close all other open FAQ items automatically
+      faqItems.forEach(otherItem => {
+        if (otherItem !== item) {
+          otherItem.classList.remove('active');
+        }
+      });
+
+      // Toggle clicked item: if it was already open, close it; otherwise open it
+      if (isAlreadyActive) {
+        item.classList.remove('active');
+      } else {
+        item.classList.add('active');
+      }
     });
   });
 }

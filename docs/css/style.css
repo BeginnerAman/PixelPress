@@ -829,11 +829,17 @@ kbd {
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  transition: border-color 0.15s ease;
+  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.faq-item:hover {
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
 .faq-item.active {
   border-color: var(--border-accent);
+  background: rgba(18, 22, 36, 0.9);
+  box-shadow: 0 4px 20px rgba(124, 106, 255, 0.08);
 }
 
 .faq-question {
@@ -1175,6 +1181,17 @@ footer.site-footer {
     width: 13px;
     height: 13px;
     flex-shrink: 0;
+  }
+
+  /* FAQ Compact Styling for Mobile */
+  .faq-question {
+    font-size: 0.90rem;
+    padding: 15px 16px;
+  }
+  .faq-answer-content {
+    font-size: 0.84rem;
+    padding: 0 16px 15px 16px;
+    line-height: 1.55;
   }
 
   .format-grid { grid-template-columns: 1fr; }
