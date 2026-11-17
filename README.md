@@ -65,7 +65,7 @@ PixelPress was benchmarked against industry standard web services and desktop ut
 | Privacy and Data Security | Absolute (Zero External Sockets) | Images Stored on Third-Party Cloud | Client-side Sandbox | Absolute Local |
 | 100-Image Batch Execution | 12.4 Seconds (Multi-Threaded C-Extension) | 145+ Seconds (Upload + Process + Download) | Manual Single-File Pipeline | 48 Seconds |
 | Maximum Batch Ceiling | Unlimited (Chunked Stream Engine) | 20 Files per Batch (Free Tier) | 1 File at a Time | Unlimited |
-| Batch Memory Scaling | Bounded $O(\text{CHUNK\_SIZE})$ (~140-180 MB active peak) | Not Applicable | Tab Crash on 50+ Files | O(N) Process Heap |
+| Batch Memory Scaling | Bounded O(CHUNK_SIZE) (~140-180 MB active peak) | Not Applicable | Tab Crash on 50+ Files | O(N) Process Heap |
 | PNG Reduction Ratio | 65% to 82% (Adaptive Octree 8-bit) | 65% to 80% (Custom Quantization) | 60% to 75% (OxiPNG) | 40% to 55% (Lossless default) |
 | Pixel Inspection & Zoom | 25% to 400% Zoom, 1:1 Pixel Peeping, 2x Artifact View, Synchronous Pan | None (Zero Visual Compare) | Single-File Split Slider Only | None (No Visual GUI Preview) |
 | Color & Print Integrity | LittleCMS Perceptual CMYK-to-sRGB + Embedded Display-P3 ICC Retention | Inverts/Distorts CMYK, Strips ICC Profiles | Manual In-Browser Color Options | Strips All Color Profiles by Default |
@@ -118,7 +118,7 @@ Traditional desktop image tools suffer severe process degradation when handling 
 [ Fetch Next Chunk Window until Queue Complete ]
 ```
 
-* **Bounded Memory Pipeline $O(\text{CHUNK\_SIZE})$:** Memory consumption remains strictly bounded (~140-180 MB active peak) regardless of whether 10 or 2,000 images are processed in a single session. Each thread decodes and encodes only its active chunk file, releasing buffers immediately.
+* **Bounded Memory Pipeline O(CHUNK_SIZE):** Memory consumption remains strictly bounded (~140-180 MB active peak) regardless of whether 10 or 2,000 images are processed in a single session. Each thread decodes and encodes only its active chunk file, releasing buffers immediately.
 * **Dynamic Multi-Core Thread Scaling:** Workers automatically scale based on the host CPU hardware (`os.cpu_count()`, up to 16 cores), maximizing throughput across multi-core processors.
 * **Zero-Leak Object URL Registry:** Client-side previews utilize a managed `activeObjectUrls` registry. URLs are systematically revoked via `URL.revokeObjectURL()` on queue re-renders, removals, and resets, preventing browser memory leaks.
 * **Instant Batch Abort Protocol:** An integrated AbortController combined with backend cancellation (`/api/cancel-batch/<batch_id>`) halts processing immediately and skips remaining worker tasks atomically.
@@ -173,7 +173,7 @@ PixelPress Desktop Pro incorporates an automated engineering test harness built 
 
 ## Windows SmartScreen & Code Signing Advisory
 
-PixelPress is an open-source, non-profit community project distributed free of charge. Because commercial Extended Validation (EV) code-signing certificates cost \$400-\$600/year, the downloadable binaries are currently self-packaged without an expensive commercial certificate.
+PixelPress is an open-source, non-profit community project distributed free of charge. Because commercial Extended Validation (EV) code-signing certificates cost 400 to 600 USD annually, the downloadable binaries are currently self-packaged without an expensive commercial certificate.
 
 When launching PixelPress for the first time, Windows Defender SmartScreen may display an informational notice:  
 > *"Windows protected your PC: Microsoft Defender SmartScreen prevented an unrecognized app from starting."*
