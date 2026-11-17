@@ -175,7 +175,7 @@
         </div>
       </a>
 
-      <!-- Clean Horizontal Navigation Menu (Single words, No multi-line breaks) -->
+      <!-- Clean Horizontal Navigation Menu (Single words, Non-wrapping) -->
       <ul class="nav-links">
         <li><a href="#features">Architecture</a></li>
         <li><a href="#inspector">Quality</a></li>
@@ -200,7 +200,7 @@
     </div>
   </header>
 
-  <!-- Hero Section (Lightweight, Airy, No Clutter) -->
+  <!-- Hero Section (Lightweight, Airy, Fluid Typography) -->
   <section class="hero-section">
     <div class="container">
       <a href="https://github.com/BeginnerAman/PixelPress/releases/tag/v2.1.0" target="_blank" rel="noopener" class="hero-pill">
@@ -351,12 +351,12 @@
     </div>
   </section>
 
-  <!-- Interactive Quality Inspector (Realistic, Logical Photographic Split Slider) -->
+  <!-- Interactive Quality Inspector (Real Image Split Slider) -->
   <section id="inspector" class="section">
     <div class="container">
       <div class="section-head">
         <div class="section-pill">LIVE QUALITY INSPECTOR</div>
-        <h2>Inspect the Pixels. 80%+ Reduction with Zero Visible Loss.</h2>
+        <h2>Inspect the Pixels. 70%+ Reduction with Zero Visible Loss.</h2>
         <p>Drag the split slider handle left and right to inspect the microscopic pixel fidelity between the raw uncompressed master asset and the PixelPress optimized output.</p>
       </div>
 
@@ -364,7 +364,7 @@
         <div class="inspector-header">
           <div class="inspector-meta">
             <svg class="lucide-icon" style="color: var(--accent-purple);"><use href="#icon-sliders"></use></svg>
-            <span class="inspector-title" id="sceneTitle">Architectural Twilight Landscape (High Dynamic Range)</span>
+            <span class="inspector-title" id="sceneTitle">Architectural Twilight Landscape (High Dynamic Range Photography)</span>
           </div>
 
           <div class="inspector-tabs">
@@ -374,163 +374,22 @@
           </div>
         </div>
 
-        <!-- Split Slider Visual Area with Realistic Vector Scenes -->
+        <!-- Split Slider Visual Area with Real High-Resolution Photographic Images -->
         <div class="split-slider-container" id="splitSlider">
 
           <!-- Layer 1: Master Raw Layer (Before) -->
           <div class="split-image-layer before">
-            <div class="split-layer-canvas">
-
-              <!-- Scene 1: JPEG Landscape (Photographic Twilight) -->
-              <svg class="scene-art-svg scene-content-jpeg" viewBox="0 0 1000 450" preserveAspectRatio="xMidYMid slice">
-                <defs>
-                  <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stop-color="#0a0a1a"/>
-                    <stop offset="40%" stop-color="#141432"/>
-                    <stop offset="75%" stop-color="#2d1b4e"/>
-                    <stop offset="100%" stop-color="#582c68"/>
-                  </linearGradient>
-                  <linearGradient id="waterGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stop-color="#18112e"/>
-                    <stop offset="100%" stop-color="#06070f"/>
-                  </linearGradient>
-                </defs>
-                <rect width="1000" height="340" fill="url(#skyGrad)"/>
-                <rect y="340" width="1000" height="110" fill="url(#waterGrad)"/>
-                <!-- Stars -->
-                <circle cx="120" cy="50" r="1.5" fill="#ffffff" opacity="0.8"/>
-                <circle cx="280" cy="70" r="1" fill="#ffffff" opacity="0.6"/>
-                <circle cx="450" cy="40" r="1.5" fill="#ffffff" opacity="0.9"/>
-                <circle cx="620" cy="90" r="1" fill="#ffffff" opacity="0.7"/>
-                <circle cx="780" cy="45" r="1.5" fill="#ffffff" opacity="0.8"/>
-                <circle cx="910" cy="80" r="1" fill="#ffffff" opacity="0.6"/>
-                <!-- Moon Crescent -->
-                <path d="M 850 80 A 24 24 0 1 0 870 120 A 20 20 0 1 1 850 80 Z" fill="#fef08a" opacity="0.9"/>
-                <!-- Distant Mountains -->
-                <polygon points="0,340 180,220 350,340" fill="#1b1d36" opacity="0.85"/>
-                <polygon points="260,340 460,180 640,340" fill="#242145" opacity="0.9"/>
-                <polygon points="520,340 720,200 900,340" fill="#1e1c3a" opacity="0.85"/>
-                <polygon points="760,340 920,240 1000,340" fill="#17182e" opacity="0.9"/>
-                <!-- Foreground Ridges -->
-                <polygon points="0,340 120,270 240,340" fill="#0f1122"/>
-                <polygon points="180,340 380,250 560,340" fill="#131428"/>
-                <polygon points="480,340 680,260 860,340" fill="#101224"/>
-                <polygon points="800,340 940,280 1000,340" fill="#0b0d1a"/>
-                <!-- Water Reflection line -->
-                <line x1="0" y1="340" x2="1000" y2="340" stroke="#7c6aff" stroke-width="1.5" opacity="0.3"/>
-              </svg>
-
-              <!-- Scene 2: PNG UI System (Glassmorphic Card & Alpha Channel) -->
-              <svg class="scene-art-svg scene-content-png" style="display: none;" viewBox="0 0 1000 450" preserveAspectRatio="xMidYMid slice">
-                <rect width="1000" height="450" fill="#090a10"/>
-                <!-- Subtle Grid Background -->
-                <g stroke="rgba(255,255,255,0.04)" stroke-width="1">
-                  <line x1="100" y1="0" x2="100" y2="450"/>
-                  <line x1="250" y1="0" x2="250" y2="450"/>
-                  <line x1="400" y1="0" x2="400" y2="450"/>
-                  <line x1="550" y1="0" x2="550" y2="450"/>
-                  <line x1="700" y1="0" x2="700" y2="450"/>
-                  <line x1="850" y1="0" x2="850" y2="450"/>
-                </g>
-                <!-- Glassmorphic Card Mockup -->
-                <rect x="250" y="80" width="500" height="290" rx="20" fill="rgba(25, 28, 44, 0.75)" stroke="rgba(124, 106, 255, 0.4)" stroke-width="2"/>
-                <!-- Header inside Card -->
-                <circle cx="300" cy="130" r="16" fill="rgba(124, 106, 255, 0.2)" stroke="#7c6aff" stroke-width="2"/>
-                <rect x="335" y="120" width="160" height="12" rx="4" fill="#f8fafc"/>
-                <rect x="335" y="138" width="100" height="8" rx="3" fill="#64748b"/>
-                <rect x="620" y="120" width="90" height="24" rx="12" fill="rgba(34, 197, 94, 0.2)" stroke="#22c55e" stroke-width="1"/>
-                <!-- Metrics Bar inside Card -->
-                <rect x="290" y="190" width="420" height="60" rx="10" fill="rgba(15, 18, 28, 0.8)" stroke="rgba(255, 255, 255, 0.08)"/>
-                <rect x="310" y="210" width="110" height="20" rx="4" fill="rgba(124, 106, 255, 0.25)"/>
-                <rect x="440" y="210" width="110" height="20" rx="4" fill="rgba(6, 182, 212, 0.25)"/>
-                <rect x="570" y="210" width="110" height="20" rx="4" fill="rgba(34, 197, 94, 0.25)"/>
-                <!-- Footer Action inside Card -->
-                <rect x="290" y="280" width="420" height="50" rx="10" fill="#7c6aff"/>
-              </svg>
-
-              <!-- Scene 3: WebP Modern Graphics -->
-              <svg class="scene-art-svg scene-content-webp" style="display: none;" viewBox="0 0 1000 450" preserveAspectRatio="xMidYMid slice">
-                <rect width="1000" height="450" fill="#080812"/>
-                <circle cx="200" cy="225" r="180" fill="none" stroke="rgba(124, 106, 255, 0.25)" stroke-width="2"/>
-                <circle cx="500" cy="225" r="140" fill="none" stroke="rgba(6, 182, 212, 0.25)" stroke-width="2"/>
-                <circle cx="800" cy="225" r="180" fill="none" stroke="rgba(34, 197, 94, 0.25)" stroke-width="2"/>
-                <path d="M 100 350 Q 500 80 900 350" fill="none" stroke="url(#skyGrad)" stroke-width="6"/>
-                <text x="500" y="235" text-anchor="middle" fill="#ffffff" font-family="'Inter', sans-serif" font-size="28" font-weight="800" letter-spacing="-0.5">HIGH-EFFICIENCY PREDICTIVE WEBP</text>
-              </svg>
-
-            </div>
+            <img id="inspectImgOrig" class="split-inspect-img" src="images/inspect-photo-orig.jpg" alt="Raw Uncompressed Original Image">
             <span class="split-badge badge-before">ORIGINAL: RAW UNCOMPRESSED</span>
           </div>
 
           <!-- Layer 2: Optimized Layer (After) -->
           <div class="split-image-layer after" id="splitAfterLayer">
-            <div class="split-layer-canvas">
-
-              <!-- Scene 1: JPEG Landscape (Identical high-detail artwork) -->
-              <svg class="scene-art-svg scene-content-jpeg" viewBox="0 0 1000 450" preserveAspectRatio="xMidYMid slice">
-                <rect width="1000" height="340" fill="url(#skyGrad)"/>
-                <rect y="340" width="1000" height="110" fill="url(#waterGrad)"/>
-                <!-- Stars -->
-                <circle cx="120" cy="50" r="1.5" fill="#ffffff" opacity="0.8"/>
-                <circle cx="280" cy="70" r="1" fill="#ffffff" opacity="0.6"/>
-                <circle cx="450" cy="40" r="1.5" fill="#ffffff" opacity="0.9"/>
-                <circle cx="620" cy="90" r="1" fill="#ffffff" opacity="0.7"/>
-                <circle cx="780" cy="45" r="1.5" fill="#ffffff" opacity="0.8"/>
-                <circle cx="910" cy="80" r="1" fill="#ffffff" opacity="0.6"/>
-                <!-- Moon Crescent -->
-                <path d="M 850 80 A 24 24 0 1 0 870 120 A 20 20 0 1 1 850 80 Z" fill="#fef08a" opacity="0.9"/>
-                <!-- Distant Mountains -->
-                <polygon points="0,340 180,220 350,340" fill="#1b1d36" opacity="0.85"/>
-                <polygon points="260,340 460,180 640,340" fill="#242145" opacity="0.9"/>
-                <polygon points="520,340 720,200 900,340" fill="#1e1c3a" opacity="0.85"/>
-                <polygon points="760,340 920,240 1000,340" fill="#17182e" opacity="0.9"/>
-                <!-- Foreground Ridges -->
-                <polygon points="0,340 120,270 240,340" fill="#0f1122"/>
-                <polygon points="180,340 380,250 560,340" fill="#131428"/>
-                <polygon points="480,340 680,260 860,340" fill="#101224"/>
-                <polygon points="800,340 940,280 1000,340" fill="#0b0d1a"/>
-                <!-- Water Reflection line -->
-                <line x1="0" y1="340" x2="1000" y2="340" stroke="#7c6aff" stroke-width="1.5" opacity="0.3"/>
-              </svg>
-
-              <!-- Scene 2: PNG UI System (Identical high-detail artwork) -->
-              <svg class="scene-art-svg scene-content-png" style="display: none;" viewBox="0 0 1000 450" preserveAspectRatio="xMidYMid slice">
-                <rect width="1000" height="450" fill="#090a10"/>
-                <g stroke="rgba(255,255,255,0.04)" stroke-width="1">
-                  <line x1="100" y1="0" x2="100" y2="450"/>
-                  <line x1="250" y1="0" x2="250" y2="450"/>
-                  <line x1="400" y1="0" x2="400" y2="450"/>
-                  <line x1="550" y1="0" x2="550" y2="450"/>
-                  <line x1="700" y1="0" x2="700" y2="450"/>
-                  <line x1="850" y1="0" x2="850" y2="450"/>
-                </g>
-                <rect x="250" y="80" width="500" height="290" rx="20" fill="rgba(25, 28, 44, 0.75)" stroke="rgba(124, 106, 255, 0.4)" stroke-width="2"/>
-                <circle cx="300" cy="130" r="16" fill="rgba(124, 106, 255, 0.2)" stroke="#7c6aff" stroke-width="2"/>
-                <rect x="335" y="120" width="160" height="12" rx="4" fill="#f8fafc"/>
-                <rect x="335" y="138" width="100" height="8" rx="3" fill="#64748b"/>
-                <rect x="620" y="120" width="90" height="24" rx="12" fill="rgba(34, 197, 94, 0.2)" stroke="#22c55e" stroke-width="1"/>
-                <rect x="290" y="190" width="420" height="60" rx="10" fill="rgba(15, 18, 28, 0.8)" stroke="rgba(255, 255, 255, 0.08)"/>
-                <rect x="310" y="210" width="110" height="20" rx="4" fill="rgba(124, 106, 255, 0.25)"/>
-                <rect x="440" y="210" width="110" height="20" rx="4" fill="rgba(6, 182, 212, 0.25)"/>
-                <rect x="570" y="210" width="110" height="20" rx="4" fill="rgba(34, 197, 94, 0.25)"/>
-                <rect x="290" y="280" width="420" height="50" rx="10" fill="#7c6aff"/>
-              </svg>
-
-              <!-- Scene 3: WebP Modern Graphics (Identical high-detail artwork) -->
-              <svg class="scene-art-svg scene-content-webp" style="display: none;" viewBox="0 0 1000 450" preserveAspectRatio="xMidYMid slice">
-                <rect width="1000" height="450" fill="#080812"/>
-                <circle cx="200" cy="225" r="180" fill="none" stroke="rgba(124, 106, 255, 0.25)" stroke-width="2"/>
-                <circle cx="500" cy="225" r="140" fill="none" stroke="rgba(6, 182, 212, 0.25)" stroke-width="2"/>
-                <circle cx="800" cy="225" r="180" fill="none" stroke="rgba(34, 197, 94, 0.25)" stroke-width="2"/>
-                <path d="M 100 350 Q 500 80 900 350" fill="none" stroke="url(#skyGrad)" stroke-width="6"/>
-                <text x="500" y="235" text-anchor="middle" fill="#ffffff" font-family="'Inter', sans-serif" font-size="28" font-weight="800" letter-spacing="-0.5">HIGH-EFFICIENCY PREDICTIVE WEBP</text>
-              </svg>
-
-            </div>
+            <img id="inspectImgOpt" class="split-inspect-img" src="images/inspect-photo-opt.jpg" alt="PixelPress Desktop Pro Optimized Image">
             <span class="split-badge badge-after">PIXELPRESS PRO: OPTIMIZED</span>
           </div>
 
-          <!-- Draggable Slider Handle -->
+          <!-- Draggable Slider Handle (Pointer Events API) -->
           <div class="split-handle" id="splitHandle">
             <div class="split-handle-btn">
               <svg class="lucide-icon sm"><use href="#icon-chevrons-left-right"></use></svg>
@@ -542,15 +401,15 @@
         <div class="inspector-footer">
           <div class="inspector-stat-col">
             <span class="inspector-stat-label">Original Payload</span>
-            <span class="inspector-stat-value" id="statRawSize">8.45 MB</span>
+            <span class="inspector-stat-value" id="statRawSize">702 KB</span>
           </div>
           <div class="inspector-stat-col">
             <span class="inspector-stat-label">Optimized Output</span>
-            <span class="inspector-stat-value highlight" id="statOptSize">1.42 MB</span>
+            <span class="inspector-stat-value highlight" id="statOptSize">206 KB</span>
           </div>
           <div class="inspector-stat-col">
             <span class="inspector-stat-label">Compression Ratio</span>
-            <span class="inspector-stat-value highlight" id="statRatio">83.2%</span>
+            <span class="inspector-stat-value highlight" id="statRatio">70.7%</span>
           </div>
           <div class="inspector-stat-col">
             <span class="inspector-stat-label">Local Quantization Engine</span>
@@ -857,7 +716,7 @@
     </div>
   </section>
 
-  <!-- Extended FAQ Accordion -->
+  <!-- Extended FAQ Accordion (Hardware-Accelerated Fluid Grid) -->
   <section id="faq" class="section">
     <div class="container">
       <div class="section-head">
@@ -873,7 +732,9 @@
             <svg class="lucide-icon sm faq-chevron"><use href="#icon-chevron-down"></use></svg>
           </button>
           <div class="faq-answer">
-            Absolute zero. PixelPress contains zero external telemetry libraries, analytics beacons, or remote upload sockets. Every byte of image computation is executed locally on your PC's CPU using local C-compiled imaging libraries. You can run PixelPress on an entirely air-gapped machine without an internet connection.
+            <div class="faq-answer-inner">
+              Absolute zero. PixelPress contains zero external telemetry libraries, analytics beacons, or remote upload sockets. Every byte of image computation is executed locally on your PC's CPU using local C-compiled imaging libraries. You can run PixelPress on an entirely air-gapped machine without an internet connection.
+            </div>
           </div>
         </div>
 
@@ -883,7 +744,9 @@
             <svg class="lucide-icon sm faq-chevron"><use href="#icon-chevron-down"></use></svg>
           </button>
           <div class="faq-answer">
-            PixelPress incorporates an adaptive dual-quantization pipeline. For RGBA images with alpha channels (such as transparent UI icons and logos), it deploys an 8-bit FastOctree clustering algorithm that crafts an optimal 256-color palette while preserving subtle transparency transitions. For continuous-tone RGB photos, it applies Median-Cut box-splitting with Floyd-Steinberg error-diffusion dithering to prevent gradient banding.
+            <div class="faq-answer-inner">
+              PixelPress incorporates an adaptive dual-quantization pipeline. For RGBA images with alpha channels (such as transparent UI icons and logos), it deploys an 8-bit FastOctree clustering algorithm that crafts an optimal 256-color palette while preserving subtle transparency transitions. For continuous-tone RGB photos, it applies Median-Cut box-splitting with Floyd-Steinberg error-diffusion dithering to prevent gradient banding.
+            </div>
           </div>
         </div>
 
@@ -893,7 +756,9 @@
             <svg class="lucide-icon sm faq-chevron"><use href="#icon-chevron-down"></use></svg>
           </button>
           <div class="faq-answer">
-            The Official Setup Installer (PixelPress_Setup.exe) installs cleanly to Program Files with desktop shortcuts, Start Menu entries, and a Windows uninstaller. The Fast Portable ZIP provides a pre-extracted directory bundle offering the fastest sub-200ms cold startup without temporary file decompression. The Single-File Standalone EXE packages everything into one single executable file suitable for instant USB transfers.
+            <div class="faq-answer-inner">
+              The Official Setup Installer (PixelPress_Setup.exe) installs cleanly to Program Files with desktop shortcuts, Start Menu entries, and a Windows uninstaller. The Fast Portable ZIP provides a pre-extracted directory bundle offering the fastest sub-200ms cold startup without temporary file decompression. The Single-File Standalone EXE packages everything into one single executable file suitable for instant USB transfers.
+            </div>
           </div>
         </div>
 
@@ -903,7 +768,9 @@
             <svg class="lucide-icon sm faq-chevron"><use href="#icon-chevron-down"></use></svg>
           </button>
           <div class="faq-answer">
-            No. PixelPress is architected with an industrial chunked streaming engine. Instead of buffering hundreds of image frames into memory simultaneously, images are queued and processed in sliding windows of 8 files. After each window completes, intermediate buffers and DOM blob URLs are immediately garbage-collected, maintaining a constant O(1) memory footprint regardless of queue size.
+            <div class="faq-answer-inner">
+              No. PixelPress is architected with an industrial chunked streaming engine. Instead of buffering hundreds of image frames into memory simultaneously, images are queued and processed in sliding windows of 8 files. After each window completes, intermediate buffers and DOM blob URLs are immediately garbage-collected, maintaining a constant O(1) memory footprint regardless of queue size.
+            </div>
           </div>
         </div>
 
@@ -913,7 +780,9 @@
             <svg class="lucide-icon sm faq-chevron"><use href="#icon-chevron-down"></use></svg>
           </button>
           <div class="faq-answer">
-            Yes. PixelPress includes an optional metadata stripping toggle. When enabled, all EXIF blocks containing camera serial numbers, lens specifications, exposure settings, and sensitive GPS geolocation coordinates are stripped from the final output, safeguarding privacy before sharing.
+            <div class="faq-answer-inner">
+              Yes. PixelPress includes an optional metadata stripping toggle. When enabled, all EXIF blocks containing camera serial numbers, lens specifications, exposure settings, and sensitive GPS geolocation coordinates are stripped from the final output, safeguarding privacy before sharing.
+            </div>
           </div>
         </div>
 
@@ -923,7 +792,9 @@
             <svg class="lucide-icon sm faq-chevron"><use href="#icon-chevron-down"></use></svg>
           </button>
           <div class="faq-answer">
-            PixelPress is fully certified for 64-bit Windows 11 and Windows 10. It utilizes the Microsoft Edge WebView2 Evergreen runtime which is pre-installed on modern Windows systems, eliminating the bloated memory overhead of Electron runtimes.
+            <div class="faq-answer-inner">
+              PixelPress is fully certified for 64-bit Windows 11 and Windows 10. It utilizes the Microsoft Edge WebView2 Evergreen runtime which is pre-installed on modern Windows systems, eliminating the bloated memory overhead of Electron runtimes.
+            </div>
           </div>
         </div>
 
@@ -933,7 +804,9 @@
             <svg class="lucide-icon sm faq-chevron"><use href="#icon-chevron-down"></use></svg>
           </button>
           <div class="faq-answer">
-            Yes. PixelPress allows you to keep original formats (PNG stays PNG, JPEG stays JPEG) or convert the entire batch into modern WebP, optimized JPEG, or PNG with a single click before compressing.
+            <div class="faq-answer-inner">
+              Yes. PixelPress allows you to keep original formats (PNG stays PNG, JPEG stays JPEG) or convert the entire batch into modern WebP, optimized JPEG, or PNG with a single click before compressing.
+            </div>
           </div>
         </div>
 
@@ -943,7 +816,9 @@
             <svg class="lucide-icon sm faq-chevron"><use href="#icon-chevron-down"></use></svg>
           </button>
           <div class="faq-answer">
-            PixelPress is 100% free and open-source software released under the permissive MIT License. You are free to use it for personal projects, commercial client deliverables, enterprise production workflows, and internal studio pipelines without any licensing fees.
+            <div class="faq-answer-inner">
+              PixelPress is 100% free and open-source software released under the permissive MIT License. You are free to use it for personal projects, commercial client deliverables, enterprise production workflows, and internal studio pipelines without any licensing fees.
+            </div>
           </div>
         </div>
       </div>

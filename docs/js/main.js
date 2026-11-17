@@ -32,7 +32,7 @@ function initNavbarScroll() {
 }
 
 /* --------------------------------------------------------------------------
-   2. Interactive Comparison Split Slider (Mouse and Touch Support)
+   2. Interactive Comparison Split Slider (Modern Pointer Events API)
    -------------------------------------------------------------------------- */
 function initComparisonSlider() {
   const container = document.getElementById('splitSlider');
@@ -53,41 +53,39 @@ function initComparisonSlider() {
     handle.style.left = percentage + '%';
   };
 
-  // Mouse Drag Events
-  handle.addEventListener('mousedown', (e) => {
+  // Modern Pointer Events (Works identically for Mouse, Touch, and Stylus)
+  handle.addEventListener('pointerdown', (e) => {
     isDragging = true;
+    handle.setPointerCapture(e.pointerId);
     e.preventDefault();
   });
 
-  window.addEventListener('mouseup', () => {
-    isDragging = false;
-  });
-
-  window.addEventListener('mousemove', (e) => {
+  handle.addEventListener('pointermove', (e) => {
     if (!isDragging) return;
     updateSplit(e.clientX);
+    e.preventDefault();
   });
 
-  // Jump to click point
-  container.addEventListener('click', (e) => {
+  const stopDrag = (e) => {
+    if (!isDragging) return;
+    isDragging = false;
+    try {
+      handle.releasePointerCapture(e.pointerId);
+    } catch (err) {
+      // Ignored
+    }
+  };
+
+  handle.addEventListener('pointerup', stopDrag);
+  handle.addEventListener('pointercancel', stopDrag);
+
+  // Allow clicking on container to jump split position (ignore clicks on handle)
+  container.addEventListener('pointerdown', (e) => {
+    if (e.target === handle || handle.contains(e.target)) return;
     updateSplit(e.clientX);
   });
 
-  // Touch Drag Events
-  handle.addEventListener('touchstart', (e) => {
-    isDragging = true;
-  }, { passive: true });
-
-  window.addEventListener('touchend', () => {
-    isDragging = false;
-  });
-
-  window.addEventListener('touchmove', (e) => {
-    if (!isDragging || !e.touches[0]) return;
-    updateSplit(e.touches[0].clientX);
-  }, { passive: true });
-
-  // Format Switcher Tabs
+  // Format Switcher Tabs with Real Images
   const tabButtons = document.querySelectorAll('.inspector-tab-btn');
   const rawSizeEl = document.getElementById('statRawSize');
   const optSizeEl = document.getElementById('statOptSize');
@@ -95,31 +93,36 @@ function initComparisonSlider() {
   const algoEl = document.getElementById('statAlgo');
   const sceneTitleEl = document.getElementById('sceneTitle');
 
-  const sceneJpeg = document.querySelectorAll('.scene-content-jpeg');
-  const scenePng = document.querySelectorAll('.scene-content-png');
-  const sceneWebp = document.querySelectorAll('.scene-content-webp');
+  const imgOrig = document.getElementById('inspectImgOrig');
+  const imgOpt = document.getElementById('inspectImgOpt');
 
   const formatData = {
     jpeg: {
-      title: 'Architectural Twilight Landscape (High Dynamic Range)',
-      raw: '8.45 MB',
-      opt: '1.42 MB',
-      ratio: '83.2%',
-      algo: 'Progressive DCT 4:2:0'
+      title: 'Architectural Twilight Landscape (High Dynamic Range Photography)',
+      raw: '702 KB',
+      opt: '206 KB',
+      ratio: '70.7%',
+      algo: 'Progressive DCT 4:2:0',
+      origSrc: 'images/inspect-photo-orig.jpg',
+      optSrc: 'images/inspect-photo-opt.jpg'
     },
     png: {
-      title: 'Vector UI System and Alpha Transparency Channel',
-      raw: '4.20 MB',
-      opt: '780 KB',
-      ratio: '81.4%',
-      algo: '8-bit FastOctree RGBA'
+      title: 'Vector UI Dashboard System and Alpha Transparency Channel',
+      raw: '13 KB',
+      opt: '6 KB',
+      ratio: '53.8%',
+      algo: '8-bit FastOctree RGBA',
+      origSrc: 'images/inspect-ui-orig.png',
+      optSrc: 'images/inspect-ui-opt.png'
     },
     webp: {
       title: 'Modern High-Contrast Editorial Graphics Banner',
-      raw: '5.10 MB',
-      opt: '640 KB',
-      ratio: '87.5%',
-      algo: 'Method-4 Predictive Coding'
+      raw: '39 KB',
+      opt: '15 KB',
+      ratio: '61.5%',
+      algo: 'Method-4 Predictive Coding',
+      origSrc: 'images/inspect-banner-orig.webp',
+      optSrc: 'images/inspect-banner-opt.webp'
     }
   };
 
@@ -138,16 +141,12 @@ function initComparisonSlider() {
       if (algoEl) algoEl.textContent = data.algo;
       if (sceneTitleEl) sceneTitleEl.textContent = data.title;
 
-      // Toggle visual scenes
-      const showScene = (nodes, visible) => {
-        nodes.forEach(n => {
-          n.style.display = visible ? 'block' : 'none';
-        });
-      };
+      if (imgOrig && data.origSrc) imgOrig.src = data.origSrc;
+      if (imgOpt && data.optSrc) imgOpt.src = data.optSrc;
 
-      showScene(sceneJpeg, fmt === 'jpeg');
-      showScene(scenePng, fmt === 'png');
-      showScene(sceneWebp, fmt === 'webp');
+      // Reset split to center 50%
+      afterLayer.style.width = '50%';
+      handle.style.left = '50%';
     });
   });
 }
@@ -216,7 +215,7 @@ function initSavingsCalculator() {
 }
 
 /* --------------------------------------------------------------------------
-   4. Smooth FAQ Accordion
+   4. Smooth FAQ Accordion (Hardware-Accelerated Zero-Lag)
    -------------------------------------------------------------------------- */
 function initFaqAccordion() {
   const faqItems = document.querySelectorAll('.faq-item');
@@ -226,15 +225,16 @@ function initFaqAccordion() {
     if (!questionBtn) return;
 
     questionBtn.addEventListener('click', () => {
-      const isActive = item.classList.contains('active');
+      const isAlreadyActive = item.classList.contains('active');
 
-      // Close other accordion items
-      faqItems.forEach(otherItem => {
-        otherItem.classList.remove('active');
-      });
-
-      // Toggle current item
-      if (!isActive) {
+      // Toggle this item smoothly
+      if (isAlreadyActive) {
+        item.classList.remove('active');
+      } else {
+        // Close others cleanly
+        faqItems.forEach(other => {
+          if (other !== item) other.classList.remove('active');
+        });
         item.classList.add('active');
       }
     });

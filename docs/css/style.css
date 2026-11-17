@@ -105,7 +105,7 @@ body {
 }
 
 /* -------------------------------------------------------------
-   Navigation Header (Perfect Alignment, Zero Wrapping, Clean Gaps)
+   Navigation Header (Clean Alignment, Zero Line-Breaks)
    ------------------------------------------------------------- */
 header.navbar {
   position: sticky;
@@ -130,7 +130,7 @@ header.navbar.scrolled {
   justify-content: space-between;
 }
 
-/* Exact Brand Badge matching Desktop App */
+/* Brand Badge matching Desktop App */
 .brand-wrap {
   display: flex;
   align-items: center;
@@ -183,11 +183,11 @@ header.navbar.scrolled {
   border-radius: var(--radius-full);
 }
 
-/* Nav Menu: Clean Horizontal Centered Layout, Zero Line Breaks */
+/* Nav Menu: Centered, Non-wrapping, Generous Gaps */
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 22px;
   list-style: none;
   margin: 0 auto;
 }
@@ -205,13 +205,13 @@ header.navbar.scrolled {
   color: var(--text-main);
 }
 
-/* Action Buttons: Clean Distance from FAQ, Never Sticking Together */
+/* Action Buttons */
 .nav-actions {
   display: flex;
   align-items: center;
   gap: 12px;
   flex-shrink: 0;
-  margin-left: 32px;
+  margin-left: 28px;
 }
 
 /* Button System */
@@ -229,6 +229,8 @@ header.navbar.scrolled {
   transition: all 0.2s ease;
   border: 1px solid transparent;
   white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .btn-primary {
@@ -267,14 +269,14 @@ header.navbar.scrolled {
 
 /* Section Shared Spacing */
 .section {
-  padding: 88px 0;
+  padding: 76px 0;
   position: relative;
 }
 
 .section-head {
   text-align: center;
   max-width: 760px;
-  margin: 0 auto 56px auto;
+  margin: 0 auto 50px auto;
 }
 
 .section-pill {
@@ -288,13 +290,13 @@ header.navbar.scrolled {
   color: var(--accent-purple);
   font-size: 0.78rem;
   font-weight: 600;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
   font-family: var(--font-mono);
   letter-spacing: 0.04em;
 }
 
 .section-head h2 {
-  font-size: 2.35rem;
+  font-size: clamp(1.8rem, 4vw, 2.35rem);
   font-weight: 800;
   letter-spacing: -0.03em;
   margin-bottom: 14px;
@@ -303,15 +305,15 @@ header.navbar.scrolled {
 
 .section-head p {
   color: var(--text-muted);
-  font-size: 1.05rem;
+  font-size: clamp(0.92rem, 2vw, 1.05rem);
   line-height: 1.6;
 }
 
 /* -------------------------------------------------------------
-   Hero Section (Featherweight, Airy, No Bulky Mockup)
+   Hero Section (Featherweight, Fluid Typography)
    ------------------------------------------------------------- */
 .hero-section {
-  padding: 80px 0 70px 0;
+  padding: 70px 0 60px 0;
   text-align: center;
   position: relative;
 }
@@ -326,7 +328,7 @@ header.navbar.scrolled {
   border: 1px solid var(--border-subtle);
   color: var(--text-muted);
   font-size: 0.84rem;
-  margin-bottom: 28px;
+  margin-bottom: 24px;
   transition: all 0.2s ease;
   text-decoration: none;
 }
@@ -348,12 +350,12 @@ header.navbar.scrolled {
 }
 
 .hero-title {
-  font-size: 3.5rem;
+  font-size: clamp(2rem, 5vw, 3.4rem);
   font-weight: 800;
   letter-spacing: -0.04em;
   line-height: 1.15;
   max-width: 940px;
-  margin: 0 auto 22px auto;
+  margin: 0 auto 20px auto;
 }
 
 .hero-title .text-gradient {
@@ -363,10 +365,10 @@ header.navbar.scrolled {
 }
 
 .hero-subtitle {
-  font-size: 1.18rem;
+  font-size: clamp(0.96rem, 2vw, 1.18rem);
   color: var(--text-muted);
   max-width: 720px;
-  margin: 0 auto 36px auto;
+  margin: 0 auto 34px auto;
   line-height: 1.6;
 }
 
@@ -376,14 +378,14 @@ header.navbar.scrolled {
   justify-content: center;
   gap: 14px;
   flex-wrap: wrap;
-  margin-bottom: 36px;
+  margin-bottom: 32px;
 }
 
 .hero-trust-bar {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 28px;
+  gap: 24px;
   flex-wrap: wrap;
   color: var(--text-dim);
   font-size: 0.84rem;
@@ -402,7 +404,7 @@ header.navbar.scrolled {
 }
 
 /* -------------------------------------------------------------
-   Interactive Quality Inspector (Realistic, Logical, Featherweight)
+   Interactive Quality Inspector (Real Images, Pointer Events)
    ------------------------------------------------------------- */
 .inspector-card {
   background: var(--bg-surface);
@@ -420,7 +422,7 @@ header.navbar.scrolled {
   background: rgba(16, 20, 30, 0.8);
   border-bottom: 1px solid var(--border-subtle);
   flex-wrap: wrap;
-  gap: 16px;
+  gap: 14px;
 }
 
 .inspector-meta {
@@ -430,7 +432,7 @@ header.navbar.scrolled {
 }
 
 .inspector-title {
-  font-size: 1rem;
+  font-size: 0.98rem;
   font-weight: 700;
   color: var(--text-main);
 }
@@ -455,6 +457,9 @@ header.navbar.scrolled {
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
 }
 
 .inspector-tab-btn.active {
@@ -463,14 +468,15 @@ header.navbar.scrolled {
   border: 1px solid var(--border-accent);
 }
 
-/* Realistic Split Slider Canvas */
+/* Split Slider Container (Touch Action None for Smooth Drag) */
 .split-slider-container {
   position: relative;
   width: 100%;
-  height: 400px;
+  height: 420px;
   overflow: hidden;
   user-select: none;
   background: #06070a;
+  touch-action: none;
 }
 
 .split-image-layer {
@@ -479,9 +485,6 @@ header.navbar.scrolled {
   left: 0;
   width: 100%;
   height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .split-image-layer.before {
@@ -500,47 +503,43 @@ header.navbar.scrolled {
   background: #07090e;
 }
 
-.split-layer-canvas {
-  width: 100%;
-  height: 100%;
+/* Real High-Resolution Images */
+.split-inspect-img {
   position: absolute;
   top: 0;
   left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Realistic Scene SVG Presentation */
-.scene-art-svg {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
+  user-select: none;
+  pointer-events: none;
 }
 
 /* Floating Comparison Badges */
 .split-badge {
   position: absolute;
-  top: 18px;
+  top: 16px;
   padding: 5px 12px;
   border-radius: var(--radius-full);
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.74rem;
   font-weight: 700;
   backdrop-filter: blur(10px);
   z-index: 10;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
 }
 
 .split-badge.badge-before {
-  right: 20px;
+  right: 18px;
   background: rgba(239, 68, 68, 0.18);
   color: #fca5a5;
   border: 1px solid rgba(239, 68, 68, 0.35);
 }
 
 .split-badge.badge-after {
-  left: 20px;
+  left: 18px;
   background: rgba(34, 197, 94, 0.18);
   color: #86efac;
   border: 1px solid rgba(34, 197, 94, 0.35);
@@ -552,18 +551,20 @@ header.navbar.scrolled {
   top: 0;
   bottom: 0;
   left: 50%;
-  width: 36px;
-  margin-left: -18px;
+  width: 40px;
+  margin-left: -20px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: ew-resize;
   z-index: 20;
+  touch-action: none;
+  user-select: none;
 }
 
 .split-handle-btn {
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   background: #ffffff;
   color: #07080c;
@@ -572,6 +573,7 @@ header.navbar.scrolled {
   justify-content: center;
   box-shadow: 0 0 16px rgba(0, 0, 0, 0.6), 0 0 0 3px rgba(124, 106, 255, 0.4);
   transition: transform 0.15s ease;
+  pointer-events: none;
 }
 
 .split-handle:hover .split-handle-btn {
@@ -582,7 +584,7 @@ header.navbar.scrolled {
 .inspector-footer {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  padding: 20px 24px;
+  padding: 18px 24px;
   background: rgba(13, 16, 24, 0.95);
   border-top: 1px solid var(--border-subtle);
   gap: 16px;
@@ -594,7 +596,7 @@ header.navbar.scrolled {
 }
 
 .inspector-stat-label {
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   color: var(--text-dim);
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -619,7 +621,7 @@ header.navbar.scrolled {
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-xl);
-  padding: 40px;
+  padding: 38px;
   position: relative;
   overflow: hidden;
 }
@@ -627,7 +629,7 @@ header.navbar.scrolled {
 .calc-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 48px;
+  gap: 44px;
   align-items: center;
 }
 
@@ -640,11 +642,11 @@ header.navbar.scrolled {
 .calc-input-block p {
   color: var(--text-muted);
   font-size: 0.92rem;
-  margin-bottom: 28px;
+  margin-bottom: 26px;
 }
 
 .slider-group {
-  margin-bottom: 24px;
+  margin-bottom: 22px;
 }
 
 .slider-label-row {
@@ -671,19 +673,19 @@ header.navbar.scrolled {
   width: 100%;
   -webkit-appearance: none;
   appearance: none;
-  height: 7px;
+  height: 8px;
   border-radius: var(--radius-full);
   background: rgba(255, 255, 255, 0.1);
   outline: none;
   cursor: pointer;
-  transition: background 0.2s ease;
+  touch-action: pan-x;
 }
 
 .calc-range-input::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   background: var(--accent-purple);
   box-shadow: 0 0 10px var(--accent-purple-glow);
@@ -697,8 +699,8 @@ header.navbar.scrolled {
 }
 
 .calc-range-input::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   background: var(--accent-purple);
   box-shadow: 0 0 10px var(--accent-purple-glow);
@@ -756,7 +758,7 @@ header.navbar.scrolled {
 
 .calc-metric-num {
   font-family: var(--font-mono);
-  font-size: 1.75rem;
+  font-size: 1.7rem;
   font-weight: 800;
   color: var(--text-main);
   line-height: 1.1;
@@ -782,7 +784,7 @@ header.navbar.scrolled {
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-xl);
-  padding: 34px;
+  padding: 32px;
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   transition: all 0.25s ease;
@@ -811,7 +813,7 @@ header.navbar.scrolled {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
 .bento-card.cyan .bento-icon-box {
@@ -830,7 +832,7 @@ header.navbar.scrolled {
 }
 
 .bento-title {
-  font-size: 1.3rem;
+  font-size: 1.28rem;
   font-weight: 700;
   letter-spacing: -0.02em;
   margin-bottom: 10px;
@@ -878,7 +880,7 @@ header.navbar.scrolled {
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
-  padding: 26px 20px;
+  padding: 24px 20px;
   display: flex;
   flex-direction: column;
   transition: all 0.2s ease;
@@ -893,7 +895,7 @@ header.navbar.scrolled {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
 .format-name {
@@ -950,14 +952,14 @@ header.navbar.scrolled {
 .pipeline-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+  gap: 18px;
 }
 
 .pipeline-step {
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
-  padding: 28px 20px;
+  padding: 26px 20px;
 }
 
 .pipeline-num {
@@ -965,7 +967,7 @@ header.navbar.scrolled {
   font-size: 0.75rem;
   font-weight: 700;
   color: var(--accent-purple);
-  margin-bottom: 14px;
+  margin-bottom: 12px;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -1001,6 +1003,7 @@ header.navbar.scrolled {
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-xl);
   background: var(--bg-surface);
+  -webkit-overflow-scrolling: touch;
 }
 
 .benchmark-table {
@@ -1008,6 +1011,7 @@ header.navbar.scrolled {
   border-collapse: collapse;
   text-align: left;
   font-size: 0.9rem;
+  min-width: 680px;
 }
 
 .benchmark-table th,
@@ -1094,7 +1098,7 @@ kbd {
 }
 
 /* -------------------------------------------------------------
-   FAQ Accordion
+   FAQ Accordion (Hardware-Accelerated CSS Grid Animation)
    ------------------------------------------------------------- */
 .faq-wrap {
   max-width: 860px;
@@ -1119,7 +1123,7 @@ kbd {
 .faq-question {
   width: 100%;
   text-align: left;
-  padding: 20px 24px;
+  padding: 18px 24px;
   background: transparent;
   border: none;
   color: var(--text-main);
@@ -1129,11 +1133,16 @@ kbd {
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
 }
 
 .faq-chevron {
-  transition: transform 0.25s ease;
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
   color: var(--text-dim);
+  flex-shrink: 0;
+  margin-left: 12px;
 }
 
 .faq-item.active .faq-chevron {
@@ -1141,20 +1150,28 @@ kbd {
   color: var(--accent-purple);
 }
 
+/* Butter-Smooth CSS Grid Animation */
 .faq-answer {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s cubic-bezier(0, 1, 0, 1);
-  padding: 0 24px;
-  color: var(--text-muted);
-  font-size: 0.92rem;
-  line-height: 1.65;
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .faq-item.active .faq-answer {
-  max-height: 400px;
-  padding-bottom: 22px;
-  transition: max-height 0.3s ease-in-out;
+  grid-template-rows: 1fr;
+}
+
+.faq-answer-inner {
+  overflow: hidden;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  line-height: 1.65;
+  padding: 0 24px;
+  transition: padding-bottom 0.22s ease;
+}
+
+.faq-item.active .faq-answer-inner {
+  padding-bottom: 20px;
 }
 
 /* -------------------------------------------------------------
@@ -1170,7 +1187,7 @@ kbd {
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-xl);
-  padding: 34px 26px;
+  padding: 32px 24px;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -1249,14 +1266,14 @@ kbd {
 footer.site-footer {
   background: #040508;
   border-top: 1px solid var(--border-subtle);
-  padding: 70px 0 36px 0;
+  padding: 64px 0 34px 0;
 }
 
 .footer-grid {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr;
   gap: 40px;
-  margin-bottom: 50px;
+  margin-bottom: 44px;
 }
 
 .footer-brand p {
@@ -1298,7 +1315,7 @@ footer.site-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 28px;
+  padding-top: 26px;
   border-top: 1px solid var(--border-subtle);
   color: var(--text-dim);
   font-size: 0.8rem;
@@ -1306,9 +1323,11 @@ footer.site-footer {
   gap: 14px;
 }
 
-/* Responsive Media Queries */
+/* -------------------------------------------------------------
+   Tablet & Mobile Responsiveness
+   ------------------------------------------------------------- */
 @media (max-width: 1024px) {
-  .hero-title { font-size: 2.8rem; }
+  .section { padding: 60px 0; }
   .bento-card.col-8 { grid-column: span 12; }
   .bento-card.col-4 { grid-column: span 12; }
   .bento-card.col-6 { grid-column: span 12; }
@@ -1316,20 +1335,54 @@ footer.site-footer {
   .pipeline-grid { grid-template-columns: repeat(2, 1fr); }
   .download-hub-grid { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
-  .calc-grid { grid-template-columns: 1fr; }
+  .calc-grid { grid-template-columns: 1fr; gap: 32px; }
   .shortcuts-grid { grid-template-columns: repeat(3, 1fr); }
   .nav-links { gap: 16px; }
+  .split-slider-container { height: 340px; }
 }
 
 @media (max-width: 768px) {
   .nav-links { display: none; }
-  .hero-title { font-size: 2.2rem; }
-  .hero-subtitle { font-size: 1rem; }
-  .section { padding: 56px 0; }
-  .split-slider-container { height: 280px; }
-  .inspector-footer { grid-template-columns: repeat(2, 1fr); }
+  .nav-actions { margin-left: auto; }
+  .section { padding: 50px 0; }
+  .hero-section { padding: 50px 0 40px 0; }
+  .hero-cta-group {
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+  }
+  .hero-cta-group .btn {
+    width: 100%;
+  }
+  .hero-trust-bar {
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+  }
+  .split-slider-container { height: 260px; }
+  .inspector-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .inspector-tabs {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .inspector-tab-btn {
+    flex: 1;
+    text-align: center;
+    padding: 6px 8px;
+  }
+  .inspector-footer {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 16px;
+  }
+  .calc-card { padding: 24px 18px; }
   .calc-output-block { grid-template-columns: 1fr; }
-  .shortcuts-grid { grid-template-columns: repeat(2, 1fr); }
-  .footer-grid { grid-template-columns: 1fr; }
+  .format-grid { grid-template-columns: 1fr; }
+  .pipeline-grid { grid-template-columns: 1fr; }
+  .shortcuts-grid { grid-template-columns: 1fr 1fr; }
+  .footer-grid { grid-template-columns: 1fr; gap: 28px; }
   .footer-bottom { flex-direction: column; align-items: flex-start; }
 }
