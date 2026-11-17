@@ -323,10 +323,15 @@ header.navbar.scrolled {
 }
 
 /* -------------------------------------------------------------
-   Hero Section (Featherweight, Fluid Typography)
+   Hero Section (Desktop Viewport Lock & Elegant Fluid Spacing)
    ------------------------------------------------------------- */
 .hero-section {
-  padding: 64px 0 50px 0;
+  min-height: calc(100vh - 60px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 0;
   text-align: center;
   position: relative;
   width: 100%;
@@ -336,13 +341,13 @@ header.navbar.scrolled {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 14px;
+  padding: 7px 16px;
   border-radius: var(--radius-full);
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--border-subtle);
   color: var(--text-muted);
-  font-size: 0.82rem;
-  margin-bottom: 22px;
+  font-size: 0.84rem;
+  margin-bottom: 24px;
   transition: all 0.2s ease;
   text-decoration: none;
   max-width: 100%;
@@ -366,12 +371,12 @@ header.navbar.scrolled {
 }
 
 .hero-title {
-  font-size: clamp(1.95rem, 5vw, 3.3rem);
+  font-size: clamp(2.1rem, 4.2vw, 3.4rem);
   font-weight: 800;
-  letter-spacing: -0.04em;
-  line-height: 1.15;
-  max-width: 920px;
-  margin: 0 auto 18px auto;
+  letter-spacing: -0.035em;
+  line-height: 1.18;
+  max-width: 960px;
+  margin: 0 auto 20px auto;
 }
 
 .hero-title .text-gradient {
@@ -381,32 +386,32 @@ header.navbar.scrolled {
 }
 
 .hero-subtitle {
-  font-size: clamp(0.95rem, 2vw, 1.15rem);
+  font-size: clamp(0.98rem, 1.8vw, 1.12rem);
   color: var(--text-muted);
-  max-width: 700px;
-  margin: 0 auto 32px auto;
-  line-height: 1.6;
+  max-width: 740px;
+  margin: 0 auto 34px auto;
+  line-height: 1.65;
 }
 
 .hero-cta-group {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: 14px;
   flex-wrap: wrap;
-  margin-bottom: 28px;
+  margin-bottom: 30px;
 }
 
 .hero-trust-bar {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 22px;
+  gap: 26px;
   flex-wrap: wrap;
   color: var(--text-dim);
-  font-size: 0.82rem;
+  font-size: 0.84rem;
   font-weight: 500;
-  padding-top: 6px;
+  padding-top: 8px;
 }
 
 .trust-item {
@@ -1037,6 +1042,11 @@ footer.site-footer {
    Tablet & Mobile Responsiveness
    ------------------------------------------------------------- */
 @media (max-width: 1024px) {
+  .hero-section {
+    min-height: auto;
+    display: block;
+    padding: 50px 0 38px 0;
+  }
   .hero-pill { display: none; }
   .section { padding: 52px 0; }
   .bento-card.col-8 { grid-column: span 12; }
@@ -1073,7 +1083,11 @@ footer.site-footer {
   }
 
   .section { padding: 44px 0; }
-  .hero-section { padding: 40px 0 32px 0; }
+  .hero-section {
+    min-height: auto;
+    display: block;
+    padding: 40px 0 32px 0;
+  }
   .hero-cta-group {
     flex-direction: column;
     width: 100%;
