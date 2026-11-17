@@ -705,42 +705,49 @@ header.navbar.scrolled {
   border-radius: var(--radius-xl);
   background: var(--bg-surface);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(124, 106, 255, 0.3) transparent;
+}
+
+.benchmark-table-wrapper::-webkit-scrollbar {
+  height: 6px;
+}
+
+.benchmark-table-wrapper::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.benchmark-table-wrapper::-webkit-scrollbar-thumb {
+  background: rgba(124, 106, 255, 0.25);
+  border-radius: 999px;
+}
+
+.benchmark-table-wrapper::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-purple);
 }
 
 .benchmark-table {
   width: 100%;
-  min-width: 660px;
   border-collapse: collapse;
   text-align: left;
-  font-size: 0.88rem;
+  font-size: 0.85rem;
 }
 
 .benchmark-table th,
 .benchmark-table td {
-  padding: 14px 18px;
+  padding: 12px 14px;
   border-bottom: 1px solid var(--border-subtle);
   vertical-align: middle;
+  line-height: 1.4;
 }
 
 .benchmark-table th {
   background: rgba(16, 20, 30, 0.95);
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--text-dim);
-  white-space: nowrap;
-}
-
-/* Sticky first column so feature parameter remains visible while swiping on mobile */
-.benchmark-table th:first-child,
-.benchmark-table td:first-child {
-  position: sticky;
-  left: 0;
-  background: #0d0f17;
-  z-index: 2;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.4);
-  border-right: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .benchmark-table th.highlight-col,
@@ -762,7 +769,7 @@ header.navbar.scrolled {
   gap: 6px;
   color: var(--accent-emerald);
   font-weight: 600;
-  white-space: nowrap;
+  line-height: 1.35;
 }
 
 .cross-pill {
@@ -770,7 +777,51 @@ header.navbar.scrolled {
   align-items: center;
   gap: 6px;
   color: #ef4444;
-  white-space: nowrap;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+/* Desktop layout: Table fits 100% with zero overflow or horizontal scrollbar */
+@media (min-width: 992px) {
+  .benchmark-table {
+    table-layout: fixed;
+    min-width: 100%;
+  }
+
+  .benchmark-table th:first-child,
+  .benchmark-table td:first-child {
+    width: 22%;
+    position: static;
+    box-shadow: none;
+    border-right: 1px solid var(--border-subtle);
+  }
+
+  .benchmark-table th.highlight-col,
+  .benchmark-table td.highlight-col {
+    width: 30%;
+  }
+
+  .benchmark-table th:not(:first-child):not(.highlight-col),
+  .benchmark-table td:not(:first-child):not(.highlight-col) {
+    width: 16%;
+  }
+}
+
+/* Tablet & Mobile: Touch-scrollable with sticky first column */
+@media (max-width: 991px) {
+  .benchmark-table {
+    min-width: 660px;
+  }
+
+  .benchmark-table th:first-child,
+  .benchmark-table td:first-child {
+    position: sticky;
+    left: 0;
+    background: #0d0f17;
+    z-index: 2;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.4);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+  }
 }
 
 /* -------------------------------------------------------------
