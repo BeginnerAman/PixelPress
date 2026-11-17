@@ -85,46 +85,6 @@
         <line x1="12" y1="15" x2="12" y2="3"></line>
       </symbol>
 
-      <!-- Sliders (Inspector & Tuning) -->
-      <symbol id="icon-sliders" viewBox="0 0 24 24">
-        <line x1="4" y1="21" x2="4" y2="14"></line>
-        <line x1="4" y1="10" x2="4" y2="3"></line>
-        <line x1="12" y1="21" x2="12" y2="12"></line>
-        <line x1="12" y1="8" x2="12" y2="3"></line>
-        <line x1="20" y1="21" x2="20" y2="16"></line>
-        <line x1="20" y1="12" x2="20" y2="3"></line>
-        <line x1="1" y1="14" x2="7" y2="14"></line>
-        <line x1="9" y1="8" x2="15" y2="8"></line>
-        <line x1="17" y1="16" x2="23" y2="16"></line>
-      </symbol>
-
-      <!-- Hard Drive (Disk Storage) -->
-      <symbol id="icon-hard-drive" viewBox="0 0 24 24">
-        <line x1="22" y1="12" x2="2" y2="12"></line>
-        <path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path>
-        <line x1="6" y1="16" x2="6.01" y2="16"></line>
-        <line x1="10" y1="16" x2="10.01" y2="16"></line>
-      </symbol>
-
-      <!-- Globe (Cloud Bandwidth) -->
-      <symbol id="icon-globe" viewBox="0 0 24 24">
-        <circle cx="12" cy="12" r="10"></circle>
-        <line x1="2" y1="12" x2="22" y2="12"></line>
-        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-      </symbol>
-
-      <!-- Clock (Upload Time) -->
-      <symbol id="icon-clock" viewBox="0 0 24 24">
-        <circle cx="12" cy="12" r="10"></circle>
-        <polyline points="12 6 12 12 16 14"></polyline>
-      </symbol>
-
-      <!-- Dollar Sign (API Savings) -->
-      <symbol id="icon-dollar-sign" viewBox="0 0 24 24">
-        <line x1="12" y1="1" x2="12" y2="23"></line>
-        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-      </symbol>
-
       <!-- Checkmark -->
       <symbol id="icon-check" viewBox="0 0 24 24">
         <polyline points="20 6 9 17 4 12"></polyline>
@@ -139,12 +99,6 @@
       <!-- Chevron Down -->
       <symbol id="icon-chevron-down" viewBox="0 0 24 24">
         <polyline points="6 9 12 15 18 9"></polyline>
-      </symbol>
-
-      <!-- Chevrons Left Right -->
-      <symbol id="icon-chevrons-left-right" viewBox="0 0 24 24">
-        <polyline points="9 7 4 12 9 17"></polyline>
-        <polyline points="15 7 20 12 15 17"></polyline>
       </symbol>
 
       <!-- GitHub -->
@@ -175,11 +129,9 @@
         </div>
       </a>
 
-      <!-- Clean Horizontal Navigation Menu (Single words, Non-wrapping) -->
+      <!-- Clean Horizontal Navigation Menu (5 Crisp Single-Word Links) -->
       <ul class="nav-links">
         <li><a href="#features">Architecture</a></li>
-        <li><a href="#inspector">Quality</a></li>
-        <li><a href="#calculator">Calculator</a></li>
         <li><a href="#formats">Engines</a></li>
         <li><a href="#benchmarks">Benchmarks</a></li>
         <li><a href="#shortcuts">Shortcuts</a></li>
@@ -351,150 +303,13 @@
     </div>
   </section>
 
-  <!-- Interactive Quality Inspector (Real Image Split Slider) -->
-  <section id="inspector" class="section">
-    <div class="container">
-      <div class="section-head">
-        <div class="section-pill">LIVE QUALITY INSPECTOR</div>
-        <h2>Inspect the Pixels. 70%+ Reduction with Zero Visible Loss.</h2>
-        <p>Drag the split slider handle left and right to inspect the microscopic pixel fidelity between the raw uncompressed master asset and the PixelPress optimized output.</p>
-      </div>
-
-      <div class="inspector-card">
-        <div class="inspector-header">
-          <div class="inspector-meta">
-            <svg class="lucide-icon" style="color: var(--accent-purple);"><use href="#icon-sliders"></use></svg>
-            <span class="inspector-title" id="sceneTitle">Architectural Twilight Landscape (High Dynamic Range Photography)</span>
-          </div>
-
-          <div class="inspector-tabs">
-            <button class="inspector-tab-btn active" data-format="jpeg">JPEG Photo</button>
-            <button class="inspector-tab-btn" data-format="png">PNG Alpha</button>
-            <button class="inspector-tab-btn" data-format="webp">WebP Modern</button>
-          </div>
-        </div>
-
-        <!-- Split Slider Visual Area with Real High-Resolution Photographic Images -->
-        <div class="split-slider-container" id="splitSlider">
-
-          <!-- Layer 1: Master Raw Layer (Before) -->
-          <div class="split-image-layer before">
-            <img id="inspectImgOrig" class="split-inspect-img" src="images/inspect-photo-orig.jpg" alt="Raw Uncompressed Original Image">
-            <span class="split-badge badge-before">ORIGINAL: RAW UNCOMPRESSED</span>
-          </div>
-
-          <!-- Layer 2: Optimized Layer (After) -->
-          <div class="split-image-layer after" id="splitAfterLayer">
-            <img id="inspectImgOpt" class="split-inspect-img" src="images/inspect-photo-opt.jpg" alt="PixelPress Desktop Pro Optimized Image">
-            <span class="split-badge badge-after">PIXELPRESS PRO: OPTIMIZED</span>
-          </div>
-
-          <!-- Draggable Slider Handle (Pointer Events API) -->
-          <div class="split-handle" id="splitHandle">
-            <div class="split-handle-btn">
-              <svg class="lucide-icon sm"><use href="#icon-chevrons-left-right"></use></svg>
-            </div>
-          </div>
-        </div>
-
-        <!-- Metric Readout Footer -->
-        <div class="inspector-footer">
-          <div class="inspector-stat-col">
-            <span class="inspector-stat-label">Original Payload</span>
-            <span class="inspector-stat-value" id="statRawSize">702 KB</span>
-          </div>
-          <div class="inspector-stat-col">
-            <span class="inspector-stat-label">Optimized Output</span>
-            <span class="inspector-stat-value highlight" id="statOptSize">206 KB</span>
-          </div>
-          <div class="inspector-stat-col">
-            <span class="inspector-stat-label">Compression Ratio</span>
-            <span class="inspector-stat-value highlight" id="statRatio">70.7%</span>
-          </div>
-          <div class="inspector-stat-col">
-            <span class="inspector-stat-label">Local Quantization Engine</span>
-            <span class="inspector-stat-value" id="statAlgo">Progressive DCT 4:2:0</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Interactive Storage & Bandwidth Savings Calculator -->
-  <section id="calculator" class="section">
-    <div class="container">
-      <div class="section-head">
-        <div class="section-pill">ROI &amp; BANDWIDTH CALCULATOR</div>
-        <h2>Quantify Your Hardware &amp; Network Gains</h2>
-        <p>Estimate how much local disk storage, cloud egress bandwidth, upload latency, and paid API fees your team will reclaim by switching to PixelPress Desktop Pro.</p>
-      </div>
-
-      <div class="calc-card">
-        <div class="calc-grid">
-          <!-- Input Controls -->
-          <div class="calc-input-block">
-            <h3>Configure Your Batch Volume</h3>
-            <p>Drag the slider to adjust your estimated monthly image volume:</p>
-
-            <div class="slider-group">
-              <div class="slider-label-row">
-                <span class="slider-title">Monthly Images Processed:</span>
-                <span class="slider-readout" id="calcCountReadout">2,500 images / mo</span>
-              </div>
-              <input type="range" id="calcRange" class="calc-range-input" min="100" max="25000" step="100" value="2500">
-            </div>
-
-            <div style="font-size: 0.85rem; color: var(--text-dim); line-height: 1.5;">
-              Calculations assume an average original size of 3.5 MB per asset and an 80% average compression yield without cloud round-trip delay.
-            </div>
-          </div>
-
-          <!-- Dynamic Output Metrics -->
-          <div class="calc-output-block">
-            <div class="calc-metric-card">
-              <div class="calc-metric-icon">
-                <svg class="lucide-icon"><use href="#icon-hard-drive"></use></svg>
-              </div>
-              <div class="calc-metric-num" id="calcDiskSaved">78.8 GB / yr</div>
-              <div class="calc-metric-label">Local SSD &amp; Backup Storage Reclaimed</div>
-            </div>
-
-            <div class="calc-metric-card">
-              <div class="calc-metric-icon">
-                <svg class="lucide-icon"><use href="#icon-globe"></use></svg>
-              </div>
-              <div class="calc-metric-num" id="calcBandwidthSaved">630.0 GB / yr</div>
-              <div class="calc-metric-label">CDN &amp; Cloud Egress Bandwidth Saved</div>
-            </div>
-
-            <div class="calc-metric-card">
-              <div class="calc-metric-icon">
-                <svg class="lucide-icon"><use href="#icon-clock"></use></svg>
-              </div>
-              <div class="calc-metric-num" id="calcTimeSaved">7.0 Hrs / yr</div>
-              <div class="calc-metric-label">Cloud Upload Waiting Time Eliminated</div>
-            </div>
-
-            <div class="calc-metric-card">
-              <div class="calc-metric-icon">
-                <svg class="lucide-icon"><use href="#icon-dollar-sign"></use></svg>
-              </div>
-              <div class="calc-metric-num" id="calcCostSaved">$216 / yr</div>
-              <div class="calc-metric-label">TinyPNG Paid API Subscription Saved</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Format-by-Format Engine Breakdown -->
+  <!-- Format Optimization & Compression Matrix (Clean, Logical, High-Impact) -->
   <section id="formats" class="section">
     <div class="container">
       <div class="section-head">
-        <div class="section-pill">FORMAT ENGINES</div>
+        <div class="section-pill">FORMAT ENGINES &amp; YIELD</div>
         <h2>Specialized Compression Pipelines per Format</h2>
-        <p>Each graphic format features distinctive compression heuristics. PixelPress applies dedicated, tailored quantization and encoding filters for each.</p>
+        <p>Each graphic format features distinctive compression heuristics. PixelPress applies dedicated, tailored quantization and encoding filters for peak payload reduction.</p>
       </div>
 
       <div class="format-grid">
@@ -502,9 +317,16 @@
         <div class="format-card">
           <div class="format-badge-row">
             <span class="format-name">PNG</span>
-            <span class="format-ratio">65% to 82%</span>
+            <span class="format-ratio">-81.4% Saved</span>
           </div>
           <div class="format-algo">FastOctree 8-bit RGBA</div>
+          <div class="size-bar-container">
+            <div class="size-bar-fill" style="width: 19%;"></div>
+          </div>
+          <div class="size-values-row">
+            <span class="size-val-orig">Original: 4.20 MB</span>
+            <span class="size-val-opt">Optimized: 780 KB</span>
+          </div>
           <p class="format-desc">
             Converts heavy 32-bit RGBA assets into optimized 8-bit indexed palettes while retaining full alpha channel gradations and crisp vector borders.
           </p>
@@ -519,16 +341,23 @@
         <div class="format-card">
           <div class="format-badge-row">
             <span class="format-name">JPEG / JPG</span>
-            <span class="format-ratio">70% to 85%</span>
+            <span class="format-ratio">-83.2% Saved</span>
           </div>
           <div class="format-algo">Progressive DCT 4:2:0</div>
+          <div class="size-bar-container">
+            <div class="size-bar-fill" style="width: 17%;"></div>
+          </div>
+          <div class="size-values-row">
+            <span class="size-val-orig">Original: 8.45 MB</span>
+            <span class="size-val-opt">Optimized: 1.42 MB</span>
+          </div>
           <p class="format-desc">
             Leverages LibJPEG-Turbo progressive Discrete Cosine Transform scans with chrominance subsampling, rendering progressive previews on web pages.
           </p>
           <div class="format-tags">
             <span class="format-tag">Progressive DCT</span>
             <span class="format-tag">MozJPEG-Grade</span>
-            <span class="format-tag">Smooth Gradients</span>
+            <span class="format-tag">Zero Banding</span>
           </div>
         </div>
 
@@ -536,9 +365,16 @@
         <div class="format-card">
           <div class="format-badge-row">
             <span class="format-name">WEBP</span>
-            <span class="format-ratio">75% to 88%</span>
+            <span class="format-ratio">-87.5% Saved</span>
           </div>
           <div class="format-algo">Method-4 Predictive Coding</div>
+          <div class="size-bar-container">
+            <div class="size-bar-fill" style="width: 13%;"></div>
+          </div>
+          <div class="size-values-row">
+            <span class="size-val-orig">Original: 5.10 MB</span>
+            <span class="size-val-opt">Optimized: 640 KB</span>
+          </div>
           <p class="format-desc">
             High-efficiency predictive intra-frame compression with dedicated alpha plane compression, generating ultra-light assets for modern web delivery.
           </p>
@@ -553,9 +389,16 @@
         <div class="format-card">
           <div class="format-badge-row">
             <span class="format-name">GIF</span>
-            <span class="format-ratio">40% to 60%</span>
+            <span class="format-ratio">-60.0% Saved</span>
           </div>
           <div class="format-algo">Frame Remapping &amp; Diffing</div>
+          <div class="size-bar-container">
+            <div class="size-bar-fill" style="width: 40%;"></div>
+          </div>
+          <div class="size-values-row">
+            <span class="size-val-orig">Original: 1.20 MB</span>
+            <span class="size-val-opt">Optimized: 480 KB</span>
+          </div>
           <p class="format-desc">
             Optimizes animated sequences by computing inter-frame differences, deduplicating identical background blocks, and recalculating global color tables.
           </p>
@@ -606,7 +449,7 @@
     </div>
   </section>
 
-  <!-- Comparative Benchmark Table -->
+  <!-- Comparative Benchmark Table (Desktop Table + Mobile Native Cards) -->
   <section id="benchmarks" class="section">
     <div class="container">
       <div class="section-head">
@@ -615,6 +458,7 @@
         <p>Standardized test benchmark across 100 high-resolution photographic and graphic files (420 MB total uncompressed payload).</p>
       </div>
 
+      <!-- Desktop View: Full 5-Column Table -->
       <div class="benchmark-table-wrapper">
         <table class="benchmark-table">
           <thead>
@@ -679,6 +523,70 @@
           </tbody>
         </table>
       </div>
+
+      <!-- Mobile View: Clean Native Cards (Zero Horizontal Scrolling) -->
+      <div class="benchmark-mobile-cards">
+        <!-- Card 1 -->
+        <div class="mobile-comp-card">
+          <div class="mobile-comp-header">100 Images Batch Processing Speed</div>
+          <div class="mobile-comp-row highlight">
+            <span class="mobile-comp-label">PixelPress Desktop Pro</span>
+            <span class="mobile-comp-val text-green" style="color: var(--accent-emerald);">12.4s (Multi-Core Local)</span>
+          </div>
+          <div class="mobile-comp-row">
+            <span class="mobile-comp-label">TinyPNG Cloud Web</span>
+            <span class="mobile-comp-val" style="color: #ef4444;">145s+ (Upload/Download)</span>
+          </div>
+          <div class="mobile-comp-row">
+            <span class="mobile-comp-label">ImageOptim (macOS)</span>
+            <span class="mobile-comp-val">48.0s</span>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="mobile-comp-card">
+          <div class="mobile-comp-header">Privacy &amp; Data Security</div>
+          <div class="mobile-comp-row highlight">
+            <span class="mobile-comp-label">PixelPress Desktop Pro</span>
+            <span class="mobile-comp-val" style="color: var(--accent-emerald);">100% Offline Air-Gapped</span>
+          </div>
+          <div class="mobile-comp-row">
+            <span class="mobile-comp-label">TinyPNG Cloud Web</span>
+            <span class="mobile-comp-val" style="color: #ef4444;">Remote Third-Party Cloud</span>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="mobile-comp-card">
+          <div class="mobile-comp-header">Batch Queue Limit</div>
+          <div class="mobile-comp-row highlight">
+            <span class="mobile-comp-label">PixelPress Desktop Pro</span>
+            <span class="mobile-comp-val" style="color: var(--accent-emerald);">Unlimited (Constant O(1))</span>
+          </div>
+          <div class="mobile-comp-row">
+            <span class="mobile-comp-label">TinyPNG Cloud Web</span>
+            <span class="mobile-comp-val" style="color: #ef4444;">20 Files per Batch Limit</span>
+          </div>
+          <div class="mobile-comp-row">
+            <span class="mobile-comp-label">Google Squoosh</span>
+            <span class="mobile-comp-val">1 Image at a Time</span>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="mobile-comp-card">
+          <div class="mobile-comp-header">Cost &amp; Subscription Fees</div>
+          <div class="mobile-comp-row highlight">
+            <span class="mobile-comp-label">PixelPress Desktop Pro</span>
+            <span class="mobile-comp-val" style="color: var(--accent-emerald);">100% Free &amp; Open Source</span>
+          </div>
+          <div class="mobile-comp-row">
+            <span class="mobile-comp-label">TinyPNG Cloud Web</span>
+            <span class="mobile-comp-val" style="color: #ef4444;">Paid Subscription over 500</span>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 

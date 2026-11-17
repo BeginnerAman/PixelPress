@@ -25,10 +25,11 @@ Unlike web-based tools that upload proprietary graphics, confidential client ass
 Explore the interactive live showcase website hosted on GitHub Pages:
 
 * **Live Showcase URL:** [https://beginneraman.github.io/PixelPress/](https://beginneraman.github.io/PixelPress/)
-* **Interactive Features on Website:**
-  * **Interactive Quality Inspector:** Split slider comparing raw uncompressed master graphics with PixelPress outputs at 1:1 pixel fidelity.
-  * **ROI and Bandwidth Savings Calculator:** Live dynamic calculator estimating local SSD space reclaimed, cloud egress bandwidth saved, and TinyPNG API cost savings.
-  * **Format Engine Deep-Dive:** Microscopic breakdown for PNG (FastOctree 8-bit), JPEG (Progressive DCT), WebP (Method-4 Predictive), and GIF.
+* **Showcase Highlights on Website:**
+  * **Core Architecture Overview:** Dual adaptive quantization, constant O(1) chunked stream memory pipeline, and native Windows 11 shell integration.
+  * **Format Engines & Yield Matrix:** Visual payload reduction metrics for PNG (FastOctree 8-bit), JPEG (Progressive DCT), WebP (Method-4 Predictive), and GIF.
+  * **Comparative Benchmarks:** Complete head-to-head analysis comparing PixelPress Desktop Pro with TinyPNG, Google Squoosh, and ImageOptim.
+  * **Workstation Shortcuts & FAQ:** Keyboard shortcuts reference and comprehensive technical FAQ.
   * **Direct GitHub Release Downloads:** One-click links for Setup Installer, Fast Portable ZIP, and Standalone EXE.
 
 ---
