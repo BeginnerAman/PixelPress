@@ -1037,6 +1037,7 @@ footer.site-footer {
    Tablet & Mobile Responsiveness
    ------------------------------------------------------------- */
 @media (max-width: 1024px) {
+  .hero-pill { display: none; }
   .section { padding: 52px 0; }
   .bento-card.col-8 { grid-column: span 12; }
   .bento-card.col-4 { grid-column: span 12; }
