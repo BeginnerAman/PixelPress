@@ -61,10 +61,6 @@ def make_aperture_frame(size):
         y2 = cy + r * math.sin(outer_angle)
         draw.line([(x1, y1), (x2, y2)], fill=accent_color, width=stroke_w)
 
-    # Center dot / lens shine
-    dot_r = max(2, int(canvas_size * 0.035))
-    draw.ellipse([cx - dot_r, cy - dot_r, cx + dot_r, cy + dot_r], fill=(34, 197, 94, 255))
-
     # Downsample with high-quality LANCZOS to final icon frame size
     return img.resize((size, size), Image.LANCZOS)
 

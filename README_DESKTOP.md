@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets/logo.png" width="96" height="96" alt="PixelPress Desktop Pro Logo" />
+  <img src="assets/logo.svg" width="96" height="96" alt="PixelPress Desktop Pro Logo" />
   <h1>PixelPress Desktop Pro - Internal Architecture Guide</h1>
   <p><strong>High-Performance, On-Device Image Compression Workstation for Windows 11 and 10</strong><br>
   Built with Python 3.13, PyWebView (WebView2 Evergreen), Flask, and Pillow (LibJPEG-Turbo, LibPNG, LibWebP, LittleCMS)</p>

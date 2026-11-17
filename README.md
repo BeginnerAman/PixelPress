@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets/logo.png" width="128" height="128" alt="PixelPress Desktop Pro Logo" />
+  <img src="assets/logo.svg" width="96" height="96" alt="PixelPress Desktop Pro Logo" />
   <h1>PixelPress Desktop Pro</h1>
   <p><strong>High-Performance, On-Device Image Compression Workstation for Windows</strong></p>
 
