@@ -112,6 +112,12 @@
         <polyline points="15 3 21 3 21 9"></polyline>
         <line x1="10" y1="14" x2="21" y2="3"></line>
       </symbol>
+
+      <!-- Chevrons Left Right (Swipe Indicator) -->
+      <symbol id="icon-chevrons-left-right" viewBox="0 0 24 24">
+        <polyline points="9 7 4 12 9 17"></polyline>
+        <polyline points="15 7 20 12 15 17"></polyline>
+      </symbol>
     </defs>
   </svg>
 
@@ -140,11 +146,11 @@
 
       <!-- Action Buttons (Proper spacing, Never touching FAQ) -->
       <div class="nav-actions">
-        <a href="https://github.com/BeginnerAman/PixelPress" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">
+        <a href="https://github.com/BeginnerAman/PixelPress" target="_blank" rel="noopener" class="btn btn-secondary btn-sm btn-github">
           <svg class="lucide-icon sm"><use href="#icon-github"></use></svg>
           <span>GitHub</span>
         </a>
-        <a href="#download" class="btn btn-primary btn-sm">
+        <a href="#download" class="btn btn-primary btn-sm btn-download">
           <svg class="lucide-icon sm"><use href="#icon-download"></use></svg>
           <span>Download</span>
         </a>
@@ -458,7 +464,12 @@
         <p>Standardized test benchmark across 100 high-resolution photographic and graphic files (420 MB total uncompressed payload).</p>
       </div>
 
-      <!-- Desktop View: Full 5-Column Table -->
+      <!-- Full 5-Column Comparison Table (With Smooth Touch Scroll & Sticky First Column on Mobile) -->
+      <div class="table-scroll-hint">
+        <svg class="lucide-icon sm"><use href="#icon-chevrons-left-right"></use></svg>
+        <span>Swipe table horizontally to compare all platforms</span>
+      </div>
+
       <div class="benchmark-table-wrapper">
         <table class="benchmark-table">
           <thead>
@@ -524,69 +535,6 @@
         </table>
       </div>
 
-      <!-- Mobile View: Clean Native Cards (Zero Horizontal Scrolling) -->
-      <div class="benchmark-mobile-cards">
-        <!-- Card 1 -->
-        <div class="mobile-comp-card">
-          <div class="mobile-comp-header">100 Images Batch Processing Speed</div>
-          <div class="mobile-comp-row highlight">
-            <span class="mobile-comp-label">PixelPress Desktop Pro</span>
-            <span class="mobile-comp-val text-green" style="color: var(--accent-emerald);">12.4s (Multi-Core Local)</span>
-          </div>
-          <div class="mobile-comp-row">
-            <span class="mobile-comp-label">TinyPNG Cloud Web</span>
-            <span class="mobile-comp-val" style="color: #ef4444;">145s+ (Upload/Download)</span>
-          </div>
-          <div class="mobile-comp-row">
-            <span class="mobile-comp-label">ImageOptim (macOS)</span>
-            <span class="mobile-comp-val">48.0s</span>
-          </div>
-        </div>
-
-        <!-- Card 2 -->
-        <div class="mobile-comp-card">
-          <div class="mobile-comp-header">Privacy &amp; Data Security</div>
-          <div class="mobile-comp-row highlight">
-            <span class="mobile-comp-label">PixelPress Desktop Pro</span>
-            <span class="mobile-comp-val" style="color: var(--accent-emerald);">100% Offline Air-Gapped</span>
-          </div>
-          <div class="mobile-comp-row">
-            <span class="mobile-comp-label">TinyPNG Cloud Web</span>
-            <span class="mobile-comp-val" style="color: #ef4444;">Remote Third-Party Cloud</span>
-          </div>
-        </div>
-
-        <!-- Card 3 -->
-        <div class="mobile-comp-card">
-          <div class="mobile-comp-header">Batch Queue Limit</div>
-          <div class="mobile-comp-row highlight">
-            <span class="mobile-comp-label">PixelPress Desktop Pro</span>
-            <span class="mobile-comp-val" style="color: var(--accent-emerald);">Unlimited (Constant O(1))</span>
-          </div>
-          <div class="mobile-comp-row">
-            <span class="mobile-comp-label">TinyPNG Cloud Web</span>
-            <span class="mobile-comp-val" style="color: #ef4444;">20 Files per Batch Limit</span>
-          </div>
-          <div class="mobile-comp-row">
-            <span class="mobile-comp-label">Google Squoosh</span>
-            <span class="mobile-comp-val">1 Image at a Time</span>
-          </div>
-        </div>
-
-        <!-- Card 4 -->
-        <div class="mobile-comp-card">
-          <div class="mobile-comp-header">Cost &amp; Subscription Fees</div>
-          <div class="mobile-comp-row highlight">
-            <span class="mobile-comp-label">PixelPress Desktop Pro</span>
-            <span class="mobile-comp-val" style="color: var(--accent-emerald);">100% Free &amp; Open Source</span>
-          </div>
-          <div class="mobile-comp-row">
-            <span class="mobile-comp-label">TinyPNG Cloud Web</span>
-            <span class="mobile-comp-val" style="color: #ef4444;">Paid Subscription over 500</span>
-          </div>
-        </div>
-      </div>
-
     </div>
   </section>
 
@@ -634,14 +582,16 @@
       </div>
 
       <div class="faq-wrap">
-        <div class="faq-item active">
+        <div class="faq-item">
           <button class="faq-question">
             <span>Does PixelPress upload my graphics or photos to any cloud servers?</span>
             <svg class="lucide-icon sm faq-chevron"><use href="#icon-chevron-down"></use></svg>
           </button>
           <div class="faq-answer">
             <div class="faq-answer-inner">
-              Absolute zero. PixelPress contains zero external telemetry libraries, analytics beacons, or remote upload sockets. Every byte of image computation is executed locally on your PC's CPU using local C-compiled imaging libraries. You can run PixelPress on an entirely air-gapped machine without an internet connection.
+              <div class="faq-answer-content">
+                Absolute zero. PixelPress contains zero external telemetry libraries, analytics beacons, or remote upload sockets. Every byte of image computation is executed locally on your PC's CPU using local C-compiled imaging libraries. You can run PixelPress on an entirely air-gapped machine without an internet connection.
+              </div>
             </div>
           </div>
         </div>
@@ -653,7 +603,9 @@
           </button>
           <div class="faq-answer">
             <div class="faq-answer-inner">
-              PixelPress incorporates an adaptive dual-quantization pipeline. For RGBA images with alpha channels (such as transparent UI icons and logos), it deploys an 8-bit FastOctree clustering algorithm that crafts an optimal 256-color palette while preserving subtle transparency transitions. For continuous-tone RGB photos, it applies Median-Cut box-splitting with Floyd-Steinberg error-diffusion dithering to prevent gradient banding.
+              <div class="faq-answer-content">
+                PixelPress incorporates an adaptive dual-quantization pipeline. For RGBA images with alpha channels (such as transparent UI icons and logos), it deploys an 8-bit FastOctree clustering algorithm that crafts an optimal 256-color palette while preserving subtle transparency transitions. For continuous-tone RGB photos, it applies Median-Cut box-splitting with Floyd-Steinberg error-diffusion dithering to prevent gradient banding.
+              </div>
             </div>
           </div>
         </div>
@@ -665,7 +617,9 @@
           </button>
           <div class="faq-answer">
             <div class="faq-answer-inner">
-              The Official Setup Installer (PixelPress_Setup.exe) installs cleanly to Program Files with desktop shortcuts, Start Menu entries, and a Windows uninstaller. The Fast Portable ZIP provides a pre-extracted directory bundle offering the fastest sub-200ms cold startup without temporary file decompression. The Single-File Standalone EXE packages everything into one single executable file suitable for instant USB transfers.
+              <div class="faq-answer-content">
+                The Official Setup Installer (PixelPress_Setup.exe) installs cleanly to Program Files with desktop shortcuts, Start Menu entries, and a Windows uninstaller. The Fast Portable ZIP provides a pre-extracted directory bundle offering the fastest sub-200ms cold startup without temporary file decompression. The Single-File Standalone EXE packages everything into one single executable file suitable for instant USB transfers.
+              </div>
             </div>
           </div>
         </div>
@@ -677,7 +631,9 @@
           </button>
           <div class="faq-answer">
             <div class="faq-answer-inner">
-              No. PixelPress is architected with an industrial chunked streaming engine. Instead of buffering hundreds of image frames into memory simultaneously, images are queued and processed in sliding windows of 8 files. After each window completes, intermediate buffers and DOM blob URLs are immediately garbage-collected, maintaining a constant O(1) memory footprint regardless of queue size.
+              <div class="faq-answer-content">
+                No. PixelPress is architected with an industrial chunked streaming engine. Instead of buffering hundreds of image frames into memory simultaneously, images are queued and processed in sliding windows of 8 files. After each window completes, intermediate buffers and DOM blob URLs are immediately garbage-collected, maintaining a constant O(1) memory footprint regardless of queue size.
+              </div>
             </div>
           </div>
         </div>
@@ -689,7 +645,9 @@
           </button>
           <div class="faq-answer">
             <div class="faq-answer-inner">
-              Yes. PixelPress includes an optional metadata stripping toggle. When enabled, all EXIF blocks containing camera serial numbers, lens specifications, exposure settings, and sensitive GPS geolocation coordinates are stripped from the final output, safeguarding privacy before sharing.
+              <div class="faq-answer-content">
+                Yes. PixelPress includes an optional metadata stripping toggle. When enabled, all EXIF blocks containing camera serial numbers, lens specifications, exposure settings, and sensitive GPS geolocation coordinates are stripped from the final output, safeguarding privacy before sharing.
+              </div>
             </div>
           </div>
         </div>
@@ -701,7 +659,9 @@
           </button>
           <div class="faq-answer">
             <div class="faq-answer-inner">
-              PixelPress is fully certified for 64-bit Windows 11 and Windows 10. It utilizes the Microsoft Edge WebView2 Evergreen runtime which is pre-installed on modern Windows systems, eliminating the bloated memory overhead of Electron runtimes.
+              <div class="faq-answer-content">
+                PixelPress is fully certified for 64-bit Windows 11 and Windows 10. It utilizes the Microsoft Edge WebView2 Evergreen runtime which is pre-installed on modern Windows systems, eliminating the bloated memory overhead of Electron runtimes.
+              </div>
             </div>
           </div>
         </div>
@@ -713,7 +673,9 @@
           </button>
           <div class="faq-answer">
             <div class="faq-answer-inner">
-              Yes. PixelPress allows you to keep original formats (PNG stays PNG, JPEG stays JPEG) or convert the entire batch into modern WebP, optimized JPEG, or PNG with a single click before compressing.
+              <div class="faq-answer-content">
+                Yes. PixelPress allows you to keep original formats (PNG stays PNG, JPEG stays JPEG) or convert the entire batch into modern WebP, optimized JPEG, or PNG with a single click before compressing.
+              </div>
             </div>
           </div>
         </div>
@@ -725,7 +687,9 @@
           </button>
           <div class="faq-answer">
             <div class="faq-answer-inner">
-              PixelPress is 100% free and open-source software released under the permissive MIT License. You are free to use it for personal projects, commercial client deliverables, enterprise production workflows, and internal studio pipelines without any licensing fees.
+              <div class="faq-answer-content">
+                PixelPress is 100% free and open-source software released under the permissive MIT License. You are free to use it for personal projects, commercial client deliverables, enterprise production workflows, and internal studio pipelines without any licensing fees.
+              </div>
             </div>
           </div>
         </div>

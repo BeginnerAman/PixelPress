@@ -39,17 +39,9 @@ function initFaqAccordion() {
     const questionBtn = item.querySelector('.faq-question');
     if (!questionBtn) return;
 
-    questionBtn.addEventListener('click', () => {
-      const isAlreadyActive = item.classList.contains('active');
-
-      if (isAlreadyActive) {
-        item.classList.remove('active');
-      } else {
-        faqItems.forEach(other => {
-          if (other !== item) other.classList.remove('active');
-        });
-        item.classList.add('active');
-      }
+    questionBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      item.classList.toggle('active');
     });
   });
 }
