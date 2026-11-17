@@ -1,7 +1,9 @@
-# PixelPress Desktop Pro - Internal Architecture Guide
-
-> High-Performance, On-Device Image Compression Workstation for Windows 11 and 10.  
-> Built with Python 3.13, PyWebView (WebView2 Evergreen), Flask, and Pillow (LibJPEG-Turbo, LibPNG, LibWebP).
+<div align="center">
+  <img src="assets/logo.png" width="96" height="96" alt="PixelPress Desktop Pro Logo" />
+  <h1>PixelPress Desktop Pro - Internal Architecture Guide</h1>
+  <p><strong>High-Performance, On-Device Image Compression Workstation for Windows 11 and 10</strong><br>
+  Built with Python 3.13, PyWebView (WebView2 Evergreen), Flask, and Pillow (LibJPEG-Turbo, LibPNG, LibWebP, LittleCMS)</p>
+</div>
 
 ---
 
@@ -9,7 +11,8 @@
 
 * **Cryptographic Token Gatekeeper:** All non-static Flask routes are guarded by a cryptographically secure session token (`X-PixelPress-Token`), completely mitigating localhost DNS rebinding and CSRF attacks from external browser tabs.
 * **Native Desktop Window:** Powered by `pywebview` utilizing the native Windows Edge WebView2 runtime with Win32 modal dialog ownership. Zero browser popups, tabs, or devtools artifacts in production.
-* **Ultra-Lightweight Footprint:** Single portable `.exe` is ~19.8 MB with ~15.8 MB installer package (compared to 180 MB+ for Electron apps).
+* **Ultra-Lightweight Footprint:** Single portable `.exe` is ~29.1 MB with ~22.7 MB installer package (compared to 180 MB+ for Electron apps).
+* **Automated Engineering Test Harness:** 30 passing automated Pytest tests across security, compression, storage, and UI regression with continuous integration matrix.
 * **100% Offline Resilience:** Bundled Lucide vector SVG icons, local font stack, zero cloud dependencies, and zero analytics telemetry.
 * **Deep Pixel Inspection Engine:** Interactive Before / After Dual-Mode modal supporting both Side-by-Side and Split Slider views with 25% to 400% zoom peeping, 1:1 actual pixels, 2x artifact peeping, and synchronous pan.
 * **Multi-Format Color & Animation Engine:**

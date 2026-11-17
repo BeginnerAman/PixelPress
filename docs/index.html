@@ -77,7 +77,7 @@
         <polygon points="2 10 22 10 19 21 5 21"></polygon>
       </symbol>
 
-      <!-- Database (Chunked Stream O(1) Memory) -->
+      <!-- Database (Bounded Chunked Stream Memory) -->
       <symbol id="icon-database" viewBox="0 0 24 24">
         <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
         <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
@@ -123,6 +123,32 @@
       <symbol id="icon-chevrons-left-right" viewBox="0 0 24 24">
         <polyline points="9 7 4 12 9 17"></polyline>
         <polyline points="15 7 20 12 15 17"></polyline>
+      </symbol>
+
+      <!-- Zoom In (Inspection Canvas) -->
+      <symbol id="icon-zoom-in" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        <line x1="11" y1="8" x2="11" y2="14"></line>
+        <line x1="8" y1="11" x2="14" y2="11"></line>
+      </symbol>
+
+      <!-- Film (Multi-Frame Animation) -->
+      <symbol id="icon-film" viewBox="0 0 24 24">
+        <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect>
+        <line x1="7" y1="2" x2="7" y2="22"></line>
+        <line x1="17" y1="2" x2="17" y2="22"></line>
+        <line x1="2" y1="12" x2="22" y2="12"></line>
+        <line x1="2" y1="7" x2="7" y2="7"></line>
+        <line x1="2" y1="17" x2="7" y2="17"></line>
+        <line x1="17" y1="17" x2="22" y2="17"></line>
+        <line x1="17" y1="7" x2="22" y2="7"></line>
+      </symbol>
+
+      <!-- Lock (Zero-Trust Session Token) -->
+      <symbol id="icon-lock" viewBox="0 0 24 24">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
       </symbol>
     </defs>
   </svg>
@@ -308,6 +334,73 @@
             <li class="bento-tech-item">
               <svg class="lucide-icon sm"><use href="#icon-check"></use></svg>
               <span><strong>Air-Gapped Privacy:</strong> Absolute confidentiality. No external telemetry, no analytics SDKs, and zero internet requests.</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Bento 5: Deep Pixel Inspection & Synchronous Pan Canvas (Col 6) -->
+        <div class="bento-card col-6">
+          <div class="bento-icon-box">
+            <svg class="lucide-icon"><use href="#icon-zoom-in"></use></svg>
+          </div>
+          <h3 class="bento-title">Deep Pixel Inspection &amp; Synchronous Pan Canvas</h3>
+          <p class="bento-desc">
+            Workstation-grade visual comparison modal. Smooth mouse-wheel zoom from 25% to 400%, 1:1 actual pixel inspection, 2x artifact peeping, and synchronous pan across both images.
+          </p>
+          <ul class="bento-tech-list">
+            <li class="bento-tech-item">
+              <svg class="lucide-icon sm"><use href="#icon-check"></use></svg>
+              <span><strong>Synchronous Dual-Pan:</strong> Dragging or scrolling pans both source and compressed frames in perfect lockstep.</span>
+            </li>
+            <li class="bento-tech-item">
+              <svg class="lucide-icon sm"><use href="#icon-check"></use></svg>
+              <span><strong>Keyboard Ergonomics:</strong> Space key instant before/after toggle with accessible ArrowLeft and ArrowRight split slider controls.</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Bento 6: Multi-Format Color & Animation Integrity (Col 6) -->
+        <div class="bento-card col-6 cyan">
+          <div class="bento-icon-box">
+            <svg class="lucide-icon"><use href="#icon-film"></use></svg>
+          </div>
+          <h3 class="bento-title">Multi-Format Color &amp; Animation Integrity</h3>
+          <p class="bento-desc">
+            Protects color fidelity and frame sequencing across professional graphic workflows without color shifting or data loss.
+          </p>
+          <ul class="bento-tech-list">
+            <li class="bento-tech-item">
+              <svg class="lucide-icon sm"><use href="#icon-check"></use></svg>
+              <span><strong>LittleCMS Perceptual CMYK-to-sRGB:</strong> Professional color transformation preventing neon or inverted color artifacts on print graphics.</span>
+            </li>
+            <li class="bento-tech-item">
+              <svg class="lucide-icon sm"><use href="#icon-check"></use></svg>
+              <span><strong>Multi-Frame Loop Retention:</strong> Animated GIF and Animated WebP retain all frames, sequence durations, and playback loop counts.</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Bento 7: Zero-Trust Local Security & 250 Megapixel Ceiling (Col 12) -->
+        <div class="bento-card col-12 emerald">
+          <div class="bento-icon-box">
+            <svg class="lucide-icon"><use href="#icon-lock"></use></svg>
+          </div>
+          <h3 class="bento-title">Zero-Trust Localhost Security &amp; 250 Megapixel Ceiling</h3>
+          <p class="bento-desc">
+            Guarding local processes against malicious web scripts and decompression exhaustion attacks:
+          </p>
+          <ul class="bento-tech-list">
+            <li class="bento-tech-item">
+              <svg class="lucide-icon sm"><use href="#icon-check"></use></svg>
+              <span><strong>Cryptographic Session Token Gatekeeper:</strong> Enforces X-PixelPress-Token authentication across all local endpoints, completely mitigating localhost CSRF and DNS rebinding attacks from third-party browser tabs.</span>
+            </li>
+            <li class="bento-tech-item">
+              <svg class="lucide-icon sm"><use href="#icon-check"></use></svg>
+              <span><strong>250 Megapixel Ceiling &amp; Path Traversal Sandboxing:</strong> Protected against decompression image bombs with canonical realpath workspace confinement.</span>
+            </li>
+            <li class="bento-tech-item">
+              <svg class="lucide-icon sm"><use href="#icon-check"></use></svg>
+              <span><strong>Automated Verification:</strong> Backed by 30 passing automated Pytest test suites and continuous integration matrix.</span>
             </li>
           </ul>
         </div>
@@ -537,6 +630,34 @@
               <td><span class="cross-pill"><svg class="lucide-icon sm"><use href="#icon-x"></use></svg> Browser Tab</span></td>
               <td><span class="cross-pill"><svg class="lucide-icon sm"><use href="#icon-x"></use></svg> No Windows Support</span></td>
             </tr>
+            <tr>
+              <td><strong>Pixel Inspection &amp; Zoom</strong></td>
+              <td class="highlight-col"><span class="check-pill"><svg class="lucide-icon sm"><use href="#icon-check"></use></svg> 25%-400% Zoom, 1:1 Actual Pixels, Synchronous Pan</span></td>
+              <td><span class="cross-pill"><svg class="lucide-icon sm"><use href="#icon-x"></use></svg> None (Zero Visual Compare)</span></td>
+              <td>Single-File Split Slider Only</td>
+              <td><span class="cross-pill"><svg class="lucide-icon sm"><use href="#icon-x"></use></svg> None (No GUI Preview)</span></td>
+            </tr>
+            <tr>
+              <td><strong>Color &amp; CMYK Fidelity</strong></td>
+              <td class="highlight-col"><span class="check-pill"><svg class="lucide-icon sm"><use href="#icon-check"></use></svg> LittleCMS Perceptual CMYK-to-sRGB + ICC Profiles</span></td>
+              <td><span class="cross-pill"><svg class="lucide-icon sm"><use href="#icon-x"></use></svg> Inverts CMYK, Strips ICC</span></td>
+              <td>Manual In-Browser Color Options</td>
+              <td>Strips All Profiles by Default</td>
+            </tr>
+            <tr>
+              <td><strong>Multi-Frame Animation</strong></td>
+              <td class="highlight-col"><span class="check-pill"><svg class="lucide-icon sm"><use href="#icon-check"></use></svg> Full Loop &amp; Duration Preserved (GIF &amp; WebP)</span></td>
+              <td><span class="cross-pill"><svg class="lucide-icon sm"><use href="#icon-x"></use></svg> Static Only / Fails on Large Files</span></td>
+              <td>Static Single Frame Export</td>
+              <td>Basic GIF Only (No WebP Animation)</td>
+            </tr>
+            <tr>
+              <td><strong>Localhost Host Security</strong></td>
+              <td class="highlight-col"><span class="check-pill"><svg class="lucide-icon sm"><use href="#icon-check"></use></svg> Cryptographic Token Gatekeeper (Anti-CSRF)</span></td>
+              <td>Cloud Server Security Exposure</td>
+              <td>Browser Sandbox</td>
+              <td>Local macOS Sandbox</td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -709,6 +830,34 @@
             <div class="faq-answer-inner">
               <div class="faq-answer-content">
                 PixelPress is 100% free and open-source software released under the permissive MIT License. You are free to use it for personal projects, commercial client deliverables, enterprise production workflows, and internal studio pipelines without any licensing fees.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Does PixelPress preserve animated GIFs, WebP animations, and print CMYK colors?</span>
+            <svg class="lucide-icon sm faq-chevron"><use href="#icon-chevron-down"></use></svg>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              <div class="faq-answer-content">
+                Yes. PixelPress v2.1.0 includes a dedicated multi-format integrity engine. Animated GIF and Animated WebP sequences retain all frames, duration timings, and infinite playback loop settings. For print graphics in CMYK mode, it applies LittleCMS perceptual conversion to sRGB, preventing color inversion or neon artifacts, while preserving embedded Display-P3 ICC color profiles.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>How does the Deep Pixel Zoom comparison canvas work?</span>
+            <svg class="lucide-icon sm faq-chevron"><use href="#icon-chevron-down"></use></svg>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              <div class="faq-answer-content">
+                When inspecting an image, click the Compare button to launch the inspection modal. You can toggle between Side-by-Side and Split Slider views. Use the mouse wheel or toolbar buttons to zoom from 25% up to 400%, with 1:1 actual pixel mapping and 2x artifact inspection. In both views, dragging or scrolling pans both original and compressed images synchronously. You can also press Space on your keyboard to instantly toggle before and after states.
               </div>
             </div>
           </div>

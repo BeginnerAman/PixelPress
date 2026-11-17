@@ -1,14 +1,20 @@
-# PixelPress Desktop Pro
+<div align="center">
+  <img src="assets/logo.png" width="128" height="128" alt="PixelPress Desktop Pro Logo" />
+  <h1>PixelPress Desktop Pro</h1>
+  <p><strong>High-Performance, On-Device Image Compression Workstation for Windows</strong></p>
 
-High-Performance, On-Device Image Compression Workstation for Windows.
-
-[![Version](https://img.shields.io/badge/Version-v2.1.0_Desktop_Pro-7c6aff?style=flat-square)](https://github.com/BeginnerAman/PixelPress/releases/tag/v2.1.0)
-[![Website](https://img.shields.io/badge/Website-Live_Showcase-7c6aff?style=flat-square)](https://beginneraman.github.io/PixelPress/)
-[![Platform](https://img.shields.io/badge/Platform-Windows_11_%2F_10_(64--bit)-22c55e?style=flat-square)](https://github.com/BeginnerAman/PixelPress/releases/tag/v2.1.0)
-[![Architecture](https://img.shields.io/badge/Architecture-Edge_WebView2_%2B_Python-06b6d4?style=flat-square)](https://github.com/BeginnerAman/PixelPress)
-[![Privacy](https://img.shields.io/badge/Privacy-100%25_On--Device_(Zero_Cloud)-success?style=flat-square)](https://github.com/BeginnerAman/PixelPress)
-[![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](LICENSE)
-[![Author](https://img.shields.io/badge/Author-Aman_Vishwakarma-orange?style=flat-square)](https://github.com/BeginnerAman)
+  <p>
+    <a href="https://github.com/BeginnerAman/PixelPress/releases/tag/v2.1.0"><img src="https://img.shields.io/badge/Download-v2.1.0_Release-10b981?style=flat-square&logo=windows&logoColor=white" alt="Download v2.1.0" /></a>
+    <a href="https://github.com/BeginnerAman/PixelPress/releases/tag/v2.1.0"><img src="https://img.shields.io/badge/Version-v2.1.0_Desktop_Pro-7c6aff?style=flat-square" alt="Version v2.1.0" /></a>
+    <a href="https://beginneraman.github.io/PixelPress/"><img src="https://img.shields.io/badge/Website-Live_Showcase-7c6aff?style=flat-square" alt="Website" /></a>
+    <a href="https://github.com/BeginnerAman/PixelPress/releases/tag/v2.1.0"><img src="https://img.shields.io/badge/Platform-Windows_11_%2F_10_(64--bit)-0078d4?style=flat-square&logo=windows&logoColor=white" alt="Platform" /></a>
+    <a href="https://github.com/BeginnerAman/PixelPress"><img src="https://img.shields.io/badge/Privacy-100%25_On--Device_(Zero_Cloud)-10b981?style=flat-square" alt="Privacy" /></a>
+    <a href="https://github.com/BeginnerAman/PixelPress"><img src="https://img.shields.io/badge/Engine-Python_3.13_%2B_Pillow_%2B_LittleCMS-06b6d4?style=flat-square&logo=python&logoColor=white" alt="Engine" /></a>
+    <a href="https://github.com/BeginnerAman/PixelPress"><img src="https://img.shields.io/badge/Tests-30_Passing_%7C_100%25_Green-22c55e?style=flat-square&logo=pytest&logoColor=white" alt="Tests" /></a>
+    <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-64748b?style=flat-square" alt="License" /></a>
+    <a href="https://github.com/BeginnerAman"><img src="https://img.shields.io/badge/Author-Aman_Vishwakarma-7c6aff?style=flat-square&logo=github&logoColor=white" alt="Author" /></a>
+  </p>
+</div>
 
 ---
 
@@ -28,7 +34,8 @@ Explore the interactive live showcase website hosted on GitHub Pages:
 * **Showcase Highlights on Website:**
   * **Core Architecture Overview:** Dual adaptive quantization, bounded chunked streaming memory pipeline, cryptographic token gatekeeper, and native Windows 11 shell integration.
   * **Format Engines & Yield Matrix:** Visual payload reduction metrics for PNG (FastOctree 8-bit), JPEG (Progressive DCT), WebP (Method-4 Predictive), and multi-frame GIF/WebP.
-  * **Comparative Benchmarks:** Complete head-to-head analysis comparing PixelPress Desktop Pro with TinyPNG, Google Squoosh, and ImageOptim.
+  * **Comparative Benchmarks:** Complete head-to-head analysis comparing PixelPress Desktop Pro with TinyPNG, Google Squoosh, and ImageOptim across 12 criteria.
+  * **Deep Pixel Peeping Engine:** 25% to 400% zoom, 1:1 pixel inspect, 2x artifact view, and synchronous pan across split slider.
   * **Workstation Shortcuts & FAQ:** Keyboard shortcuts reference and comprehensive technical FAQ.
   * **Direct GitHub Release Downloads:** One-click links for Setup Installer, Fast Portable ZIP, and Standalone EXE.
 
@@ -60,6 +67,10 @@ PixelPress was benchmarked against industry standard web services and desktop ut
 | Maximum Batch Ceiling | Unlimited (Chunked Stream Engine) | 20 Files per Batch (Free Tier) | 1 File at a Time | Unlimited |
 | Batch Memory Scaling | Bounded $O(\text{CHUNK\_SIZE})$ (~140-180 MB active peak) | Not Applicable | Tab Crash on 50+ Files | O(N) Process Heap |
 | PNG Reduction Ratio | 65% to 82% (Adaptive Octree 8-bit) | 65% to 80% (Custom Quantization) | 60% to 75% (OxiPNG) | 40% to 55% (Lossless default) |
+| Pixel Inspection & Zoom | 25% to 400% Zoom, 1:1 Pixel Peeping, 2x Artifact View, Synchronous Pan | None (Zero Visual Compare) | Single-File Split Slider Only | None (No Visual GUI Preview) |
+| Color & Print Integrity | LittleCMS Perceptual CMYK-to-sRGB + Embedded Display-P3 ICC Retention | Inverts/Distorts CMYK, Strips ICC Profiles | Manual In-Browser Color Options | Strips All Color Profiles by Default |
+| Multi-Frame Animation | Full Multi-Frame Loop & Duration Retention (GIF & WebP) | Static Only / Fails on Large Files | 1st Frame Static Export Only | Basic GIF Only (No WebP Animation) |
+| Local Host Security | Cryptographic Token Gatekeeper (Anti-CSRF & DNS Rebinding Defense) | Cloud Server Security Exposure | Browser Sandbox | Local Sandbox |
 | Cost and Subscriptions | Free and Open Source (MIT) | Subscription / Paid API over Limit | Free | Free |
 
 ---
@@ -150,6 +161,13 @@ To prevent desktop clutter and permission failures on enterprise systems, PixelP
   When deployed in `C:\Program Files\PixelPress\`, the application operates without User Account Control (UAC) permission errors, as write operations are isolated to the active user's LocalAppData profile.
 * **True USB Mode (Portable Trigger):**  
   When a `.portable` or `portable.dat` file is detected adjacent to the executable, the engine redirects all operational data into a self-contained `PixelPress_Data\` subfolder on the USB drive.
+
+### 8. Automated Test Suite & CI/CD Verification
+
+PixelPress Desktop Pro incorporates an automated engineering test harness built on Pytest, guaranteeing zero regression across all core sub-systems:
+
+* **30 Passing Automated Suites:** Rigorous tests covering cryptographic token gatekeeper authentication (`X-PixelPress-Token`), LittleCMS CMYK-to-sRGB color transformations, Display-P3 ICC profile preservation, animated GIF multi-frame loop preservation, 250MP decompression bomb boundaries, path traversal sandboxing, and dual-mode storage resolution.
+* **Continuous Integration Pipeline:** Automated GitHub Actions workflow (`.github/workflows/ci.yml`) executes the full test suite on Windows matrix runners on every commit, ensuring 100% test green status before distribution.
 
 ---
 
