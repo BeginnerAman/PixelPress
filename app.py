@@ -11,13 +11,17 @@ import zipfile
 import time
 import shutil
 import subprocess
+import threading
+import secrets
 from concurrent.futures import ThreadPoolExecutor
 
 from flask import Flask, render_template, request, jsonify, send_file, send_from_directory
-from PIL import Image, ImageOps, ImageFile
+from werkzeug.utils import secure_filename
+from PIL import Image, ImageOps, ImageFile, ImageSequence, ImageCms
 
 # Prevent truncated/partially corrupted image crashes
 ImageFile.LOAD_TRUNCATED_IMAGES = True
+Image.MAX_IMAGE_PIXELS = 250_000_000  # Support pro photography & panoramic images up to 250 Megapixels
 
 # ─── PyInstaller / Development Path Resolution ────────────────────────────────
 
@@ -163,42 +167,27 @@ def format_size(size_bytes):
 def compress_image(input_path, output_path, settings):
     """
     Core high-performance compression engine.
-    Supports: quality, resize, format conversion, metadata strip, deep optimize, PNG quantization.
+    Supports: quality, resize, format conversion, metadata strip, deep optimize,
+    PNG quantization, ICC profile preservation, CMYK correction, and multi-frame animation.
     """
     img = Image.open(input_path)
-    original_format = img.format or 'JPEG'
+    original_format = (img.format or 'JPEG').upper()
+    is_animated = getattr(img, 'is_animated', False) and getattr(img, 'n_frames', 1) > 1
+    duration = img.info.get('duration', 100)
+    loop = img.info.get('loop', 0)
+    icc_profile = img.info.get('icc_profile')
+    exif_data = img.info.get('exif')
 
-    # Auto-orient based on EXIF
-    try:
-        img = ImageOps.exif_transpose(img)
-    except Exception:
-        pass
+    # Auto-orient based on EXIF for non-animated images
+    if not is_animated:
+        try:
+            img = ImageOps.exif_transpose(img)
+        except Exception:
+            pass
 
     strip_metadata = settings.get('strip_metadata', False)
 
-    # ── Smart Resizing ──
-    resize_mode = settings.get('resize_mode', 'none')
-    if resize_mode == 'percentage':
-        pct = int(settings.get('resize_value', 100)) / 100
-        new_w = max(1, int(img.width * pct))
-        new_h = max(1, int(img.height * pct))
-        img = img.resize((new_w, new_h), Image.LANCZOS)
-    elif resize_mode == 'width':
-        target_w = int(settings.get('resize_value', img.width))
-        ratio = target_w / img.width
-        new_h = max(1, int(img.height * ratio))
-        img = img.resize((target_w, new_h), Image.LANCZOS)
-    elif resize_mode == 'height':
-        target_h = int(settings.get('resize_value', img.height))
-        ratio = target_h / img.height
-        new_w = max(1, int(img.width * ratio))
-        img = img.resize((new_w, target_h), Image.LANCZOS)
-    elif resize_mode == 'custom':
-        target_w = int(settings.get('resize_width', img.width))
-        target_h = int(settings.get('resize_height', img.height))
-        img = img.resize((target_w, target_h), Image.LANCZOS)
-
-    # ── Output Format ──
+    # ── Output Format Resolution ──
     out_format = settings.get('output_format', 'same').lower()
     ext_map = {
         'jpeg': 'jpg', 'jpg': 'jpg', 'png': 'png',
@@ -207,49 +196,130 @@ def compress_image(input_path, output_path, settings):
     if out_format == 'same':
         out_format = original_format.lower()
 
-    out_format_norm = out_format if out_format != 'jpg' else 'jpeg'
-    out_ext = ext_map.get(out_format, 'jpg')
+    out_format_norm = 'jpeg' if out_format in ('jpg', 'jpeg') else out_format
+    out_ext = ext_map.get(out_format_norm, 'jpg')
     output_path = os.path.splitext(output_path)[0] + '.' + out_ext
 
-    # ── Quality & Options ──
+    # ── Quality & Optimization Parameters ──
     quality  = int(settings.get('quality', 85))
     optimize = settings.get('optimize', True)
     lossless = settings.get('lossless', False)
 
-    # ── Mode Conversions ──
-    if out_format_norm == 'jpeg':
-        if img.mode in ('RGBA', 'P', 'LA'):
-            bg = Image.new('RGB', img.size, (255, 255, 255))
-            if img.mode == 'P':
-                img = img.convert('RGBA')
-            if img.mode in ('RGBA', 'LA'):
-                bg.paste(img, mask=img.split()[-1])
-            img = bg
-        elif img.mode != 'RGB':
-            img = img.convert('RGB')
+    # ── Resizing Helper ──
+    def _apply_resize(target_img):
+        resize_mode = settings.get('resize_mode', 'none')
+        w, h = target_img.width, target_img.height
+        if resize_mode == 'percentage':
+            pct = int(settings.get('resize_value', 100)) / 100.0
+            new_w = max(1, int(w * pct))
+            new_h = max(1, int(h * pct))
+            return target_img.resize((new_w, new_h), Image.Resampling.LANCZOS)
+        elif resize_mode == 'width':
+            target_w = int(settings.get('resize_value', w))
+            ratio = target_w / float(w)
+            new_h = max(1, int(h * ratio))
+            return target_img.resize((target_w, new_h), Image.Resampling.LANCZOS)
+        elif resize_mode == 'height':
+            target_h = int(settings.get('resize_value', h))
+            ratio = target_h / float(h)
+            new_w = max(1, int(img.width * ratio))
+            return target_img.resize((new_w, target_h), Image.Resampling.LANCZOS)
+        elif resize_mode == 'custom':
+            target_w = int(settings.get('resize_width', w))
+            target_h = int(settings.get('resize_height', h))
+            return target_img.resize((max(1, target_w), max(1, target_h)), Image.Resampling.LANCZOS)
+        return target_img
 
-    # ── Format Specific Optimizations & Save ──
+    # ── Color Mode Conversion Helper ──
+    def _convert_color_mode(target_img, target_format):
+        # CMYK to RGB Perceptual Color Profile Conversion
+        if target_img.mode == 'CMYK':
+            if icc_profile:
+                try:
+                    in_p = ImageCms.getOpenProfile(io.BytesIO(icc_profile))
+                    out_p = ImageCms.createProfile('sRGB')
+                    target_img = ImageCms.profileToProfile(target_img, in_p, out_p, outputMode='RGB')
+                except Exception:
+                    target_img = target_img.convert('RGB')
+            else:
+                target_img = target_img.convert('RGB')
+
+        if target_format == 'jpeg':
+            if target_img.mode in ('RGBA', 'P', 'LA'):
+                bg = Image.new('RGB', target_img.size, (255, 255, 255))
+                if target_img.mode == 'P':
+                    target_img = target_img.convert('RGBA')
+                if target_img.mode in ('RGBA', 'LA'):
+                    bg.paste(target_img, mask=target_img.split()[-1])
+                return bg
+            elif target_img.mode != 'RGB':
+                return target_img.convert('RGB')
+        return target_img
+
+    # ── Multi-Frame Animated GIF & WebP Preservation ──
+    if is_animated and out_format_norm in ('gif', 'webp'):
+        frames = []
+        for frame in ImageSequence.Iterator(img):
+            f = frame.copy()
+            f = _apply_resize(f)
+            f = _convert_color_mode(f, out_format_norm)
+            frames.append(f)
+
+        out_w, out_h = frames[0].width, frames[0].height
+        save_kwargs = {
+            'save_all': True,
+            'append_images': frames[1:],
+            'duration': duration,
+            'loop': loop,
+            'optimize': optimize,
+        }
+        if out_format_norm == 'webp':
+            save_kwargs['quality'] = quality
+            save_kwargs['lossless'] = lossless
+            save_kwargs['method'] = 4
+        elif out_format_norm == 'gif':
+            pass
+
+        frames[0].save(output_path, format=out_format_norm.upper(), **save_kwargs)
+        for f in frames:
+            try:
+                f.close()
+            except Exception:
+                pass
+        try:
+            img.close()
+        except Exception:
+            pass
+        return output_path, out_w, out_h
+
+    # ── Single-Frame Image Processing Pipeline ──
+    img = _apply_resize(img)
+    img = _convert_color_mode(img, out_format_norm)
+
     save_kwargs = {}
 
+    # Preserve ICC Color Profiles (Display-P3, Adobe RGB, ProPhoto)
+    if not strip_metadata and icc_profile:
+        try:
+            save_kwargs['icc_profile'] = icc_profile
+        except Exception:
+            pass
+
     if out_format_norm == 'jpeg':
-        # Chroma subsampling: 4:4:4 for maximum fidelity >= 90%, 4:2:0 for 30-40% smaller size < 90%
         subsampling = 0 if quality >= 90 else 2
-        save_kwargs = {
+        save_kwargs.update({
             'quality':     quality,
-            'optimize':    True,  # Always optimize Huffman tables for JPEG
-            'progressive': True,  # Progressive JPEG gives 3-8% extra compression and smooth rendering
+            'optimize':    True,
+            'progressive': True,
             'subsampling': subsampling,
-        }
-        if not strip_metadata:
+        })
+        if not strip_metadata and exif_data:
             try:
-                exif_data = img.info.get('exif', b'')
-                if exif_data:
-                    save_kwargs['exif'] = exif_data
+                save_kwargs['exif'] = exif_data
             except Exception:
                 pass
 
     elif out_format_norm == 'png':
-        # TinyPNG-grade adaptive quantization (60-80% size reduction with crisp visuals)
         if not lossless and quality < 95:
             colors = max(32, min(256, int(quality * 2.56)))
             try:
@@ -257,26 +327,24 @@ def compress_image(input_path, output_path, settings):
                     img = img.quantize(colors=colors, method=Image.Quantize.FASTOCTREE, dither=Image.Dither.FLOYDSTEINBERG)
                 elif img.mode in ('RGB', 'L'):
                     img = img.quantize(colors=colors, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.FLOYDSTEINBERG)
-                elif img.mode == 'P':
-                    pass
             except Exception:
                 pass
 
         compress_level = max(0, min(9, int((100 - quality) / 10) + 1))
-        save_kwargs = {
+        save_kwargs.update({
             'optimize':       True,
             'compress_level': compress_level,
-        }
+        })
 
     elif out_format_norm == 'webp':
-        save_kwargs = {
+        save_kwargs.update({
             'quality':  quality,
             'lossless': lossless,
             'method':   4,
-        }
+        })
 
     elif out_format_norm == 'gif':
-        save_kwargs = {'optimize': optimize}
+        save_kwargs['optimize'] = optimize
 
     out_w, out_h = img.width, img.height
     img.save(
@@ -285,7 +353,6 @@ def compress_image(input_path, output_path, settings):
         **save_kwargs
     )
 
-    # Immediately free uncompressed raw bitmap from memory (low RAM usage)
     try:
         img.close()
     except Exception:
@@ -369,6 +436,34 @@ def native_close():
         os._exit(0)
 
 
+# ─── Session Security & Authentication ────────────────────────────────────────
+
+def get_auth_token():
+    """Retrieve or generate cryptographically secure local session token."""
+    token = app.config.get('PIXELPRESS_AUTH_TOKEN')
+    if not token:
+        token = secrets.token_urlsafe(32)
+        app.config['PIXELPRESS_AUTH_TOKEN'] = token
+    return token
+
+
+@app.before_request
+def verify_auth_token():
+    """
+    Zero-Trust Localhost Gatekeeper:
+    Rejects any unauthenticated external browser tab / script attempting CSRF or DNS rebinding.
+    Whitelists only root page, health probe, and static bundle assets.
+    """
+    if request.path == '/' or request.path == '/health' or request.path.startswith('/static/'):
+        return None
+
+    expected_token = get_auth_token()
+    provided_token = request.headers.get('X-PixelPress-Token') or request.args.get('token')
+
+    if not provided_token or provided_token != expected_token:
+        return jsonify({'error': 'Unauthorized: Missing or invalid authentication token'}), 403
+
+
 # ─── Routes ───────────────────────────────────────────────────────────────────
 
 _desktop_api = None
@@ -380,31 +475,20 @@ def set_desktop_api(api):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', auth_token=get_auth_token())
 
 
-@app.route('/window/drag', methods=['POST'])
-def win_drag():
-    native_drag()
-    return jsonify({'status': 'ok'})
+# ─── Batch Cancellation Registry ──────────────────────────────────────────────
+_active_batches = {}
+_active_batches_lock = threading.Lock()
 
 
-@app.route('/window/minimize', methods=['POST'])
-def win_min():
-    native_minimize()
-    return jsonify({'status': 'ok'})
-
-
-@app.route('/window/maximize', methods=['POST'])
-def win_max():
-    is_max = native_toggle_maximize()
-    return jsonify({'status': 'ok', 'maximized': is_max})
-
-
-@app.route('/window/close', methods=['POST'])
-def win_close():
-    native_close()
-    return jsonify({'status': 'ok'})
+@app.route('/api/cancel-batch/<batch_id>', methods=['POST'])
+def api_cancel_batch(batch_id):
+    safe_id = secure_filename(batch_id)
+    with _active_batches_lock:
+        _active_batches[safe_id] = {'cancelled': True, 'timestamp': time.time()}
+    return jsonify({'status': 'ok', 'cancelled': True, 'batch_id': safe_id})
 
 
 @app.route('/compress', methods=['POST'])
@@ -415,6 +499,15 @@ def compress():
     files = request.files.getlist('files')
     if not files or all(f.filename == '' for f in files):
         return jsonify({'error': 'No files selected'}), 400
+
+    batch_id = request.form.get('batch_id')
+    if batch_id:
+        safe_batch_id = secure_filename(batch_id)
+        with _active_batches_lock:
+            if safe_batch_id not in _active_batches:
+                _active_batches[safe_batch_id] = {'cancelled': False, 'timestamp': time.time()}
+    else:
+        safe_batch_id = None
 
     settings = {
         'quality':        request.form.get('quality', 85),
@@ -463,10 +556,23 @@ def compress():
     def _run_single(task):
         in_path  = task['input_path']
         out_path = task['output_path']
+
+        # Check if batch was cancelled prior to processing
+        if safe_batch_id:
+            with _active_batches_lock:
+                if _active_batches.get(safe_batch_id, {}).get('cancelled'):
+                    return {'cancelled': True, 'filename': task['original_name'], 'file_id': task['file_id']}
+
         try:
             start = time.time()
             final_path, out_w, out_h = compress_image(in_path, out_path, settings)
             elapsed = round(time.time() - start, 2)
+
+            # Check again after compression before thumbnail I/O
+            if safe_batch_id:
+                with _active_batches_lock:
+                    if _active_batches.get(safe_batch_id, {}).get('cancelled'):
+                        return {'cancelled': True, 'filename': task['original_name'], 'file_id': task['file_id']}
 
             # Pre-generate lightweight 104x104 thumbnail (~3KB) for instantaneous 144Hz card scrolling
             try:
@@ -509,10 +615,13 @@ def compress():
                 'output_height':       out_h,
                 'time_taken':          elapsed,
             }
+        except Image.DecompressionBombError as e:
+            return {'error': f'Image exceeds 250 Megapixel limit (DecompressionBomb protection): {e}', 'filename': task['original_name']}
         except Exception as e:
             return {'error': str(e), 'filename': task['original_name']}
 
-    worker_count = min(4, max(2, (os.cpu_count() or 4) // 2 or 2))
+    # Dynamically scale worker threads up to 16 cores (minimum 2)
+    worker_count = max(2, min(os.cpu_count() or 4, 16))
     results = list(skipped)
 
     with ThreadPoolExecutor(max_workers=worker_count) as executor:
@@ -524,11 +633,14 @@ def compress():
 
 @app.route('/download/<filename>')
 def download_file(filename):
-    path = os.path.join(COMPRESSED_FOLDER, filename)
+    safe_name = secure_filename(filename)
+    if not safe_name:
+        return jsonify({'error': 'Invalid filename'}), 400
+    path = os.path.join(COMPRESSED_FOLDER, safe_name)
     if not os.path.exists(path):
         return jsonify({'error': 'File not found'}), 404
-    clean = '_'.join(filename.split('_')[2:]) if filename.count('_') >= 2 else filename
-    return send_file(path, as_attachment=True, download_name=f"compressed_{clean}")
+    clean = '_'.join(safe_name.split('_')[2:]) if safe_name.count('_') >= 2 else safe_name
+    return send_from_directory(COMPRESSED_FOLDER, safe_name, as_attachment=True, download_name=f"compressed_{clean}")
 
 
 @app.route('/download-zip', methods=['POST'])
@@ -805,9 +917,28 @@ def api_save_all_folder():
 def api_reveal_file():
     data = request.get_json() or {}
     path = data.get('path')
-    if path and os.path.exists(path):
+    if not path:
+        return jsonify({'error': 'No path provided'}), 400
+
+    # Strict sandboxing: resolve canonical absolute path
+    norm_path = os.path.realpath(os.path.abspath(path))
+    allowed_roots = [
+        os.path.realpath(os.path.abspath(COMPRESSED_FOLDER)),
+        os.path.realpath(os.path.abspath(UPLOAD_FOLDER)),
+        os.path.realpath(os.path.abspath(TEMP_FOLDER)),
+    ]
+
+    is_allowed = any(
+        norm_path.startswith(d + os.sep) or norm_path == d
+        for d in allowed_roots
+    )
+
+    if not is_allowed:
+        return jsonify({'error': 'Access denied: Path is outside allowed workspace'}), 403
+
+    if os.path.exists(norm_path):
         try:
-            subprocess.run(['explorer.exe', '/select,', os.path.normpath(path)])
+            subprocess.run(['explorer.exe', '/select,', norm_path])
             return jsonify({'status': 'ok'})
         except Exception as e:
             return jsonify({'error': str(e)}), 500
@@ -820,15 +951,19 @@ def thumb_file(filename):
     Ultra-lightweight thumbnail endpoint (104x104px, ~3-4 KB).
     Eliminates GPU bottleneck of rendering 16MP raw photos into small 52px card thumbnails.
     """
-    t_name = f"thumb_{filename}.jpg"
+    safe_name = secure_filename(filename)
+    if not safe_name:
+        return jsonify({'error': 'Invalid filename'}), 400
+
+    t_name = f"thumb_{safe_name}.jpg"
     t_path = os.path.join(TEMP_FOLDER, t_name)
     if os.path.exists(t_path):
-        return send_file(t_path, mimetype='image/jpeg')
+        return send_from_directory(TEMP_FOLDER, t_name, mimetype='image/jpeg')
 
     # Fallback: generate on demand
-    src = os.path.join(COMPRESSED_FOLDER, filename)
+    src = os.path.join(COMPRESSED_FOLDER, safe_name)
     if not os.path.exists(src):
-        src = os.path.join(UPLOAD_FOLDER, filename)
+        src = os.path.join(UPLOAD_FOLDER, safe_name)
 
     if os.path.exists(src):
         try:
@@ -844,21 +979,27 @@ def thumb_file(filename):
                 elif img.mode != 'RGB':
                     img = img.convert('RGB')
                 img.save(t_path, format='JPEG', quality=82, optimize=True)
-            return send_file(t_path, mimetype='image/jpeg')
+            return send_from_directory(TEMP_FOLDER, t_name, mimetype='image/jpeg')
         except Exception:
-            return send_from_directory(COMPRESSED_FOLDER, filename)
+            return send_from_directory(COMPRESSED_FOLDER, safe_name)
 
     return jsonify({'error': 'Not found'}), 404
 
 
 @app.route('/preview/<filename>')
 def preview_file(filename):
-    return send_from_directory(COMPRESSED_FOLDER, filename)
+    safe_name = secure_filename(filename)
+    if not safe_name:
+        return jsonify({'error': 'Invalid filename'}), 400
+    return send_from_directory(COMPRESSED_FOLDER, safe_name)
 
 
 @app.route('/original/<filename>')
 def original_file(filename):
-    return send_from_directory(UPLOAD_FOLDER, filename)
+    safe_name = secure_filename(filename)
+    if not safe_name:
+        return jsonify({'error': 'Invalid filename'}), 400
+    return send_from_directory(UPLOAD_FOLDER, safe_name)
 
 
 @app.route('/health')

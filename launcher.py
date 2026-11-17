@@ -15,6 +15,7 @@ import os
 import sys
 import time
 import threading
+import secrets
 import urllib.request
 import urllib.error
 import logging
@@ -158,9 +159,11 @@ def find_free_port(default_port=5000):
 
 # ─── Flask Server Thread ──────────────────────────────────────────────────────
 
-def run_flask(port):
+def run_flask(port, auth_token=None):
     try:
         from app import app
+        if auth_token:
+            app.config['PIXELPRESS_AUTH_TOKEN'] = auth_token
         import logging as py_logging
         werkzeug_log = py_logging.getLogger('werkzeug')
         werkzeug_log.setLevel(py_logging.ERROR)
@@ -206,10 +209,11 @@ def main():
     log.info("=" * 60)
 
     port = find_free_port(PORT)
+    auth_token = secrets.token_urlsafe(32)
     url = f'http://{HOST}:{port}'
 
     # Start Flask in daemon thread
-    flask_thread = threading.Thread(target=run_flask, args=(port,), daemon=True)
+    flask_thread = threading.Thread(target=run_flask, args=(port, auth_token), daemon=True)
     flask_thread.start()
 
     # Wait for server to be ready

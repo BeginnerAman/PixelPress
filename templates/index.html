@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="pixelpress-token" content="{{ auth_token }}">
 <title>PixelPress - Professional Image Compressor</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
@@ -443,14 +444,28 @@
 
       <!-- Mode Switcher: Side-by-Side vs Split Slider -->
       <div class="compare-mode-toggle">
-        <button class="compare-mode-btn active" id="btn-mode-side" onclick="switchCompareMode('side')">
+        <button class="compare-mode-btn active" id="btn-mode-side" onclick="switchCompareMode('side')" title="Side-by-Side View (Space to toggle)">
           <svg class="lucide-icon"><use href="#icon-columns"/></svg>
-          <span>Side-by-Side (50/50)</span>
+          <span>Side-by-Side</span>
         </button>
-        <button class="compare-mode-btn" id="btn-mode-split" onclick="switchCompareMode('split')">
+        <button class="compare-mode-btn" id="btn-mode-split" onclick="switchCompareMode('split')" title="Split Slider View (Space to toggle)">
           <svg class="lucide-icon"><use href="#icon-split"/></svg>
           <span>Split Slider</span>
         </button>
+      </div>
+
+      <!-- Deep Pixel Inspection Zoom & Pan Controls -->
+      <div class="compare-zoom-controls">
+        <button class="zoom-btn" onclick="zoomChange(-0.25)" title="Zoom Out (-)">
+          <svg class="lucide-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <span class="zoom-display" id="zoom-level-display" onclick="setZoomMode('100')" title="Click for 1:1 Actual Pixels">100%</span>
+        <button class="zoom-btn" onclick="zoomChange(0.25)" title="Zoom In (+)">
+          <svg class="lucide-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <button class="zoom-pill active" id="btn-zoom-fit" onclick="setZoomMode('fit')" title="Fit to Viewport">Fit</button>
+        <button class="zoom-pill" id="btn-zoom-100" onclick="setZoomMode('100')" title="1:1 Actual Pixel Peeping">1:1</button>
+        <button class="zoom-pill" id="btn-zoom-200" onclick="setZoomMode('200')" title="200% Artifact Peeping">2x</button>
       </div>
 
       <button class="compare-close-btn" onclick="closeCompareModal()" title="Close (Esc)">
@@ -465,8 +480,8 @@
           <span class="compare-badge badge-orig">Original</span>
           <span class="side-specs" id="side-orig-specs">--</span>
         </div>
-        <div class="side-img-box">
-          <img id="side-orig-img" class="side-inspect-img" alt="Original">
+        <div class="side-img-box zoomable-viewport" id="side-orig-box">
+          <img id="side-orig-img" class="side-inspect-img zoom-target" alt="Original">
         </div>
       </div>
 
@@ -475,25 +490,25 @@
           <span class="compare-badge badge-comp">Compressed</span>
           <span class="side-specs text-green" id="side-comp-specs">--</span>
         </div>
-        <div class="side-img-box">
-          <img id="side-comp-img" class="side-inspect-img" alt="Compressed">
+        <div class="side-img-box zoomable-viewport" id="side-comp-box">
+          <img id="side-comp-img" class="side-inspect-img zoom-target" alt="Compressed">
         </div>
       </div>
     </div>
 
     <!-- Mode 2: Split Overlay Slider -->
     <div class="compare-stage hidden" id="compare-stage-split">
-      <div class="compare-wrapper" id="compare-wrapper">
-        <img id="compare-orig-img" class="compare-img" alt="Original Image">
+      <div class="compare-wrapper zoomable-viewport" id="compare-wrapper">
+        <img id="compare-orig-img" class="compare-img zoom-target" alt="Original Image">
 
         <div class="compare-overlay-layer" id="compare-overlay-layer">
-          <img id="compare-comp-img" class="compare-img" alt="Compressed Image">
+          <img id="compare-comp-img" class="compare-img zoom-target" alt="Compressed Image">
         </div>
 
         <span class="compare-badge badge-orig" id="split-badge-orig">Original</span>
         <span class="compare-badge badge-comp" id="split-badge-comp">Compressed</span>
 
-        <div class="compare-handle" id="compare-handle">
+        <div class="compare-handle" id="compare-handle" tabindex="0" role="slider" aria-label="Before/After Split Position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
           <div class="handle-line"></div>
           <div class="handle-thumb">
             <svg class="lucide-icon handle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

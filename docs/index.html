@@ -179,21 +179,21 @@
       </h1>
 
       <p class="hero-subtitle">
-        Industrial-grade, privacy-first desktop image optimization workstation. TinyPNG-grade dual quantization, chunked streaming engine with constant O(1) memory, and native Windows 11 integration - without cloud uploads or subscriptions.
+        Industrial-grade, privacy-first desktop image optimization workstation. TinyPNG-grade dual quantization, bounded chunked streaming memory pipeline, and native Windows 11 integration - without cloud uploads or subscriptions.
       </p>
 
       <div class="hero-cta-group">
         <a href="https://github.com/BeginnerAman/PixelPress/releases/download/v2.1.0/PixelPress_Setup.exe" class="btn btn-primary btn-lg">
           <svg class="lucide-icon"><use href="#icon-download"></use></svg>
-          <span>Download Setup (15.8 MB)</span>
+          <span>Download Setup (22.7 MB)</span>
         </a>
         <a href="https://github.com/BeginnerAman/PixelPress/releases/download/v2.1.0/PixelPress-v2.1.0-Portable.zip" class="btn btn-secondary btn-lg">
           <svg class="lucide-icon"><use href="#icon-folder-open"></use></svg>
-          <span>Portable ZIP (19.7 MB)</span>
+          <span>Portable ZIP (29.0 MB)</span>
         </a>
         <a href="https://github.com/BeginnerAman/PixelPress/releases/download/v2.1.0/PixelPress-Portable.exe" class="btn btn-secondary btn-lg">
           <svg class="lucide-icon"><use href="#icon-zap"></use></svg>
-          <span>Standalone EXE (19.8 MB)</span>
+          <span>Standalone EXE (29.1 MB)</span>
         </a>
       </div>
 
@@ -254,9 +254,9 @@
           <div class="bento-icon-box">
             <svg class="lucide-icon"><use href="#icon-database"></use></svg>
           </div>
-          <h3 class="bento-title">Chunked Stream Engine</h3>
+          <h3 class="bento-title">Bounded Chunked Stream Engine</h3>
           <p class="bento-desc">
-            Constant O(1) Memory Footprint. Traditional web and desktop tools crash when fed 500+ files due to thread explosion. PixelPress processes in sliding windows of 8 images with immediate garbage collection.
+            Bounded Memory Overhead. Traditional web and desktop tools crash when fed 500+ files due to thread explosion. PixelPress processes in sliding windows of 8 images with immediate memory buffer release.
           </p>
           <ul class="bento-tech-list">
             <li class="bento-tech-item">
@@ -265,7 +265,7 @@
             </li>
             <li class="bento-tech-item">
               <svg class="lucide-icon sm"><use href="#icon-check"></use></svg>
-              <span>Instant AbortController support</span>
+              <span>Strictly capped ~140-180 MB peak RAM</span>
             </li>
           </ul>
         </div>
@@ -511,14 +511,14 @@
             </tr>
             <tr>
               <td><strong>Batch Processing Ceiling</strong></td>
-              <td class="highlight-col"><strong>Unlimited</strong> (Chunked Stream O(1))</td>
+              <td class="highlight-col"><strong>Unlimited</strong> (Bounded Chunked Pipeline)</td>
               <td>20 Files per Batch (Free Tier)</td>
               <td>1 Image at a Time</td>
               <td>Unlimited</td>
             </tr>
             <tr>
               <td><strong>Memory Footprint</strong></td>
-              <td class="highlight-col"><strong>Constant O(1)</strong> (~95 MB RAM)</td>
+              <td class="highlight-col"><strong>Bounded $O(\text{CHUNK\_SIZE})$</strong> (~140-180 MB active peak)</td>
               <td>N/A (Web UI)</td>
               <td>Browser Crashes on 50+ Files</td>
               <td>O(N) Process Heap</td>
@@ -624,7 +624,7 @@
           <div class="faq-answer">
             <div class="faq-answer-inner">
               <div class="faq-answer-content">
-                The Official Setup Installer (PixelPress_Setup.exe) installs cleanly to Program Files with desktop shortcuts, Start Menu entries, and a Windows uninstaller. The Fast Portable ZIP provides a pre-extracted directory bundle offering the fastest sub-200ms cold startup without temporary file decompression. The Single-File Standalone EXE packages everything into one single executable file suitable for instant USB transfers.
+                The Official Setup Installer (PixelPress_Setup.exe) installs cleanly to Program Files with desktop shortcuts, Start Menu entries, and a Windows uninstaller. The Fast Portable ZIP provides a pre-extracted directory bundle offering fast ~1.1s startup without temporary file decompression delays. The Single-File Standalone EXE packages everything into one single executable file suitable for instant USB transfers.
               </div>
             </div>
           </div>
@@ -638,7 +638,21 @@
           <div class="faq-answer">
             <div class="faq-answer-inner">
               <div class="faq-answer-content">
-                No. PixelPress is architected with an industrial chunked streaming engine. Instead of buffering hundreds of image frames into memory simultaneously, images are queued and processed in sliding windows of 8 files. After each window completes, intermediate buffers and DOM blob URLs are immediately garbage-collected, maintaining a constant O(1) memory footprint regardless of queue size.
+                No. PixelPress is architected with an industrial chunked streaming engine. Instead of buffering hundreds of image frames into memory simultaneously, images are queued and processed in sliding windows of 8 files. After each window completes, intermediate buffers and DOM blob URLs are immediately released, maintaining a strictly bounded memory footprint (~140-180 MB active peak) regardless of queue size.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Why does Windows SmartScreen display an unrecognized app notice on first launch?</span>
+            <svg class="lucide-icon sm faq-chevron"><use href="#icon-chevron-down"></use></svg>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              <div class="faq-answer-content">
+                PixelPress is a free, non-profit open-source project. Because commercial Extended Validation (EV) code-signing certificates cost $400-$600 annually, the downloadable binaries are self-packaged. Windows Defender SmartScreen shows this notice for any newly released binary without an expensive corporate certificate. Simply click "More info" and then "Run anyway" to start PixelPress. You can also verify the published SHA-256 checksums on GitHub Releases.
               </div>
             </div>
           </div>
@@ -723,7 +737,7 @@
           <p>Full Windows wizard with Start Menu integration, desktop shortcuts, and clean uninstaller in Windows Settings / Control Panel.</p>
           <div class="download-meta">
             <span>PixelPress_Setup.exe</span>
-            <span>15.8 MB</span>
+            <span>22.7 MB</span>
           </div>
           <a href="https://github.com/BeginnerAman/PixelPress/releases/download/v2.1.0/PixelPress_Setup.exe" class="btn btn-primary">
             <svg class="lucide-icon sm"><use href="#icon-download"></use></svg>
@@ -737,10 +751,10 @@
             <svg class="lucide-icon"><use href="#icon-folder-open"></use></svg>
           </div>
           <h3>Fast Portable ZIP</h3>
-          <p>Pre-extracted directory bundle. Delivers instantaneous sub-200ms cold startup without temporary extraction delays. Recommended for USB drives.</p>
+          <p>Pre-extracted directory bundle. Delivers fast ~1.1s cold startup without temporary extraction delays. Recommended for USB drives.</p>
           <div class="download-meta">
             <span>PixelPress-v2.1.0-Portable.zip</span>
-            <span>19.7 MB</span>
+            <span>29.0 MB</span>
           </div>
           <a href="https://github.com/BeginnerAman/PixelPress/releases/download/v2.1.0/PixelPress-v2.1.0-Portable.zip" class="btn btn-secondary">
             <svg class="lucide-icon sm"><use href="#icon-download"></use></svg>
@@ -757,7 +771,7 @@
           <p>Zero-extraction standalone binary. Entire application bundled into one single executable file. Double-click and compress immediately.</p>
           <div class="download-meta">
             <span>PixelPress-Portable.exe</span>
-            <span>19.8 MB</span>
+            <span>29.1 MB</span>
           </div>
           <a href="https://github.com/BeginnerAman/PixelPress/releases/download/v2.1.0/PixelPress-Portable.exe" class="btn btn-secondary">
             <svg class="lucide-icon sm"><use href="#icon-download"></use></svg>

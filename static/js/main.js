@@ -1,5 +1,114 @@
 // --- PixelPress Desktop Pro - Core Client Engine ---
 
+// ─── Session Security & Anti-CSRF Token ───
+const AUTH_TOKEN = document.querySelector('meta[name="pixelpress-token"]')?.getAttribute('content') || '';
+window.PIXELPRESS_TOKEN = AUTH_TOKEN;
+
+function getAuthHeaders(extraHeaders = {}) {
+  const headers = { ...extraHeaders };
+  if (AUTH_TOKEN) {
+    headers['X-PixelPress-Token'] = AUTH_TOKEN;
+  }
+  return headers;
+}
+
+function withAuthToken(url) {
+  if (!AUTH_TOKEN) return url;
+  const separator = url.includes('?') ? '&' : '?';
+  return `${url}${separator}token=${encodeURIComponent(AUTH_TOKEN)}`;
+}
+
+function apiFetch(url, options = {}) {
+  const opts = { ...options };
+  opts.headers = getAuthHeaders(opts.headers || {});
+  return fetch(url, opts);
+}
+
+// ─── Zero-Leak Object URL Registry (Lifecycle Management) ───
+const activeObjectUrls = new Set();
+
+function createManagedObjectURL(file) {
+  const url = URL.createObjectURL(file);
+  activeObjectUrls.add(url);
+  return url;
+}
+
+function revokeAllManagedObjectURLs() {
+  activeObjectUrls.forEach(url => {
+    try {
+      URL.revokeObjectURL(url);
+    } catch (_) {}
+  });
+  activeObjectUrls.clear();
+}
+
+// ─── Settings Persistence Engine (localStorage) ───
+const PREFS_KEY = 'pixelpress_pro_user_prefs';
+
+function saveUserPreferences() {
+  try {
+    const prefs = {
+      quality: qualitySlider ? qualitySlider.value : 85,
+      output_format: document.querySelector('input[name="output_format"]:checked')?.value || 'same',
+      resize_mode: resizeMode ? resizeMode.value : 'none',
+      resize_value: document.getElementById('resize_value')?.value || 100,
+      resize_width: document.getElementById('resize_width')?.value || '',
+      resize_height: document.getElementById('resize_height')?.value || '',
+      strip_metadata: document.getElementById('strip_metadata')?.checked ?? true,
+      lossless: document.getElementById('lossless')?.checked ?? false,
+      optimize: document.getElementById('optimize')?.checked ?? true,
+    };
+    localStorage.setItem(PREFS_KEY, JSON.stringify(prefs));
+  } catch (_) {}
+}
+
+function loadUserPreferences() {
+  try {
+    const saved = localStorage.getItem(PREFS_KEY);
+    if (!saved) return;
+    const prefs = JSON.parse(saved);
+
+    if (qualitySlider && prefs.quality !== undefined) {
+      qualitySlider.value = prefs.quality;
+      if (qualityDisplay) qualityDisplay.textContent = prefs.quality + '%';
+      updateSliderBg(qualitySlider);
+    }
+
+    if (prefs.output_format) {
+      document.querySelectorAll('.fmt-pill').forEach(btn => {
+        const input = btn.querySelector('input');
+        const match = input && input.value === prefs.output_format;
+        btn.classList.toggle('active', match);
+        if (input) input.checked = match;
+      });
+    }
+
+    if (resizeMode && prefs.resize_mode) {
+      resizeMode.value = prefs.resize_mode;
+      resizeMode.dispatchEvent(new Event('change'));
+      if (prefs.resize_value && document.getElementById('resize_value')) {
+        document.getElementById('resize_value').value = prefs.resize_value;
+      }
+      if (prefs.resize_width && document.getElementById('resize_width')) {
+        document.getElementById('resize_width').value = prefs.resize_width;
+      }
+      if (prefs.resize_height && document.getElementById('resize_height')) {
+        document.getElementById('resize_height').value = prefs.resize_height;
+      }
+    }
+
+    if (prefs.strip_metadata !== undefined && document.getElementById('strip_metadata')) {
+      document.getElementById('strip_metadata').checked = prefs.strip_metadata;
+    }
+    if (prefs.lossless !== undefined && document.getElementById('lossless')) {
+      document.getElementById('lossless').checked = prefs.lossless;
+    }
+    if (prefs.optimize !== undefined && document.getElementById('optimize')) {
+      document.getElementById('optimize').checked = prefs.optimize;
+    }
+  } catch (_) {}
+}
+
 const state = {
   files: [],
   results: [],
@@ -41,7 +150,7 @@ if (titlebar) {
     if (window.pywebview && window.pywebview.api && window.pywebview.api.drag) {
       window.pywebview.api.drag();
     } else {
-      fetch('/window/drag', { method: 'POST' }).catch(() => {});
+      apiFetch('/window/drag', { method: 'POST' }).catch(() => {});
     }
   });
 
@@ -59,7 +168,7 @@ if (titlebar) {
       if (window.pywebview && window.pywebview.api && window.pywebview.api.move_by) {
         window.pywebview.api.move_by(dx, dy);
       } else {
-        fetch('/window/move', {
+        apiFetch('/window/move', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ dx, dy })
@@ -83,7 +192,7 @@ function windowMinimize() {
   if (window.pywebview && window.pywebview.api && window.pywebview.api.minimize) {
     window.pywebview.api.minimize();
   } else {
-    fetch('/window/minimize', { method: 'POST' }).catch(() => {});
+    apiFetch('/window/minimize', { method: 'POST' }).catch(() => {});
   }
 }
 
@@ -93,7 +202,7 @@ async function windowToggleMaximize() {
     if (window.pywebview && window.pywebview.api && window.pywebview.api.toggle_maximize) {
       data = await window.pywebview.api.toggle_maximize();
     } else {
-      const resp = await fetch('/window/maximize', { method: 'POST' });
+      const resp = await apiFetch('/window/maximize', { method: 'POST' });
       data = await resp.json();
     }
     updateMaxIcon(data && data.maximized);
@@ -114,12 +223,12 @@ function windowClose() {
   if (window.pywebview && window.pywebview.api && window.pywebview.api.close) {
     window.pywebview.api.close();
   } else {
-    fetch('/window/close', { method: 'POST' }).catch(() => {});
+    apiFetch('/window/close', { method: 'POST' }).catch(() => {});
   }
 }
 
 function openOutputFolder() {
-  fetch('/open-folder', { method: 'POST' }).catch(() => {});
+  apiFetch('/open-folder', { method: 'POST' }).catch(() => {});
   showToast('Opening output directory');
 }
 
@@ -133,6 +242,7 @@ if (qualitySlider) {
     qualityDisplay.textContent = qualitySlider.value + '%';
     updateSliderBg(qualitySlider);
   });
+  qualitySlider.addEventListener('change', saveUserPreferences);
   updateSliderBg(qualitySlider);
 }
 
@@ -143,6 +253,7 @@ document.querySelectorAll('.fmt-pill').forEach(btn => {
     btn.classList.add('active');
     const input = btn.querySelector('input');
     if (input) input.checked = true;
+    saveUserPreferences();
   });
 });
 
@@ -152,6 +263,7 @@ if (resizeMode) {
     const val = resizeMode.value;
     if (val === 'none') {
       resizeControls.classList.add('hidden');
+      saveUserPreferences();
       return;
     }
     resizeControls.classList.remove('hidden');
@@ -165,8 +277,19 @@ if (resizeMode) {
         ? 'Percentage (%)'
         : val === 'width' ? 'Target Width (px)' : 'Target Height (px)';
     }
+    saveUserPreferences();
   });
 }
+
+// Auto-persist resize numeric fields and compression switches
+['resize_value', 'resize_width', 'resize_height'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('change', saveUserPreferences);
+});
+['strip_metadata', 'lossless', 'optimize'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('change', saveUserPreferences);
+});
 
 // ─── Presets ───
 function applyPreset(preset) {
@@ -239,6 +362,7 @@ function applyPreset(preset) {
     if (input) input.checked = match;
   });
 
+  saveUserPreferences();
   showToast(`Preset "${p.name}" loaded`);
 }
 
@@ -275,8 +399,10 @@ function setWorkspaceView(view) {
 ['dragenter', 'dragover'].forEach(name => {
   window.addEventListener(name, e => {
     e.preventDefault();
-    if (state.currentView !== 'results') {
+    if (state.currentView === 'empty') {
       dropZone.classList.add('dragging');
+    } else if (state.currentView === 'queue') {
+      queueSection.classList.add('dragging-over');
     }
   });
 });
@@ -285,6 +411,7 @@ function setWorkspaceView(view) {
   window.addEventListener(name, e => {
     e.preventDefault();
     dropZone.classList.remove('dragging');
+    queueSection.classList.remove('dragging-over');
   });
 });
 
@@ -359,6 +486,9 @@ function renderQueue() {
   const list = document.getElementById('file-list');
   const countEl = document.getElementById('queue-count');
 
+  // Revoke previous object URLs to prevent RAM leaks
+  revokeAllManagedObjectURLs();
+
   if (state.files.length === 0) {
     setWorkspaceView('empty');
     return;
@@ -379,8 +509,8 @@ function renderQueue() {
     const thumb = document.createElement('img');
     thumb.className = 'queue-thumb';
     thumb.alt = file.name;
-    // URL.createObjectURL is 0ms, zero RAM copy, 100x faster than FileReader
-    thumb.src = URL.createObjectURL(file);
+    // Managed Object URL: 0ms, zero RAM leak
+    thumb.src = createManagedObjectURL(file);
 
     row.appendChild(thumb);
 
@@ -421,11 +551,12 @@ function removeFile(idx) {
 }
 
 function clearQueue() {
+  revokeAllManagedObjectURLs();
   state.files = [];
   state.results = [];
   state.compressedFilenames = [];
   setWorkspaceView('empty');
-  fetch('/clear-workspace', { method: 'POST' }).catch(() => {});
+  apiFetch('/clear-workspace', { method: 'POST' }).catch(() => {});
   showToast('Workspace reset');
 }
 
@@ -465,16 +596,20 @@ async function startCompression() {
   progressSub.textContent = `Preparing ${state.files.length} file(s)...`;
 
   const totalFiles = state.files.length;
-  const CHUNK_SIZE = 8; // Optimal chunk for 4-core concurrency & strict <150MB RAM cap
+  const CHUNK_SIZE = 8; // Optimal chunk for multi-core concurrency & strict <150MB RAM cap
   const totalChunks = Math.ceil(totalFiles / CHUNK_SIZE);
   let accumulatedResults = [];
   let isCancelled = false;
 
+  const currentBatchId = 'batch_' + Date.now() + '_' + Math.random().toString(36).substr(2, 8);
   compressionAbortController = new AbortController();
 
   if (cancelBtn) {
     cancelBtn.onclick = () => {
       isCancelled = true;
+      if (currentBatchId) {
+        apiFetch(`/api/cancel-batch/${encodeURIComponent(currentBatchId)}`, { method: 'POST' }).catch(() => {});
+      }
       if (compressionAbortController) compressionAbortController.abort();
       progressSub.textContent = 'Stopping queue...';
     };
@@ -490,10 +625,11 @@ async function startCompression() {
       progressSub.textContent = `Optimizing batch ${chunkStart + 1}-${Math.min(chunkStart + chunkFiles.length, totalFiles)} of ${totalFiles}...`;
 
       const formData = new FormData();
+      formData.append('batch_id', currentBatchId);
       chunkFiles.forEach(f => formData.append('files', f));
       Object.entries(settings).forEach(([k, v]) => formData.append(k, v));
 
-      const resp = await fetch('/compress', {
+      const resp = await apiFetch('/compress', {
         method: 'POST',
         body: formData,
         signal: compressionAbortController.signal
@@ -501,7 +637,7 @@ async function startCompression() {
 
       const data = await resp.json();
       if (data.results && Array.isArray(data.results)) {
-        accumulatedResults.push(...data.results);
+        accumulatedResults.push(...data.results.filter(r => !r.cancelled));
       }
 
       const completedCount = accumulatedResults.length;
@@ -635,7 +771,7 @@ function renderResults(results) {
 
     card.innerHTML = `
       <div class="result-card-left">
-        <img class="result-card-thumb" src="/thumb/${encodeURIComponent(r.compressed_filename)}" alt="${escHtml(r.original_name)}" loading="lazy">
+        <img class="result-card-thumb" src="${withAuthToken('/thumb/' + encodeURIComponent(r.compressed_filename))}" alt="${escHtml(r.original_name)}" loading="lazy">
         <div class="result-card-info">
           <div class="result-card-title" title="${escHtml(r.original_name)}">${escHtml(r.original_name)}</div>
           <div class="result-card-sizes">
@@ -676,7 +812,7 @@ async function saveSingleFile(encodedFilename, encodedOriginalName) {
   const filename = decodeURIComponent(encodedFilename);
   const originalName = decodeURIComponent(encodedOriginalName);
   try {
-    const resp = await fetch('/api/save-file', {
+    const resp = await apiFetch('/api/save-file', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ filename, original_name: originalName })
@@ -701,7 +837,7 @@ async function saveAllToFolder() {
   if (btn) btn.disabled = true;
 
   try {
-    const resp = await fetch('/api/save-all-folder', {
+    const resp = await apiFetch('/api/save-all-folder', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ filenames: state.compressedFilenames }),
@@ -729,7 +865,7 @@ async function downloadAll() {
   if (btn) btn.disabled = true;
 
   try {
-    const resp = await fetch('/api/save-zip', {
+    const resp = await apiFetch('/api/save-zip', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ filenames: state.compressedFilenames }),
@@ -764,6 +900,154 @@ const compareCompImg   = document.getElementById('compare-comp-img');
 const compareOverlay   = document.getElementById('compare-overlay-layer');
 const compareHandle    = document.getElementById('compare-handle');
 
+// ─── Deep Pixel Inspection Zoom & Pan Engine (1:1 & 200% Peeping) ───
+let currentZoom = 1.0;
+let panX = 0;
+let panY = 0;
+let zoomMode = 'fit'; // 'fit' | '100' | '200' | 'custom'
+let isPanning = false;
+let panStartX = 0;
+let panStartY = 0;
+let initialPanX = 0;
+let initialPanY = 0;
+
+function setZoomMode(mode) {
+  zoomMode = mode;
+  if (mode === 'fit') {
+    currentZoom = 1.0;
+    panX = 0;
+    panY = 0;
+  } else if (mode === '100') {
+    currentZoom = 1.0;
+  } else if (mode === '200') {
+    currentZoom = 2.0;
+  }
+  updateZoomUI();
+}
+
+function zoomChange(delta) {
+  zoomMode = 'custom';
+  currentZoom = Math.max(0.25, Math.min(4.0, Math.round((currentZoom + delta) * 100) / 100));
+  updateZoomUI();
+}
+
+function updateZoomUI() {
+  const display = document.getElementById('zoom-level-display');
+  if (display) {
+    display.textContent = `${Math.round(currentZoom * 100)}%`;
+  }
+  const btnFit = document.getElementById('btn-zoom-fit');
+  const btn100 = document.getElementById('btn-zoom-100');
+  const btn200 = document.getElementById('btn-zoom-200');
+
+  if (btnFit) btnFit.classList.toggle('active', zoomMode === 'fit');
+  if (btn100) btn100.classList.toggle('active', zoomMode === '100' || (zoomMode === 'custom' && Math.abs(currentZoom - 1.0) < 0.01));
+  if (btn200) btn200.classList.toggle('active', zoomMode === '200' || (zoomMode === 'custom' && Math.abs(currentZoom - 2.0) < 0.01));
+
+  applyZoomTransform();
+}
+
+function applyZoomTransform() {
+  const targets = document.querySelectorAll('.zoom-target');
+  const transformStr = (zoomMode === 'fit' && panX === 0 && panY === 0)
+    ? 'none'
+    : `translate(${panX}px, ${panY}px) scale(${currentZoom})`;
+
+  targets.forEach(el => {
+    el.style.transform = transformStr;
+  });
+}
+
+function resetZoom() {
+  currentZoom = 1.0;
+  panX = 0;
+  panY = 0;
+  zoomMode = 'fit';
+  updateZoomUI();
+}
+
+window.setZoomMode = setZoomMode;
+window.zoomChange = zoomChange;
+window.resetZoom = resetZoom;
+
+// Viewport Zoom & Pan Event Listeners
+function initZoomPanEngine() {
+  const viewports = document.querySelectorAll('.zoomable-viewport');
+
+  viewports.forEach(vp => {
+    vp.addEventListener('wheel', e => {
+      e.preventDefault();
+      const delta = e.deltaY < 0 ? 0.25 : -0.25;
+      zoomChange(delta);
+    }, { passive: false });
+
+    vp.addEventListener('contextmenu', e => {
+      if (currentZoom > 1.0 || panX !== 0 || panY !== 0) {
+        e.preventDefault();
+      }
+    });
+
+    vp.addEventListener('mousedown', e => {
+      if (e.target.closest('#compare-handle') || e.target.closest('button')) return;
+
+      if (state.compareMode === 'split' && e.button === 0 && !e.shiftKey && currentZoom <= 1.0 && panX === 0 && panY === 0) {
+        return; // Normal split handle drag
+      }
+
+      if (e.button === 0 || e.button === 1 || e.button === 2) {
+        e.preventDefault();
+        isPanning = true;
+        panStartX = e.clientX;
+        panStartY = e.clientY;
+        initialPanX = panX;
+        initialPanY = panY;
+        document.querySelectorAll('.zoomable-viewport').forEach(v => v.classList.add('panning'));
+      }
+    });
+  });
+
+  window.addEventListener('mousemove', e => {
+    if (!isPanning) return;
+    e.preventDefault();
+    const dx = e.clientX - panStartX;
+    const dy = e.clientY - panStartY;
+    panX = initialPanX + dx;
+    panY = initialPanY + dy;
+    applyZoomTransform();
+  });
+
+  window.addEventListener('mouseup', () => {
+    if (isPanning) {
+      isPanning = false;
+      document.querySelectorAll('.zoomable-viewport').forEach(v => v.classList.remove('panning'));
+    }
+  });
+}
+
+// Split Handle ARIA Keyboard Navigation
+if (compareHandle) {
+  compareHandle.addEventListener('keydown', e => {
+    let currentPct = 50;
+    const handleLeft = compareHandle.style.left;
+    if (handleLeft && handleLeft.endsWith('%')) {
+      currentPct = parseFloat(handleLeft);
+    }
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      setSplitPosition(currentPct - 2);
+    } else if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      setSplitPosition(currentPct + 2);
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      setSplitPosition(0);
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      setSplitPosition(100);
+    }
+  });
+}
+
 function switchCompareMode(mode) {
   state.compareMode = mode;
   const btnSide = document.getElementById('btn-mode-side');
@@ -775,13 +1059,13 @@ function switchCompareMode(mode) {
     btnSplit.classList.remove('active');
     compareStageSide.classList.remove('hidden');
     compareStageSplit.classList.add('hidden');
-    footerHint.textContent = 'Viewing side-by-side comparison with retained pixel clarity';
+    footerHint.textContent = 'Viewing side-by-side comparison with retained pixel clarity (Space to switch)';
   } else {
     btnSide.classList.remove('active');
     btnSplit.classList.add('active');
     compareStageSide.classList.add('hidden');
     compareStageSplit.classList.remove('hidden');
-    footerHint.textContent = 'Drag the center handle left or right to inspect pixel quality';
+    footerHint.textContent = 'Drag the center handle left or right to inspect pixel quality (Space to switch)';
     setSplitPosition(50);
   }
 }
@@ -793,8 +1077,8 @@ function openCompareModal(index) {
   state.activeCompareIndex = index;
   compareTitle.textContent = item.original_name;
 
-  const origUrl = `/original/${encodeURIComponent(item.input_filename)}`;
-  const compUrl = `/preview/${encodeURIComponent(item.compressed_filename)}`;
+  const origUrl = withAuthToken(`/original/${encodeURIComponent(item.input_filename)}`);
+  const compUrl = withAuthToken(`/preview/${encodeURIComponent(item.compressed_filename)}`);
 
   // Side-by-side targets
   sideOrigImg.src = origUrl;
@@ -806,6 +1090,7 @@ function openCompareModal(index) {
   compareOrigImg.src = origUrl;
   compareCompImg.src = compUrl;
 
+  resetZoom();
   setSplitPosition(50);
   switchCompareMode(state.compareMode || 'side');
   compareModal.classList.remove('hidden');
@@ -813,6 +1098,7 @@ function openCompareModal(index) {
 
 function closeCompareModal() {
   compareModal.classList.add('hidden');
+  resetZoom();
   sideOrigImg.src = '';
   sideCompImg.src = '';
   compareOrigImg.src = '';
@@ -831,6 +1117,7 @@ function setSplitPosition(pct) {
   }
   if (compareHandle) {
     compareHandle.style.left = `${bounded}%`;
+    compareHandle.setAttribute('aria-valuenow', Math.round(bounded));
   }
 
   // Symmetric smart fade for badges so line never cuts through them:
@@ -867,6 +1154,7 @@ if (compareStageSplit) {
   };
 
   compareStageSplit.addEventListener('mousedown', e => {
+    if (e.button !== 0 || e.shiftKey || (currentZoom > 1.0 && isPanning)) return;
     startDrag(e.clientX);
   });
   window.addEventListener('mousemove', e => {
@@ -928,6 +1216,15 @@ window.addEventListener('keydown', e => {
       showToast('No active compression results to save', 'warn');
     }
     return;
+  }
+
+  // Space: Toggle compare mode between side-by-side and split slider
+  if (e.code === 'Space' || e.key === ' ') {
+    if (compareModal && !compareModal.classList.contains('hidden')) {
+      e.preventDefault();
+      switchCompareMode(state.compareMode === 'side' ? 'split' : 'side');
+      return;
+    }
   }
 
   // Escape: Close active modals
@@ -992,7 +1289,7 @@ function showToast(msg, type = 'info') {
 
 // Periodic cleanup ping
 setInterval(() => {
-  fetch('/cleanup', { method: 'POST' }).catch(() => {});
+  apiFetch('/cleanup', { method: 'POST' }).catch(() => {});
 }, 30 * 60 * 1000);
 
 // ─── World-Class Dynamic Glassmorphism Tooltip Engine ───
@@ -1084,3 +1381,13 @@ setInterval(() => {
     hideTooltip();
   }, true);
 })();
+
+// ─── Phase 3 Workstation Bootstrap ───
+document.addEventListener('DOMContentLoaded', () => {
+  initZoomPanEngine();
+  loadUserPreferences();
+});
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+  initZoomPanEngine();
+  loadUserPreferences();
+}

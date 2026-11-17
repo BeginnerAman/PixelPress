@@ -37,6 +37,7 @@ hidden_imports = [
     'PIL.Image',
     'PIL.ImageOps',
     'PIL.ImageFile',
+    'PIL.ImageCms',
     'PIL.JpegImagePlugin',
     'PIL.PngImagePlugin',
     'PIL.WebPImagePlugin',
@@ -46,11 +47,13 @@ hidden_imports = [
     'PIL.IcoImagePlugin',
     'PIL.ExifTags',
     'PIL._imaging',
+    'PIL._imagingcms',
     'PIL._webp',
     'PIL.features',
 
     # Standard lib
     'uuid',
+    'secrets',
     'io',
     'zipfile',
     'threading',

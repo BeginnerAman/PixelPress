@@ -27,3 +27,7 @@ PixelPress_Data/
 .idea/
 .DS_Store
 Thumbs.db
+
+# Test and PyInstaller temp artifacts
+.pytest_cache/
+version_info.txt
