@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PixelPress - Professional Image Compressor</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<!-- ─── Lucide Vector SVG Sprite (100% Self-Contained, Zero CDN dependency) ─── -->
+<svg style="display: none;" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Aperture / Official Camera Shutter Logo -->
+    <symbol id="icon-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"></circle>
+      <line x1="14.31" y1="8" x2="20.05" y2="17.94"></line>
+      <line x1="9.69" y1="8" x2="21.17" y2="8"></line>
+      <line x1="7.38" y1="12" x2="13.12" y2="2.06"></line>
+      <line x1="9.69" y1="16" x2="3.95" y2="6.06"></line>
+      <line x1="14.31" y1="16" x2="2.83" y2="16"></line>
+      <line x1="16.62" y1="12" x2="10.88" y2="21.94"></line>
+    </symbol>
+
+    <!-- Sliders / Settings -->
+    <symbol id="icon-sliders" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="4" y1="21" x2="4" y2="14"></line>
+      <line x1="4" y1="10" x2="4" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="12"></line>
+      <line x1="12" y1="8" x2="12" y2="3"></line>
+      <line x1="20" y1="21" x2="20" y2="16"></line>
+      <line x1="20" y1="12" x2="20" y2="3"></line>
+      <line x1="1" y1="14" x2="7" y2="14"></line>
+      <line x1="9" y1="8" x2="15" y2="8"></line>
+      <line x1="17" y1="16" x2="23" y2="16"></line>
+    </symbol>
+
+    <!-- Zap / Compress -->
+    <symbol id="icon-zap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+    </symbol>
+
+    <!-- Upload Cloud -->
+    <symbol id="icon-upload" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+      <polyline points="17 8 12 3 7 8"></polyline>
+      <line x1="12" y1="3" x2="12" y2="15"></line>
+    </symbol>
+
+    <!-- Download -->
+    <symbol id="icon-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+      <polyline points="7 10 12 15 17 10"></polyline>
+      <line x1="12" y1="15" x2="12" y2="3"></line>
+    </symbol>
+
+    <!-- Folder -->
+    <symbol id="icon-folder" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"></path>
+    </symbol>
+
+    <!-- Trash / Clear -->
+    <symbol id="icon-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="3 6 5 6 21 6"></polyline>
+      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+    </symbol>
+
+    <!-- X / Close -->
+    <symbol id="icon-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="18" y1="6" x2="6" y2="18"></line>
+      <line x1="6" y1="6" x2="18" y2="18"></line>
+    </symbol>
+
+    <!-- Minimize (Dash) -->
+    <symbol id="icon-minimize" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="5" y1="12" x2="19" y2="12"></line>
+    </symbol>
+
+    <!-- Maximize (Square) -->
+    <symbol id="icon-maximize" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+    </symbol>
+
+    <!-- Restore (Overlapping Squares) -->
+    <symbol id="icon-restore" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="7" y="7" width="13" height="13" rx="2"></rect>
+      <path d="M4 17V5a2 2 0 0 1 2-2h12"></path>
+    </symbol>
+
+    <!-- Eye / Compare -->
+    <symbol id="icon-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+      <circle cx="12" cy="12" r="3"></circle>
+    </symbol>
+
+    <!-- Columns / Side by Side -->
+    <symbol id="icon-columns" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+      <line x1="12" y1="3" x2="12" y2="21"></line>
+    </symbol>
+
+    <!-- Split Slider -->
+    <symbol id="icon-split" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"></path>
+    </symbol>
+
+    <!-- Shield / Privacy -->
+    <symbol id="icon-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+    </symbol>
+
+    <!-- Refresh -->
+    <symbol id="icon-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="23 4 23 10 17 10"></polyline>
+      <polyline points="1 20 1 14 7 14"></polyline>
+      <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+    </symbol>
+
+    <!-- Archive / ZIP -->
+    <symbol id="icon-archive" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="21 8 21 21 3 21 3 8"></polyline>
+      <rect x="1" y="3" width="22" height="5"></rect>
+      <line x1="10" y1="12" x2="14" y2="12"></line>
+    </symbol>
+
+    <!-- Alert / Warning -->
+    <symbol id="icon-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"></circle>
+      <line x1="12" y1="8" x2="12" y2="12"></line>
+      <line x1="12" y1="16" x2="12.01" y2="16"></line>
+    </symbol>
+
+    <!-- Clipboard / Paste -->
+    <symbol id="icon-clipboard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect>
+      <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+    </symbol>
+
+    <!-- Checkmark -->
+    <symbol id="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="20 6 9 17 4 12"></polyline>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="app-layout">
+
+  <!-- ─── Sleek Custom Titlebar (Frameless, Windows 11 Native Controls & Draggable) ─── -->
+  <header class="desktop-header custom-drag-titlebar" id="custom-titlebar">
+    <div class="header-brand">
+      <div class="brand-badge">
+        <svg class="lucide-icon brand-icon"><use href="#icon-logo"/></svg>
+      </div>
+      <div class="brand-details">
+        <span class="brand-title">PixelPress</span>
+        <span class="brand-subtitle">DESKTOP PRO</span>
+      </div>
+    </div>
+
+    <div class="header-status">
+      <span class="status-indicator"></span>
+      <span class="status-text">Engine Ready · Sub-100ms Parallel Mode</span>
+    </div>
+
+    <div class="header-controls-group">
+      <button class="header-btn" onclick="clearQueue()" title="Clear workspace">
+        <svg class="lucide-icon"><use href="#icon-refresh"/></svg>
+        <span>Reset</span>
+      </button>
+
+      <!-- Windows 11 Window Controls -->
+      <div class="window-controls">
+        <button class="win-btn win-btn-min" onclick="windowMinimize()" title="Minimize">
+          <svg class="lucide-icon"><use href="#icon-minimize"/></svg>
+        </button>
+        <button class="win-btn win-btn-max" id="btn-maximize" onclick="windowToggleMaximize()" title="Maximize / Restore">
+          <svg class="lucide-icon" id="icon-max-state"><use href="#icon-maximize"/></svg>
+        </button>
+        <button class="win-btn win-btn-close" onclick="windowClose()" title="Close">
+          <svg class="lucide-icon"><use href="#icon-x"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ─── Main Content Grid ─── -->
+  <div class="workspace-grid">
+
+    <!-- ─── Left Sidebar: Compression Controls ─── -->
+    <aside class="sidebar-panel" id="sidebar-panel">
+      <div class="panel-section-header">
+        <div class="header-title-group">
+          <svg class="lucide-icon text-accent"><use href="#icon-sliders"/></svg>
+          <h2>Compression Settings</h2>
+        </div>
+        <span class="sidebar-lock-badge hidden" id="sidebar-lock-badge" data-tooltip="Batch Complete · Click 'New Batch' to edit settings">
+          <svg class="lucide-icon" style="width:11px; height:11px; flex-shrink:0;"><use href="#icon-shield"/></svg>
+          <span>Locked</span>
+        </span>
+      </div>
+
+      <div class="sidebar-controls" id="sidebar-controls">
+      <!-- Quality Slider -->
+      <div class="control-card">
+        <div class="control-label-row">
+          <label for="quality">Output Quality</label>
+          <span class="badge-value" id="quality-display">85%</span>
+        </div>
+        <input type="range" id="quality" min="1" max="100" value="85" class="custom-slider">
+        <div class="slider-ticks">
+          <span>Max Compression</span>
+          <span>Balanced</span>
+          <span>Best Fidelity</span>
+        </div>
+      </div>
+
+      <!-- Output Format -->
+      <div class="control-card">
+        <label class="control-label">Output Format</label>
+        <div class="format-segment">
+          <label class="fmt-pill active">
+            <input type="radio" name="output_format" value="same" checked>
+            <span>Original</span>
+          </label>
+          <label class="fmt-pill">
+            <input type="radio" name="output_format" value="jpeg">
+            <span>JPEG</span>
+          </label>
+          <label class="fmt-pill">
+            <input type="radio" name="output_format" value="png">
+            <span>PNG</span>
+          </label>
+          <label class="fmt-pill">
+            <input type="radio" name="output_format" value="webp">
+            <span>WebP</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Smart Resizing -->
+      <div class="control-card">
+        <label for="resize_mode" class="control-label">Dimensions & Resizing</label>
+        <select id="resize_mode" class="custom-select">
+          <option value="none">Retain Original Dimensions</option>
+          <option value="percentage">Scale by Percentage</option>
+          <option value="width">Constrain Width (px)</option>
+          <option value="height">Constrain Height (px)</option>
+          <option value="custom">Exact Custom (W × H)</option>
+        </select>
+
+        <div id="resize-controls" class="resize-input-wrap hidden">
+          <div id="resize-single">
+            <input type="number" id="resize_value" class="custom-input" placeholder="e.g. 75" min="1">
+            <span class="input-helper" id="resize-label">Percentage (%)</span>
+          </div>
+          <div id="resize-custom" class="hidden">
+            <div class="two-column-inputs">
+              <input type="number" id="resize_width" class="custom-input" placeholder="Width (px)" min="1">
+              <input type="number" id="resize_height" class="custom-input" placeholder="Height (px)" min="1">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Advanced Optimization Toggles -->
+      <div class="control-card toggles-group">
+        <div class="toggle-item">
+          <div class="toggle-info">
+            <span class="toggle-title">Strip Metadata</span>
+            <span class="toggle-desc">Remove EXIF, GPS and camera profiles</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="strip_metadata" checked>
+            <span class="switch-slider"></span>
+          </label>
+        </div>
+
+        <div class="toggle-item">
+          <div class="toggle-info">
+            <span class="toggle-title">Lossless Optimization</span>
+            <span class="toggle-desc">Zero pixel degradation (WebP / PNG)</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="lossless">
+            <span class="switch-slider"></span>
+          </label>
+        </div>
+
+        <div class="toggle-item">
+          <div class="toggle-info">
+            <span class="toggle-title">Deep Optimization</span>
+            <span class="toggle-desc">Fast multi-pass encoding</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="optimize" checked>
+            <span class="switch-slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Quick Preset Chips (Balanced 6 Grid) -->
+      <div class="presets-container">
+        <span class="presets-title">Quick Presets</span>
+        <div class="preset-chips">
+          <button class="preset-chip" onclick="applyPreset('web')" title="Balanced for web upload">Web Ready</button>
+          <button class="preset-chip" onclick="applyPreset('social')" title="Instagram & WhatsApp optimized">Social Media</button>
+          <button class="preset-chip" onclick="applyPreset('email')" title="Small size for email & chat">Compact</button>
+          <button class="preset-chip" onclick="applyPreset('lossless')" title="100% loss-free optimization">Lossless</button>
+          <button class="preset-chip" onclick="applyPreset('print')" title="High fidelity for archiving">Ultra Quality</button>
+          <button class="preset-chip" onclick="applyPreset('max')" title="Maximum compression ratio">Max Squeeze</button>
+        </div>
+      </div>
+      </div> <!-- /sidebar-controls -->
+    </aside>
+
+    <!-- ─── Right Workspace Area ─── -->
+    <main class="main-workspace">
+
+      <!-- Drag & Drop Zone -->
+      <div class="drop-zone" id="drop-zone">
+        <input type="file" id="file-input" multiple accept="image/*" style="display:none">
+        <div class="drop-content">
+          <div class="drop-icon-box">
+            <svg class="lucide-icon drop-hero-icon"><use href="#icon-upload"/></svg>
+          </div>
+          <h3 class="drop-heading">Drag and drop your images here</h3>
+          <p class="drop-description">
+            Supports batch processing · <kbd class="kbd-shortcut">Ctrl + O</kbd> to browse · <kbd class="kbd-shortcut">Ctrl + V</kbd> to paste
+          </p>
+          <button class="btn-browse" onclick="document.getElementById('file-input').click()">
+            Select Files From Computer
+          </button>
+          <div class="drop-format-tags">
+            <span>PNG</span><span>JPG</span><span>WEBP</span><span>GIF</span><span>BMP</span><span>TIFF</span><span>ICO</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Staged Batch Queue Section -->
+      <section id="queue-section" class="workspace-section hidden">
+        <div class="section-toolbar">
+          <div class="toolbar-title-box">
+            <h3 class="toolbar-title">Batch Queue</h3>
+            <span class="toolbar-count" id="queue-count">0 items</span>
+          </div>
+          <div class="toolbar-actions">
+            <button class="btn-secondary" onclick="document.getElementById('file-input').click()" title="Add more images">
+              <svg class="lucide-icon"><use href="#icon-upload"/></svg>
+              <span>Add Files</span>
+            </button>
+            <button class="btn-secondary" onclick="clearQueue()" title="Clear queue">
+              <svg class="lucide-icon"><use href="#icon-trash"/></svg>
+              <span>Clear</span>
+            </button>
+            <button class="btn-primary" id="compress-btn" onclick="startCompression()">
+              <svg class="lucide-icon"><use href="#icon-zap"/></svg>
+              <span>Compress All Images</span>
+            </button>
+          </div>
+        </div>
+        <div id="file-list" class="queue-list-container"></div>
+      </section>
+
+      <!-- Compression Results Section -->
+      <section id="results-section" class="workspace-section hidden">
+        <div class="section-toolbar results-toolbar">
+          <div class="toolbar-title-box">
+            <h3 class="toolbar-title">Compression Results</h3>
+            <span class="badge-success" id="results-count-badge">Complete</span>
+          </div>
+          <!-- Dynamic Action Buttons (Single Save vs All ZIP + Open Folder) -->
+          <div class="toolbar-actions" id="results-header-actions">
+            <!-- Injected dynamically via JS -->
+          </div>
+        </div>
+
+        <!-- Metrics Dashboard -->
+        <div class="metrics-dashboard">
+          <div class="metric-card">
+            <span class="metric-label">Processed</span>
+            <span class="metric-value" id="sum-files">0</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Original Size</span>
+            <span class="metric-value" id="sum-original">0 KB</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Compressed Size</span>
+            <span class="metric-value text-accent" id="sum-compressed">0 KB</span>
+          </div>
+          <div class="metric-card highlight">
+            <span class="metric-label">Total Reduction</span>
+            <span class="metric-value text-green" id="sum-savings">0%</span>
+          </div>
+        </div>
+
+        <!-- Result Cards List -->
+        <div id="results-list" class="results-grid"></div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ─── Desktop Status Bar ─── -->
+  <footer class="desktop-statusbar">
+    <div class="statusbar-left">
+      <svg class="lucide-icon status-shield"><use href="#icon-shield"/></svg>
+      <span>100% On-Device Processing - Zero Cloud Uploads</span>
+    </div>
+    <div class="statusbar-right">
+      <span id="memory-status">PixelPress v2.1.0 Desktop Pro</span>
+    </div>
+  </footer>
+
+</div>
+
+<!-- ─── Fast Progress Modal ─── -->
+<div id="progress-overlay" class="modal-backdrop hidden">
+  <div class="progress-dialog">
+    <div class="spinner-ring"></div>
+    <h3 class="dialog-title" id="progress-title">Optimizing Images</h3>
+    <div class="progress-track">
+      <div class="progress-indicator" id="progress-bar"></div>
+    </div>
+    <div class="dialog-status-row">
+      <span id="progress-sub">Processing batch...</span>
+      <span id="progress-percentage">0%</span>
+    </div>
+    <button class="btn-progress-cancel" id="progress-cancel-btn" title="Stop processing after current chunk">
+      Cancel Remaining
+    </button>
+  </div>
+</div>
+
+<!-- ─── Before / After Dual-Mode Inspection Modal ─── -->
+<div id="compare-modal" class="modal-backdrop hidden">
+  <div class="compare-dialog">
+    <div class="compare-header">
+      <div class="compare-title-box">
+        <svg class="lucide-icon text-accent"><use href="#icon-eye"/></svg>
+        <h3 id="compare-filename">Visual Quality Inspection</h3>
+      </div>
+
+      <!-- Mode Switcher: Side-by-Side vs Split Slider -->
+      <div class="compare-mode-toggle">
+        <button class="compare-mode-btn active" id="btn-mode-side" onclick="switchCompareMode('side')">
+          <svg class="lucide-icon"><use href="#icon-columns"/></svg>
+          <span>Side-by-Side (50/50)</span>
+        </button>
+        <button class="compare-mode-btn" id="btn-mode-split" onclick="switchCompareMode('split')">
+          <svg class="lucide-icon"><use href="#icon-split"/></svg>
+          <span>Split Slider</span>
+        </button>
+      </div>
+
+      <button class="compare-close-btn" onclick="closeCompareModal()" title="Close (Esc)">
+        <svg class="lucide-icon"><use href="#icon-x"/></svg>
+      </button>
+    </div>
+
+    <!-- Mode 1: Side by Side (50/50 View) -->
+    <div class="compare-stage-side" id="compare-stage-side">
+      <div class="side-card">
+        <div class="side-card-header">
+          <span class="compare-badge badge-orig">Original</span>
+          <span class="side-specs" id="side-orig-specs">--</span>
+        </div>
+        <div class="side-img-box">
+          <img id="side-orig-img" class="side-inspect-img" alt="Original">
+        </div>
+      </div>
+
+      <div class="side-card">
+        <div class="side-card-header">
+          <span class="compare-badge badge-comp">Compressed</span>
+          <span class="side-specs text-green" id="side-comp-specs">--</span>
+        </div>
+        <div class="side-img-box">
+          <img id="side-comp-img" class="side-inspect-img" alt="Compressed">
+        </div>
+      </div>
+    </div>
+
+    <!-- Mode 2: Split Overlay Slider -->
+    <div class="compare-stage hidden" id="compare-stage-split">
+      <div class="compare-wrapper" id="compare-wrapper">
+        <img id="compare-orig-img" class="compare-img" alt="Original Image">
+
+        <div class="compare-overlay-layer" id="compare-overlay-layer">
+          <img id="compare-comp-img" class="compare-img" alt="Compressed Image">
+        </div>
+
+        <span class="compare-badge badge-orig" id="split-badge-orig">Original</span>
+        <span class="compare-badge badge-comp" id="split-badge-comp">Compressed</span>
+
+        <div class="compare-handle" id="compare-handle">
+          <div class="handle-line"></div>
+          <div class="handle-thumb">
+            <svg class="lucide-icon handle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+            <svg class="lucide-icon handle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="compare-footer">
+      <span id="compare-footer-hint">Viewing side-by-side comparison with retained pixel clarity</span>
+      <button class="btn-secondary" onclick="closeCompareModal()">Close Inspection</button>
+    </div>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

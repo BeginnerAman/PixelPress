@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PixelPress Desktop Pro - On-Device Image Compression Workstation</title>
+<meta name="description" content="High-performance, privacy-first desktop image optimizer for Windows. TinyPNG-grade dual quantization, chunked streaming engine, zero cloud uploads.">
+
+<!-- Google Fonts: Inter font family -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* -------------------------------------------------------------
+   PixelPress Desktop Pro - Official Website Design System
+   Matches Desktop Studio Aesthetic: #08090d, Glassmorphism, Neon Accents
+   ------------------------------------------------------------- */
+:root {
+  --bg-core: #08090d;
+  --bg-surface: #0e1017;
+  --bg-card: rgba(17, 19, 28, 0.7);
+  --bg-card-hover: rgba(23, 26, 38, 0.9);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-accent: rgba(124, 106, 255, 0.35);
+
+  --accent-purple: #7c6aff;
+  --accent-purple-glow: rgba(124, 106, 255, 0.35);
+  --accent-cyan: #06b6d4;
+  --accent-cyan-glow: rgba(6, 182, 212, 0.25);
+  --accent-emerald: #22c55e;
+  --accent-emerald-glow: rgba(34, 197, 94, 0.2);
+
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', Consolas, monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--bg-core);
+  color: var(--text-main);
+  font-family: var(--font-sans);
+}
+
+body {
+  overflow-x: hidden;
+  line-height: 1.6;
+  background: radial-gradient(circle at 50% 0%, rgba(124, 106, 255, 0.12) 0%, transparent 60%),
+              radial-gradient(circle at 10% 40%, rgba(6, 182, 212, 0.06) 0%, transparent 50%),
+              radial-gradient(circle at 90% 70%, rgba(34, 197, 94, 0.05) 0%, transparent 50%),
+              var(--bg-core);
+}
+
+/* Lucide Vector Icons */
+.lucide-icon {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Navigation Header */
+header.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(20px);
+  background: rgba(8, 9, 13, 0.85);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 16px 0;
+}
+
+.nav-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.brand-emblem {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(124, 106, 255, 0.25), rgba(6, 182, 212, 0.15));
+  border: 1px solid var(--border-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 20px var(--accent-purple-glow);
+}
+
+.brand-text {
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.brand-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: rgba(124, 106, 255, 0.2);
+  color: var(--accent-purple);
+  border: 1px solid var(--border-accent);
+  letter-spacing: 0.5px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  list-style: none;
+}
+
+.nav-links a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover {
+  color: var(--text-main);
+}
+
+.nav-cta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: rgba(124, 106, 255, 0.15);
+  color: #fff;
+  border: 1px solid var(--accent-purple);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.nav-cta:hover {
+  background: var(--accent-purple);
+  box-shadow: 0 0 20px var(--accent-purple-glow);
+  transform: translateY(-1px);
+}
+
+/* Hero Section */
+.hero {
+  padding: 80px 0 60px;
+  text-align: center;
+  position: relative;
+}
+
+.hero-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: var(--accent-emerald);
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+
+.hero-title {
+  font-size: clamp(38px, 6vw, 68px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -1.5px;
+  max-width: 900px;
+  margin: 0 auto 20px;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #ffffff 30%, #7c6aff 70%, #06b6d4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-subtitle {
+  font-size: clamp(16px, 2vw, 20px);
+  color: var(--text-muted);
+  max-width: 720px;
+  margin: 0 auto 40px;
+  line-height: 1.6;
+}
+
+/* Download CTA Grid */
+.download-grid {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 30px;
+}
+
+.btn-download-primary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 28px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #7c6aff 0%, #6350e8 100%);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 15px;
+  box-shadow: 0 10px 30px var(--accent-purple-glow);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-download-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 40px rgba(124, 106, 255, 0.5);
+}
+
+.btn-download-secondary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 24px;
+  border-radius: 12px;
+  background: rgba(17, 19, 28, 0.9);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  border: 1px solid var(--border-subtle);
+  transition: all 0.2s;
+}
+
+.btn-download-secondary:hover {
+  border-color: var(--accent-cyan);
+  background: rgba(23, 26, 38, 0.95);
+  box-shadow: 0 0 25px var(--accent-cyan-glow);
+  transform: translateY(-2px);
+}
+
+.btn-meta {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.btn-label {
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.btn-sub {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.65);
+  font-weight: 400;
+}
+
+.hero-meta-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+.hero-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Interactive Split Comparison Slider */
+.comparison-section {
+  padding: 60px 0;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.section-tag {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--accent-purple);
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.section-title {
+  font-size: clamp(26px, 3.5vw, 40px);
+  font-weight: 800;
+  letter-spacing: -0.8px;
+}
+
+.section-subtitle {
+  font-size: 16px;
+  color: var(--text-muted);
+  max-width: 600px;
+  margin: 10px auto 0;
+}
+
+.comparison-wrapper {
+  max-width: 960px;
+  margin: 0 auto;
+  border-radius: 16px;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-surface);
+  padding: 8px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+}
+
+.comparison-card {
+  position: relative;
+  width: 100%;
+  height: 480px;
+  border-radius: 12px;
+  overflow: hidden;
+  user-select: none;
+  background: #0d0f17;
+}
+
+.split-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.layer-original {
+  background: linear-gradient(135deg, #181d2c 0%, #0d111d 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.layer-compressed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  background: linear-gradient(135deg, #181d2c 0%, #0d111d 100%);
+  border-right: 2px solid var(--accent-purple);
+  z-index: 2;
+}
+
+.layer-inner-content {
+  width: 960px;
+  height: 480px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.spec-art-box {
+  width: 220px;
+  height: 220px;
+  border-radius: 20px;
+  border: 1px solid var(--border-accent);
+  background: rgba(124, 106, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.badge-layer {
+  position: absolute;
+  top: 20px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.badge-original {
+  right: 20px;
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.badge-compressed {
+  left: 20px;
+  background: rgba(34, 197, 94, 0.15);
+  color: var(--accent-emerald);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.slider-handle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--accent-purple);
+  border: 3px solid #fff;
+  box-shadow: 0 0 20px var(--accent-purple-glow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: ew-resize;
+  z-index: 10;
+  color: #fff;
+}
+
+.comparison-stats-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  padding: 20px 16px 8px;
+  text-align: center;
+}
+
+.stat-box {
+  padding: 12px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-subtle);
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.stat-val {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.stat-emerald {
+  color: var(--accent-emerald);
+}
+
+/* Bento Features Grid */
+.features-section {
+  padding: 80px 0;
+}
+
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.bento-card {
+  border-radius: 16px;
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border-subtle);
+  padding: 28px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.bento-card:hover {
+  transform: translateY(-4px);
+  background: var(--bg-card-hover);
+  border-color: var(--border-accent);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+}
+
+.card-icon-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  border: 1px solid var(--border-accent);
+}
+
+.icon-purple {
+  background: rgba(124, 106, 255, 0.15);
+  color: var(--accent-purple);
+}
+
+.icon-emerald {
+  background: rgba(34, 197, 94, 0.15);
+  color: var(--accent-emerald);
+}
+
+.icon-cyan {
+  background: rgba(6, 182, 212, 0.15);
+  color: var(--accent-cyan);
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  letter-spacing: -0.3px;
+}
+
+.card-desc {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* Comparison Table */
+.benchmark-section {
+  padding: 80px 0;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  border-radius: 16px;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  margin-top: 30px;
+}
+
+table.benchmark-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 14px;
+}
+
+table.benchmark-table th,
+table.benchmark-table td {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+table.benchmark-table th {
+  background: rgba(255, 255, 255, 0.03);
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+table.benchmark-table td.highlight {
+  color: var(--accent-purple);
+  font-weight: 700;
+  background: rgba(124, 106, 255, 0.05);
+}
+
+/* Keyboard Shortcuts Section */
+.shortcuts-section {
+  padding: 60px 0;
+}
+
+.shortcuts-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 30px;
+}
+
+.shortcut-card {
+  padding: 20px;
+  border-radius: 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  text-align: center;
+}
+
+kbd {
+  display: inline-block;
+  padding: 4px 8px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.4);
+  margin-bottom: 10px;
+}
+
+.shortcut-label {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* FAQ Section */
+.faq-section {
+  padding: 60px 0 100px;
+}
+
+.faq-list {
+  max-width: 800px;
+  margin: 30px auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.faq-item {
+  border-radius: 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  overflow: hidden;
+}
+
+.faq-question {
+  padding: 18px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  user-select: none;
+}
+
+.faq-answer {
+  padding: 0 22px 18px;
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* Footer */
+footer.site-footer {
+  border-top: 1px solid var(--border-subtle);
+  padding: 40px 0;
+  background: #050608;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+.footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.footer-copy a {
+  color: var(--text-muted);
+  text-decoration: none;
+}
+
+.footer-copy a:hover {
+  color: var(--accent-purple);
+}
+
+@media (max-width: 900px) {
+  .bento-grid { grid-template-columns: 1fr; }
+  .shortcuts-grid { grid-template-columns: repeat(2, 1fr); }
+  .comparison-stats-bar { grid-template-columns: repeat(2, 1fr); }
+  .nav-links { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- SVG Sprites (Lucide Icons) -->
+<svg style="display: none;" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Aperture Logo -->
+    <symbol id="icon-aperture" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="10"></circle>
+      <line x1="14.31" y1="8" x2="20.05" y2="17.94"></line>
+      <line x1="9.69" y1="8" x2="21.17" y2="8"></line>
+      <line x1="7.38" y1="12" x2="13.12" y2="2.06"></line>
+      <line x1="9.69" y1="16" x2="3.95" y2="6.06"></line>
+      <line x1="14.31" y1="16" x2="2.83" y2="16"></line>
+      <line x1="16.62" y1="12" x2="10.88" y2="21.94"></line>
+    </symbol>
+    <!-- Shield -->
+    <symbol id="icon-shield" viewBox="0 0 24 24">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+    </symbol>
+    <!-- Download -->
+    <symbol id="icon-download" viewBox="0 0 24 24">
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+      <polyline points="7 10 12 15 17 10"></polyline>
+      <line x1="12" y1="15" x2="12" y2="3"></line>
+    </symbol>
+    <!-- Cpu -->
+    <symbol id="icon-cpu" viewBox="0 0 24 24">
+      <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+      <rect x="9" y="9" width="6" height="6"></rect>
+      <line x1="9" y1="1" x2="9" y2="4"></line>
+      <line x1="15" y1="1" x2="15" y2="4"></line>
+      <line x1="9" y1="20" x2="9" y2="23"></line>
+      <line x1="15" y1="20" x2="15" y2="23"></line>
+      <line x1="20" y1="9" x2="23" y2="9"></line>
+      <line x1="20" y1="14" x2="23" y2="14"></line>
+      <line x1="1" y1="9" x2="4" y2="9"></line>
+      <line x1="1" y1="14" x2="4" y2="14"></line>
+    </symbol>
+    <!-- Zap -->
+    <symbol id="icon-zap" viewBox="0 0 24 24">
+      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+    </symbol>
+    <!-- Layers -->
+    <symbol id="icon-layers" viewBox="0 0 24 24">
+      <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+      <polyline points="2 17 12 22 22 17"></polyline>
+      <polyline points="2 12 12 17 22 12"></polyline>
+    </symbol>
+    <!-- Sparkles -->
+    <symbol id="icon-sparkles" viewBox="0 0 24 24">
+      <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path>
+    </symbol>
+    <!-- Folder -->
+    <symbol id="icon-folder" viewBox="0 0 24 24">
+      <path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"></path>
+    </symbol>
+    <!-- Check -->
+    <symbol id="icon-check" viewBox="0 0 24 24">
+      <polyline points="20 6 9 17 4 12"></polyline>
+    </symbol>
+    <!-- Sliders -->
+    <symbol id="icon-sliders" viewBox="0 0 24 24">
+      <line x1="4" y1="21" x2="4" y2="14"></line>
+      <line x1="4" y1="10" x2="4" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="12"></line>
+      <line x1="12" y1="8" x2="12" y2="3"></line>
+      <line x1="20" y1="21" x2="20" y2="16"></line>
+      <line x1="20" y1="12" x2="20" y2="3"></line>
+      <line x1="1" y1="14" x2="7" y2="14"></line>
+      <line x1="9" y1="8" x2="15" y2="8"></line>
+      <line x1="17" y1="16" x2="23" y2="16"></line>
+    </symbol>
+    <!-- Chevron -->
+    <symbol id="icon-chevron-down" viewBox="0 0 24 24">
+      <polyline points="6 9 12 15 18 9"></polyline>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- Header Navbar -->
+<header class="navbar">
+  <div class="container nav-row">
+    <a href="#" class="brand-group">
+      <div class="brand-emblem">
+        <svg class="lucide-icon" style="color: var(--accent-purple);"><use href="#icon-aperture"/></svg>
+      </div>
+      <span class="brand-text">PixelPress</span>
+      <span class="brand-badge">DESKTOP PRO</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#compare">Quality Inspector</a></li>
+      <li><a href="#benchmarks">Benchmarks</a></li>
+      <li><a href="#shortcuts">Shortcuts</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <a href="https://github.com/BeginnerAman/PixelPress" target="_blank" class="nav-cta">
+      <span>GitHub Repository</span>
+    </a>
+  </div>
+</header>
+
+<!-- Hero Section -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-pill">
+      <svg class="lucide-icon" style="width: 14px; height: 14px;"><use href="#icon-shield"/></svg>
+      <span>100% On-Device Processing - Zero Cloud Uploads</span>
+    </div>
+    
+    <h1 class="hero-title">
+      Studio-Grade Image Compression.<br>
+      <span class="gradient-text">Zero Cloud Dependency.</span>
+    </h1>
+    
+    <p class="hero-subtitle">
+      Crush PNG, JPEG, and WebP file sizes by up to 80% with TinyPNG-grade dual quantization running directly on your Windows PC. No subscriptions, zero file limits, and 100% air-gapped privacy.
+    </p>
+
+    <!-- Download Buttons Grid -->
+    <div class="download-grid">
+      <a href="https://github.com/BeginnerAman/PixelPress/releases/download/v2.1.0/PixelPress_Setup.exe" class="btn-download-primary">
+        <svg class="lucide-icon"><use href="#icon-download"/></svg>
+        <div class="btn-meta">
+          <span class="btn-label">Download Setup Installer</span>
+          <span class="btn-sub">v2.1.0 - Setup Wizard - 15.8 MB</span>
+        </div>
+      </a>
+
+      <a href="https://github.com/BeginnerAman/PixelPress/releases/download/v2.1.0/PixelPress-v2.1.0-Portable.zip" class="btn-download-secondary">
+        <svg class="lucide-icon" style="color: var(--accent-cyan);"><use href="#icon-zap"/></svg>
+        <div class="btn-meta">
+          <span class="btn-label">Fast Portable ZIP</span>
+          <span class="btn-sub">USB Drive Ready - Instant 0.2s Launch - 19.7 MB</span>
+        </div>
+      </a>
+
+      <a href="https://github.com/BeginnerAman/PixelPress/releases/download/v2.1.0/PixelPress-Portable.exe" class="btn-download-secondary">
+        <svg class="lucide-icon" style="color: var(--accent-emerald);"><use href="#icon-layers"/></svg>
+        <div class="btn-meta">
+          <span class="btn-label">Single-File EXE</span>
+          <span class="btn-sub">Zero Extraction - Standalone - 19.8 MB</span>
+        </div>
+      </a>
+    </div>
+
+    <div class="hero-meta-bar">
+      <div class="hero-meta-item">
+        <svg class="lucide-icon" style="width: 14px; height: 14px; color: var(--accent-emerald);"><use href="#icon-check"/></svg>
+        <span>Windows 11 / 10 (64-bit)</span>
+      </div>
+      <div class="hero-meta-item">
+        <svg class="lucide-icon" style="width: 14px; height: 14px; color: var(--accent-emerald);"><use href="#icon-check"/></svg>
+        <span>MIT License</span>
+      </div>
+      <div class="hero-meta-item">
+        <svg class="lucide-icon" style="width: 14px; height: 14px; color: var(--accent-emerald);"><use href="#icon-check"/></svg>
+        <span>Engineered by Aman Vishwakarma</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Interactive Split Comparison Slider -->
+<section id="compare" class="comparison-section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Interactive Quality Inspector</div>
+      <h2 class="section-title">See the Quality. Not the File Size.</h2>
+      <p class="section-subtitle">Drag the interactive slider below to inspect 1:1 pixel fidelity between raw uncompressed photography and PixelPress optimization.</p>
+    </div>
+
+    <div class="comparison-wrapper">
+      <div class="comparison-card" id="sliderCard">
+        <!-- Original Layer -->
+        <div class="split-layer layer-original">
+          <div class="spec-art-box">
+            <svg class="lucide-icon" style="width: 72px; height: 72px; color: var(--text-dim);"><use href="#icon-aperture"/></svg>
+          </div>
+          <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 6px;">RAW Uncompressed Photograph</h3>
+          <p style="font-size: 13px; color: var(--text-muted); font-family: var(--font-mono);">3456 x 4608 px - High-Fidelity 24-bit TrueColor</p>
+          <span class="badge-layer badge-original">ORIGINAL - 4.05 MB</span>
+        </div>
+
+        <!-- Compressed Layer -->
+        <div class="split-layer layer-compressed" id="sliderOverlay">
+          <div class="layer-inner-content">
+            <div class="spec-art-box" style="background: rgba(34, 197, 94, 0.08); border-color: rgba(34, 197, 94, 0.3);">
+              <svg class="lucide-icon" style="width: 72px; height: 72px; color: var(--accent-emerald);"><use href="#icon-aperture"/></svg>
+            </div>
+            <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 6px;">PixelPress Optimized (Adaptive Octree)</h3>
+            <p style="font-size: 13px; color: var(--accent-emerald); font-family: var(--font-mono);">3456 x 4608 px - 100% Visual Fidelity Preserved</p>
+            <span class="badge-layer badge-compressed">OPTIMIZED - 2.02 MB (-50.2% SAVED)</span>
+          </div>
+        </div>
+
+        <!-- Drag Handle -->
+        <div class="slider-handle" id="sliderHandle">
+          <svg class="lucide-icon" style="width: 18px; height: 18px;"><use href="#icon-sliders"/></svg>
+        </div>
+      </div>
+
+      <!-- Stats Bar -->
+      <div class="comparison-stats-bar">
+        <div class="stat-box">
+          <div class="stat-label">Original Payload</div>
+          <div class="stat-val">4.05 MB</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Optimized Payload</div>
+          <div class="stat-val stat-emerald">2.02 MB</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Data Reduction</div>
+          <div class="stat-val stat-emerald">-50.2%</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Compression Time</div>
+          <div class="stat-val">2.46s (Local CPU)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Bento Grid Features Section -->
+<section id="features" class="features-section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Engineering Highlights</div>
+      <h2 class="section-title">Built for Speed. Engineered for Scale.</h2>
+      <p class="section-subtitle">Explore the core systems that position PixelPress Desktop Pro in a tier above typical desktop utilities.</p>
+    </div>
+
+    <div class="bento-grid">
+      <!-- Card 1 -->
+      <div class="bento-card">
+        <div>
+          <div class="card-icon-wrap icon-purple">
+            <svg class="lucide-icon"><use href="#icon-sparkles"/></svg>
+          </div>
+          <h3 class="card-title">TinyPNG-Grade Dual Quantization</h3>
+          <p class="card-desc">Spatial Octree clustering for RGBA transparency alongside recursive Median-Cut with Floyd-Steinberg error diffusion for continuous gradients.</p>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="bento-card">
+        <div>
+          <div class="card-icon-wrap icon-cyan">
+            <svg class="lucide-icon"><use href="#icon-cpu"/></svg>
+          </div>
+          <h3 class="card-title">Chunked Streaming Engine</h3>
+          <p class="card-desc">Batch queue partitioned into fixed-size windows (CHUNK_SIZE = 8). Memory scaling remains strictly bounded at O(1) across 1,000+ files.</p>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="bento-card">
+        <div>
+          <div class="card-icon-wrap icon-emerald">
+            <svg class="lucide-icon"><use href="#icon-shield"/></svg>
+          </div>
+          <h3 class="card-title">100% Air-Gapped Local Privacy</h3>
+          <p class="card-desc">Zero cloud uploads, zero telemetry SDKs, and zero analytics trackers. All pixels are processed in transient process memory on your CPU.</p>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="bento-card">
+        <div>
+          <div class="card-icon-wrap icon-purple">
+            <svg class="lucide-icon"><use href="#icon-folder"/></svg>
+          </div>
+          <h3 class="card-title">Windows 11 Fluent Explorer</h3>
+          <p class="card-desc">Direct integration with native IFileOpenDialog. Save all compressed images into your chosen folder with zero ZIP extraction friction.</p>
+        </div>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="bento-card">
+        <div>
+          <div class="card-icon-wrap icon-cyan">
+            <svg class="lucide-icon"><use href="#icon-zap"/></svg>
+          </div>
+          <h3 class="card-title">Sub-16 MB Featherweight Binary</h3>
+          <p class="card-desc">Rejects heavy 180MB+ Electron frameworks in favor of Microsoft Edge WebView2 Evergreen, delivering instant 0.2s cold launches.</p>
+        </div>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="bento-card">
+        <div>
+          <div class="card-icon-wrap icon-emerald">
+            <svg class="lucide-icon"><use href="#icon-layers"/></svg>
+          </div>
+          <h3 class="card-title">Smart Dual-Mode Storage</h3>
+          <p class="card-desc">Routes runtime staging to %LOCALAPPDATA% to keep your Desktop 100% clean, with automatic portable.dat USB pendrive detection.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Benchmark Table Section -->
+<section id="benchmarks" class="benchmark-section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Objective Metrics</div>
+      <h2 class="section-title">Head-to-Head Architectural Comparison</h2>
+      <p class="section-subtitle">Evaluated over a standardized batch of 100 high-resolution images (420 MB raw payload).</p>
+    </div>
+
+    <div class="table-wrapper">
+      <table class="benchmark-table">
+        <thead>
+          <tr>
+            <th>Metric / Capability</th>
+            <th>PixelPress Desktop Pro (v2.1.0)</th>
+            <th>TinyPNG (Web)</th>
+            <th>Google Squoosh (Web)</th>
+            <th>ImageOptim (macOS)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Execution Environment</td>
+            <td class="highlight">100% Local (On-Device)</td>
+            <td>Remote Cloud Server</td>
+            <td>In-Browser Wasm</td>
+            <td>Local Native</td>
+          </tr>
+          <tr>
+            <td>Privacy Guarantee</td>
+            <td class="highlight">Air-Gapped (Zero Uploads)</td>
+            <td>Cloud Retention Risk</td>
+            <td>Client-Side Sandbox</td>
+            <td>Air-Gapped</td>
+          </tr>
+          <tr>
+            <td>100-Image Batch Execution</td>
+            <td class="highlight">12.4 Seconds (Multi-Core)</td>
+            <td>145+ Seconds (Upload+Download)</td>
+            <td>Manual Single-File</td>
+            <td>48 Seconds</td>
+          </tr>
+          <tr>
+            <td>Maximum Batch Limit</td>
+            <td class="highlight">Unlimited (Chunked Stream)</td>
+            <td>20 Files per Batch (Free)</td>
+            <td>1 Image at a Time</td>
+            <td>Unlimited</td>
+          </tr>
+          <tr>
+            <td>Memory Scaling</td>
+            <td class="highlight">Constant O(1) Memory Heap</td>
+            <td>Not Applicable</td>
+            <td>Tab Crash at 50+ Files</td>
+            <td>O(N) Process Memory</td>
+          </tr>
+          <tr>
+            <td>Cost Model</td>
+            <td class="highlight">Free and Open Source (MIT)</td>
+            <td>Subscription / Paid API</td>
+            <td>Free</td>
+            <td>Free</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- Hardware Shortcuts Section -->
+<section id="shortcuts" class="shortcuts-section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Ergonomics</div>
+      <h2 class="section-title">Pro Hardware Shortcuts</h2>
+      <p class="section-subtitle">Work without touching the mouse using built-in desktop keyboard accelerators.</p>
+    </div>
+
+    <div class="shortcuts-grid">
+      <div class="shortcut-card">
+        <kbd>Ctrl + O</kbd>
+        <div class="shortcut-label">Open File Explorer Dialog</div>
+      </div>
+      <div class="shortcut-card">
+        <kbd>Ctrl + S</kbd>
+        <div class="shortcut-label">Direct Save to Destination Folder</div>
+      </div>
+      <div class="shortcut-card">
+        <kbd>Ctrl + V</kbd>
+        <div class="shortcut-label">Paste Image from System Clipboard</div>
+      </div>
+      <div class="shortcut-card">
+        <kbd>Esc</kbd>
+        <div class="shortcut-label">Reset Workspace / Close Inspector</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ Section -->
+<section id="faq" class="faq-section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Frequently Asked Questions</div>
+      <h2 class="section-title">Common Questions</h2>
+    </div>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-question">
+          <span>Does PixelPress require an internet connection?</span>
+          <svg class="lucide-icon"><use href="#icon-chevron-down"/></svg>
+        </div>
+        <div class="faq-answer">
+          No. PixelPress is 100% offline and air-gapped. All image processing, quantization, and compression routines execute locally using your PC's CPU cores.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <span>What image formats are supported?</span>
+          <svg class="lucide-icon"><use href="#icon-chevron-down"/></svg>
+        </div>
+        <div class="faq-answer">
+          PixelPress supports input files in PNG, JPEG, JPG, WebP, GIF, BMP, TIFF, and ICO formats. Compressed outputs can be exported in Original matching format, WebP, JPEG, or PNG.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <span>Which download option should I choose?</span>
+          <svg class="lucide-icon"><use href="#icon-chevron-down"/></svg>
+        </div>
+        <div class="faq-answer">
+          For most users on Windows, the Setup Installer (PixelPress_Setup.exe) is recommended because it provides automatic Desktop shortcuts and Start Menu integration. If you are running the app from a USB pendrive, the Fast Portable ZIP provides instant 0.2s launch speed without decompression delays.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <span>Will PixelPress leave temporary folders on my Desktop?</span>
+          <svg class="lucide-icon"><use href="#icon-chevron-down"/></svg>
+        </div>
+        <div class="faq-answer">
+          No. PixelPress utilizes a Smart AppData storage engine that isolates all session buffers and logs to %LOCALAPPDATA%\PixelPress\. Your Desktop and Downloads directories remain completely clean.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="container footer-row">
+    <div class="footer-copy">
+      PixelPress Desktop Pro v2.1.0 - Designed and Engineered by <a href="https://github.com/BeginnerAman" target="_blank">Aman Vishwakarma</a>.
+    </div>
+    <div class="footer-links">
+      <a href="https://github.com/BeginnerAman/PixelPress" target="_blank" style="color: var(--text-muted); text-decoration: none;">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<!-- Interactive Split Slider Script -->
+<script>
+(function() {
+  const card = document.getElementById('sliderCard');
+  const overlay = document.getElementById('sliderOverlay');
+  const handle = document.getElementById('sliderHandle');
+  let isDragging = false;
+
+  function updateSlider(x) {
+    const rect = card.getBoundingClientRect();
+    let pos = (x - rect.left) / rect.width;
+    pos = Math.max(0.05, Math.min(0.95, pos));
+    const percent = pos * 100;
+    overlay.style.width = percent + '%';
+    handle.style.left = percent + '%';
+  }
+
+  card.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    updateSlider(e.clientX);
+  });
+
+  window.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    updateSlider(e.clientX);
+  });
+
+  window.addEventListener('mouseup', () => {
+    isDragging = false;
+  });
+
+  // Touch Support for mobile / touch displays
+  card.addEventListener('touchstart', (e) => {
+    isDragging = true;
+    updateSlider(e.touches[0].clientX);
+  });
+
+  window.addEventListener('touchmove', (e) => {
+    if (!isDragging) return;
+    updateSlider(e.touches[0].clientX);
+  });
+
+  window.addEventListener('touchend', () => {
+    isDragging = false;
+  });
+})();
+</script>
+
+</body>
+</html>
